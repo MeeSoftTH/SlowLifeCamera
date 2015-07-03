@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6BD2E4411B464CFF006E4020 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4401B464CFF006E4020 /* ViewController.swift */; };
+		6BD2E4441B464D0F006E4020 /* global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4421B464D0F006E4020 /* global.swift */; };
+		6BD2E4451B464D0F006E4020 /* save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4431B464D0F006E4020 /* save.swift */; };
 		6BF090961B4531F30012ED7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF090951B4531F30012ED7C /* AppDelegate.swift */; };
-		6BF090981B4531F30012ED7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF090971B4531F30012ED7C /* ViewController.swift */; };
 		6BF0909B1B4531F30012ED7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BF090991B4531F30012ED7C /* Main.storyboard */; };
 		6BF0909D1B4531F30012ED7C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BF0909C1B4531F30012ED7C /* Images.xcassets */; };
 		6BF090A01B4531F30012ED7C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */; };
@@ -26,10 +28,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6BD2E4401B464CFF006E4020 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = Controller/ViewController.swift; sourceTree = "<group>"; };
+		6BD2E4421B464D0F006E4020 /* global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = global.swift; path = SaveState/global.swift; sourceTree = "<group>"; };
+		6BD2E4431B464D0F006E4020 /* save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = save.swift; path = SaveState/save.swift; sourceTree = "<group>"; };
 		6BF090901B4531F30012ED7C /* SlowLifeCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlowLifeCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BF090941B4531F30012ED7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6BF090951B4531F30012ED7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6BF090971B4531F30012ED7C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6BF0909A1B4531F30012ED7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6BF0909C1B4531F30012ED7C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6BF0909F1B4531F30012ED7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -56,6 +60,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6BD2E43E1B464C81006E4020 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6BD2E4401B464CFF006E4020 /* ViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		6BD2E43F1B464CC0006E4020 /* SaveState */ = {
+			isa = PBXGroup;
+			children = (
+				6BD2E4421B464D0F006E4020 /* global.swift */,
+				6BD2E4431B464D0F006E4020 /* save.swift */,
+			);
+			name = SaveState;
+			sourceTree = "<group>";
+		};
 		6BF090871B4531F30012ED7C = {
 			isa = PBXGroup;
 			children = (
@@ -78,10 +99,11 @@
 			isa = PBXGroup;
 			children = (
 				6BF090951B4531F30012ED7C /* AppDelegate.swift */,
-				6BF090971B4531F30012ED7C /* ViewController.swift */,
-				6BF090991B4531F30012ED7C /* Main.storyboard */,
 				6BF0909C1B4531F30012ED7C /* Images.xcassets */,
+				6BD2E43E1B464C81006E4020 /* Controller */,
 				6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */,
+				6BF090991B4531F30012ED7C /* Main.storyboard */,
+				6BD2E43F1B464CC0006E4020 /* SaveState */,
 				6BF090931B4531F30012ED7C /* Supporting Files */,
 			);
 			path = SlowLifeCamera;
@@ -212,7 +234,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BF090981B4531F30012ED7C /* ViewController.swift in Sources */,
+				6BD2E4451B464D0F006E4020 /* save.swift in Sources */,
+				6BD2E4441B464D0F006E4020 /* global.swift in Sources */,
+				6BD2E4411B464CFF006E4020 /* ViewController.swift in Sources */,
 				6BF090961B4531F30012ED7C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,6 +435,7 @@
 				6BF090B11B4531F30012ED7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6BF090B21B4531F30012ED7C /* Build configuration list for PBXNativeTarget "SlowLifeCameraTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +444,7 @@
 				6BF090B41B4531F30012ED7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
