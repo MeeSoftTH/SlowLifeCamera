@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6BF090961B4531F30012ED7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF090951B4531F30012ED7C /* AppDelegate.swift */; };
+		6BF090981B4531F30012ED7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF090971B4531F30012ED7C /* ViewController.swift */; };
+		6BF0909B1B4531F30012ED7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BF090991B4531F30012ED7C /* Main.storyboard */; };
+		6BF0909D1B4531F30012ED7C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BF0909C1B4531F30012ED7C /* Images.xcassets */; };
+		6BF090A01B4531F30012ED7C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */; };
+		6BF090AC1B4531F30012ED7C /* SlowLifeCameraTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF090AB1B4531F30012ED7C /* SlowLifeCameraTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6BF090A61B4531F30012ED7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6BF090881B4531F30012ED7C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6BF0908F1B4531F30012ED7C;
+			remoteInfo = SlowLifeCamera;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6BF090901B4531F30012ED7C /* SlowLifeCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlowLifeCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BF090941B4531F30012ED7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6BF090951B4531F30012ED7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6BF090971B4531F30012ED7C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6BF0909A1B4531F30012ED7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6BF0909C1B4531F30012ED7C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6BF0909F1B4531F30012ED7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		6BF090A51B4531F30012ED7C /* SlowLifeCameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SlowLifeCameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BF090AA1B4531F30012ED7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6BF090AB1B4531F30012ED7C /* SlowLifeCameraTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlowLifeCameraTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6BF0908D1B4531F30012ED7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BF090A21B4531F30012ED7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6BF090871B4531F30012ED7C = {
+			isa = PBXGroup;
+			children = (
+				6BF090921B4531F30012ED7C /* SlowLifeCamera */,
+				6BF090A81B4531F30012ED7C /* SlowLifeCameraTests */,
+				6BF090911B4531F30012ED7C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6BF090911B4531F30012ED7C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6BF090901B4531F30012ED7C /* SlowLifeCamera.app */,
+				6BF090A51B4531F30012ED7C /* SlowLifeCameraTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6BF090921B4531F30012ED7C /* SlowLifeCamera */ = {
+			isa = PBXGroup;
+			children = (
+				6BF090951B4531F30012ED7C /* AppDelegate.swift */,
+				6BF090971B4531F30012ED7C /* ViewController.swift */,
+				6BF090991B4531F30012ED7C /* Main.storyboard */,
+				6BF0909C1B4531F30012ED7C /* Images.xcassets */,
+				6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */,
+				6BF090931B4531F30012ED7C /* Supporting Files */,
+			);
+			path = SlowLifeCamera;
+			sourceTree = "<group>";
+		};
+		6BF090931B4531F30012ED7C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6BF090941B4531F30012ED7C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6BF090A81B4531F30012ED7C /* SlowLifeCameraTests */ = {
+			isa = PBXGroup;
+			children = (
+				6BF090AB1B4531F30012ED7C /* SlowLifeCameraTests.swift */,
+				6BF090A91B4531F30012ED7C /* Supporting Files */,
+			);
+			path = SlowLifeCameraTests;
+			sourceTree = "<group>";
+		};
+		6BF090A91B4531F30012ED7C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6BF090AA1B4531F30012ED7C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6BF0908F1B4531F30012ED7C /* SlowLifeCamera */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BF090AF1B4531F30012ED7C /* Build configuration list for PBXNativeTarget "SlowLifeCamera" */;
+			buildPhases = (
+				6BF0908C1B4531F30012ED7C /* Sources */,
+				6BF0908D1B4531F30012ED7C /* Frameworks */,
+				6BF0908E1B4531F30012ED7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SlowLifeCamera;
+			productName = SlowLifeCamera;
+			productReference = 6BF090901B4531F30012ED7C /* SlowLifeCamera.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6BF090A41B4531F30012ED7C /* SlowLifeCameraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6BF090B21B4531F30012ED7C /* Build configuration list for PBXNativeTarget "SlowLifeCameraTests" */;
+			buildPhases = (
+				6BF090A11B4531F30012ED7C /* Sources */,
+				6BF090A21B4531F30012ED7C /* Frameworks */,
+				6BF090A31B4531F30012ED7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6BF090A71B4531F30012ED7C /* PBXTargetDependency */,
+			);
+			name = SlowLifeCameraTests;
+			productName = SlowLifeCameraTests;
+			productReference = 6BF090A51B4531F30012ED7C /* SlowLifeCameraTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6BF090881B4531F30012ED7C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = Pawarit_Bunrith;
+				TargetAttributes = {
+					6BF0908F1B4531F30012ED7C = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
+					6BF090A41B4531F30012ED7C = {
+						CreatedOnToolsVersion = 6.3.2;
+						TestTargetID = 6BF0908F1B4531F30012ED7C;
+					};
+				};
+			};
+			buildConfigurationList = 6BF0908B1B4531F30012ED7C /* Build configuration list for PBXProject "SlowLifeCamera" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6BF090871B4531F30012ED7C;
+			productRefGroup = 6BF090911B4531F30012ED7C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6BF0908F1B4531F30012ED7C /* SlowLifeCamera */,
+				6BF090A41B4531F30012ED7C /* SlowLifeCameraTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6BF0908E1B4531F30012ED7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BF0909B1B4531F30012ED7C /* Main.storyboard in Resources */,
+				6BF090A01B4531F30012ED7C /* LaunchScreen.xib in Resources */,
+				6BF0909D1B4531F30012ED7C /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BF090A31B4531F30012ED7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6BF0908C1B4531F30012ED7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BF090981B4531F30012ED7C /* ViewController.swift in Sources */,
+				6BF090961B4531F30012ED7C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6BF090A11B4531F30012ED7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BF090AC1B4531F30012ED7C /* SlowLifeCameraTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6BF090A71B4531F30012ED7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6BF0908F1B4531F30012ED7C /* SlowLifeCamera */;
+			targetProxy = 6BF090A61B4531F30012ED7C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6BF090991B4531F30012ED7C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6BF0909A1B4531F30012ED7C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6BF0909F1B4531F30012ED7C /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6BF090AD1B4531F30012ED7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6BF090AE1B4531F30012ED7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6BF090B01B4531F30012ED7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SlowLifeCamera/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6BF090B11B4531F30012ED7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SlowLifeCamera/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		6BF090B31B4531F30012ED7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SlowLifeCameraTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SlowLifeCamera.app/SlowLifeCamera";
+			};
+			name = Debug;
+		};
+		6BF090B41B4531F30012ED7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SlowLifeCameraTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SlowLifeCamera.app/SlowLifeCamera";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6BF0908B1B4531F30012ED7C /* Build configuration list for PBXProject "SlowLifeCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BF090AD1B4531F30012ED7C /* Debug */,
+				6BF090AE1B4531F30012ED7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6BF090AF1B4531F30012ED7C /* Build configuration list for PBXNativeTarget "SlowLifeCamera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BF090B01B4531F30012ED7C /* Debug */,
+				6BF090B11B4531F30012ED7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6BF090B21B4531F30012ED7C /* Build configuration list for PBXNativeTarget "SlowLifeCameraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BF090B31B4531F30012ED7C /* Debug */,
+				6BF090B41B4531F30012ED7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6BF090881B4531F30012ED7C /* Project object */;
+}
