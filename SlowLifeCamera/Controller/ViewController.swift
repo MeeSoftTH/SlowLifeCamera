@@ -88,6 +88,8 @@ class ViewController: UIViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //self.navigationController!.navigationBar.barTintColor = UIColor.lightGrayColor()
+        
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
         let devices = AVCaptureDevice.devices()
         for device in devices {
@@ -101,6 +103,10 @@ class ViewController: UIViewController  {
                 }
             }
         }
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
     func takePicture() {
