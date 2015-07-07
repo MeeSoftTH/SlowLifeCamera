@@ -133,10 +133,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RNo-kP-RUE">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <view contentMode="scaleAspectFit" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QIC-T3-mAq">
+                                    <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="QIC-T3-mAq">
                                         <rect key="frame" x="0.0" y="132" width="320" height="380"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xEh-M2-d3V">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xEh-M2-d3V">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="190"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k3e-6q-ZcM">
@@ -180,7 +180,7 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="03G-Ss-DPa">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="03G-Ss-DPa">
                                                 <rect key="frame" x="80" y="0.0" width="80" height="190"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xge-Iz-wWu">
@@ -224,7 +224,7 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tAA-hA-lwE">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tAA-hA-lwE">
                                                 <rect key="frame" x="160" y="0.0" width="80" height="190"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnx-iD-UFR">
@@ -268,7 +268,7 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mCz-LL-kSn">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mCz-LL-kSn">
                                                 <rect key="frame" x="240" y="0.0" width="80" height="190"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uzs-pQ-TwP">
@@ -312,7 +312,7 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LJX-Xf-S07">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LJX-Xf-S07">
                                                 <rect key="frame" x="0.0" y="190" width="80" height="190"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gEX-Gz-TkP">
@@ -356,7 +356,7 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IzJ-oF-5mB">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IzJ-oF-5mB">
                                                 <rect key="frame" x="80" y="190" width="80" height="190"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GQ1-g3-pQC">
@@ -400,7 +400,7 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ukP-pP-LGm">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ukP-pP-LGm">
                                                 <rect key="frame" x="160" y="190" width="80" height="190"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fd5-b7-lgi">
@@ -444,7 +444,7 @@
                                                     </mask>
                                                 </variation>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tUD-m5-bSQ">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUD-m5-bSQ">
                                                 <rect key="frame" x="240" y="190" width="80" height="190"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X4v-cs-FnV">
@@ -632,10 +632,10 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t8h-l9-sWB">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t8h-l9-sWB">
                                         <rect key="frame" x="0.0" y="64" width="320" height="52"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="koz-0e-Saq">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="koz-0e-Saq">
                                                 <rect key="frame" x="8" y="8" width="69" height="35"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="69" id="YK0-VQ-7Nb"/>
@@ -656,7 +656,7 @@
                                                     </mask>
                                                 </variation>
                                             </button>
-                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cjw-fK-vRV">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cjw-fK-vRV">
                                                 <rect key="frame" x="216" y="11" width="96" height="29"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rHa-17-vgu">
@@ -665,7 +665,7 @@
                                                         <color key="textColor" red="0.85098039219999999" green="0.4039215686" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="coin" translatesAutoresizingMaskIntoConstraints="NO" id="akD-nc-xbK">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="coin" translatesAutoresizingMaskIntoConstraints="NO" id="akD-nc-xbK">
                                                         <rect key="frame" x="8" y="3" width="26" height="26"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="26" id="8aJ-xl-3w8"/>
@@ -737,8 +737,7 @@
                                                 <exclude reference="pY3-as-lhQ"/>
                                             </mask>
                                         </variation>
-                                        <variation key="widthClass=compact" misplaced="YES">
-                                            <rect key="frame" x="40" y="15" width="320" height="52"/>
+                                        <variation key="widthClass=compact">
                                             <mask key="constraints">
                                                 <include reference="3Db-qO-bYH"/>
                                                 <include reference="XXM-lN-EJ5"/>
@@ -829,14 +828,14 @@
                                 <exclude reference="RNo-kP-RUE"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="5h1-FL-hL7"/>
-                                <exclude reference="PhE-Gj-frA"/>
-                                <exclude reference="dvR-xH-L3G"/>
-                                <exclude reference="oB3-h9-KgX"/>
                                 <exclude reference="F2q-4D-PC2"/>
                                 <exclude reference="LuQ-Ud-EKA"/>
                                 <exclude reference="PuN-1G-hCG"/>
                                 <exclude reference="TPF-xK-vdY"/>
+                                <exclude reference="5h1-FL-hL7"/>
+                                <exclude reference="PhE-Gj-frA"/>
+                                <exclude reference="dvR-xH-L3G"/>
+                                <exclude reference="oB3-h9-KgX"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -844,14 +843,14 @@
                                 <include reference="RNo-kP-RUE"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="5h1-FL-hL7"/>
-                                <include reference="PhE-Gj-frA"/>
-                                <include reference="dvR-xH-L3G"/>
-                                <include reference="oB3-h9-KgX"/>
                                 <include reference="F2q-4D-PC2"/>
                                 <include reference="LuQ-Ud-EKA"/>
                                 <exclude reference="PuN-1G-hCG"/>
                                 <include reference="TPF-xK-vdY"/>
+                                <include reference="5h1-FL-hL7"/>
+                                <include reference="PhE-Gj-frA"/>
+                                <include reference="dvR-xH-L3G"/>
+                                <include reference="oB3-h9-KgX"/>
                             </mask>
                         </variation>
                     </view>

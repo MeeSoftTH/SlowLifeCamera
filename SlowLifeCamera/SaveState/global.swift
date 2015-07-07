@@ -9,5 +9,10 @@
 import UIKit
 
 class global: NSObject {
+    
+    struct variable {
+        
+        
+    }
    
 }

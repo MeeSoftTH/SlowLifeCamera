@@ -9,5 +9,9 @@
 import UIKit
 
 class save: NSObject {
-   
+    
+    struct variable {
+    
+    }
+    
 }
