@@ -10,12 +10,22 @@ import UIKit
 
 class GetCoinsViewController: UIViewController
 {
-    override var preferredContentSize: CGSize {
-        get {
-            return CGSize(width: 300, height: 275)
-        }
-        set {
-            super.preferredContentSize = newValue
-        }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    @IBAction func close(sender: UIBarButtonItem) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
 }

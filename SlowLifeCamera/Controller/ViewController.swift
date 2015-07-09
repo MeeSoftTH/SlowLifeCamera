@@ -11,7 +11,7 @@ import AVFoundation
 import MobileCoreServices
 import Foundation
 
-class ViewController: UIViewController  {
+class ViewController: UIViewController, UIPopoverPresentationControllerDelegate  {
     
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
@@ -153,6 +153,22 @@ class ViewController: UIViewController  {
         self.view.bringSubviewToFront(rightWing)
         previewLayer?.frame = self.view.layer.frame
         captureSession.startRunning()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        if let popupView = segue.destinationViewController as? UIViewController
+        {
+            if let popup = popupView.popoverPresentationController
+            {
+                popup.delegate = self
+            }
+        }
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle
+    {
+        return UIModalPresentationStyle.None
     }
     
 }
