@@ -21,35 +21,36 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var shotImage: UIImage!
     var cameratype: Bool = true
     
+    @IBOutlet weak var topbar: UIView!
+    @IBOutlet weak var foolBar: UIView!
+    @IBOutlet weak var flashButton: UIButton!
+    @IBOutlet weak var numberLabel: UILabel!
+    @IBOutlet weak var switchCameraButton: UIButton!
+    @IBOutlet weak var settingButton: UIButton!
+    @IBOutlet weak var shopButton: UIButton!
     @IBOutlet weak var shotButton: UIButton!
-    @IBOutlet weak var shotPicture: UIImageView!
-    @IBOutlet weak var leftWing: UIButton!
-    @IBOutlet weak var rightWing: UIButton!
-    @IBOutlet weak var exButton: UIButton!
+    
     
     @IBAction func shotPress(sender: UIButton) {
-        takePicture()
-        self.view.bringSubviewToFront(shotPicture)
-        self.view.sendSubviewToBack(shotButton)
-        self.view.sendSubviewToBack(leftWing)
-        self.view.sendSubviewToBack(rightWing)
-        self.view.bringSubviewToFront(exButton)
+        
     }
     
-    @IBAction func exitPress(sender: UIButton) {
-        shotPicture.image = nil
-        shotPicture.backgroundColor = UIColor.blackColor()
-        self.view.sendSubviewToBack(shotPicture)
-        self.view.sendSubviewToBack(exButton)
-        self.view.bringSubviewToFront(shotButton)
-        self.view.bringSubviewToFront(leftWing)
-        self.view.bringSubviewToFront(rightWing)
+    @IBAction func flashEnable(sender: UIButton) {
+        let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        if (device.hasTorch) {
+            device.lockForConfiguration(nil)
+            if (device.torchMode == AVCaptureTorchMode.On) {
+                device.torchMode = AVCaptureTorchMode.Off
+                flashButton.tintColor = UIColor.blackColor()
+            } else {
+                device.setTorchModeOnWithLevel(1.0, error: nil)
+                flashButton.tintColor = UIColor.whiteColor()
+            }
+            device.unlockForConfiguration()
+        }
     }
     
     @IBAction func switchCamera(sender: UIButton) {
-        shotPicture.image = nil
-        shotPicture.backgroundColor = UIColor.blackColor()
-        self.view.sendSubviewToBack(exButton)
         for oldInput : AnyObject in captureSession.inputs {
             if let captureInput = oldInput as? AVCaptureInput {
                 captureSession.removeInput(captureInput)
@@ -124,7 +125,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         if videoConnection != nil {
             stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
                 { (imageDataSampleBuffer, error) -> Void in
-                    self.shotPicture.image = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer))
+                    
             }}
     }
     
@@ -147,10 +148,25 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             println("error: \(err?.localizedDescription)")
         }
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        
+        previewLayer!.frame = self.view.frame
+        
+        var bounds:CGRect = self.view.layer.bounds
+        previewLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
+        previewLayer!.bounds = bounds
+        previewLayer!.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds))
+        
         self.view.layer.addSublayer(previewLayer)
+        self.view.bringSubviewToFront(numberLabel)
+        self.view.bringSubviewToFront(flashButton)
+        self.view.bringSubviewToFront(switchCameraButton)
+        self.view.bringSubviewToFront(settingButton)
+        self.view.bringSubviewToFront(shopButton)
         self.view.bringSubviewToFront(shotButton)
-        self.view.bringSubviewToFront(leftWing)
-        self.view.bringSubviewToFront(rightWing)
+        self.view.bringSubviewToFront(topbar)
+        self.view.bringSubviewToFront(foolBar)
+        
+        
         previewLayer?.frame = self.view.layer.frame
         captureSession.startRunning()
     }

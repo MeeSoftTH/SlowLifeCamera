@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShopViewController: UIViewController {
+class ShopViewController: UIViewController, UIPopoverPresentationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +25,20 @@ class ShopViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        if let popupView = segue.destinationViewController as? UIViewController
+        {
+            if let popup = popupView.popoverPresentationController
+            {
+                popup.delegate = self
+            }
+        }
+    }
     
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle
+    {
+        return UIModalPresentationStyle.None
+    }
 
 }

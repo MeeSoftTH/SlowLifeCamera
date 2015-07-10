@@ -12,10 +12,22 @@ class SettingViewController: UIViewController {
     
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: 300, height: 275)
+            return CGSize(width: 300, height: 200)
         }
         set {
             super.preferredContentSize = newValue
         }
+    }
+
+    @IBAction func copyRight(sender: UISwitch) {
+        
+    }
+
+    @IBAction func time(sender: UISwitch) {
+        
+    }
+
+    @IBAction func location(sender: UISwitch) {
+        
     }
 }
