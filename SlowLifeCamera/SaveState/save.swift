@@ -8,10 +8,12 @@
 
 import UIKit
 
-class save: NSObject {
+class save {
     
     struct variable {
-    
+        
+        static var myCoins: Int = 999999
+        static var myNum: Int = 0
     }
     
 }

@@ -9,15 +9,17 @@
 import UIKit
 
 class ShopViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+    
+    @IBOutlet weak var myCoins: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        let intCoins: Int = save.variable.myCoins
+        
+        var myStringCoins = String(intCoins)
+        
+        myCoins.text = myStringCoins
     }
 
     override func didReceiveMemoryWarning() {

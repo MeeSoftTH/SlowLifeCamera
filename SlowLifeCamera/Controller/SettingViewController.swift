@@ -10,6 +10,12 @@ import UIKit
 
 class SettingViewController: UIViewController {
     
+    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    
+    @IBOutlet weak var showCopy: UISwitch!
+    @IBOutlet weak var showTime: UISwitch!
+    @IBOutlet weak var showLocation: UISwitch!
+    
     override var preferredContentSize: CGSize {
         get {
             return CGSize(width: 300, height: 200)
@@ -18,16 +24,39 @@ class SettingViewController: UIViewController {
             super.preferredContentSize = newValue
         }
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        showCopy.setOn(userSetting.boolForKey("showCopyRight"), animated:true)
+        
+        showTime.setOn(userSetting.boolForKey("ShowTime"), animated:true)
+        
+        showLocation.setOn(userSetting.boolForKey("showLocation"), animated:true)
+     
+    }
 
     @IBAction func copyRight(sender: UISwitch) {
-        
+        if showCopy.on {
+            userSetting.setBool(true, forKey : "showCopyRight")
+        }else {
+            userSetting.setBool(false, forKey : "showCopyRight")
+        }
     }
 
     @IBAction func time(sender: UISwitch) {
-        
+        if showTime.on {
+            userSetting.setBool(true, forKey : "ShowTime")
+        }else {
+            userSetting.setBool(false, forKey : "ShowTime")
+        }
     }
 
     @IBAction func location(sender: UISwitch) {
-        
+        if showLocation.on {
+            userSetting.setBool(true, forKey : "showLocation")
+        }else {
+            userSetting.setBool(false, forKey : "showLocation")
+        }
     }
 }
