@@ -8,11 +8,10 @@
 
 import UIKit
 
-class global: NSObject {
+class global {
     
     struct variable {
         
         
     }
-   
 }

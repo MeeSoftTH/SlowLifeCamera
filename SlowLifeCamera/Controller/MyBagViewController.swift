@@ -124,7 +124,7 @@ class MyBagViewController: UIViewController {
     
     func updateControl() {
         
-        let intCoins: Int = save.variable.myCoins
+        let intCoins: Int = userSetting.integerForKey("myCoins")
         
         var myStringCoins = String(intCoins)
         

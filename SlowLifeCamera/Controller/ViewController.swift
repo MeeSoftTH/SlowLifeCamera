@@ -34,6 +34,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     @IBOutlet weak var capture: UIView!
     @IBOutlet weak var controlView: UIView!
     
+    var timer: NSTimer!
+    
     
     override func prefersStatusBarHidden() -> Bool {
         return true
@@ -138,15 +140,24 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             numberLabel.text = String(save.variable.myNum) + ("/10")
         }
         
-        var timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateScreen"), userInfo: nil, repeats: true)
-        
+        delay(2){
+            self.updateScreen()
+        }
     }
     
     func updateScreen() {
         controlView.alpha = 1.0
         capture.alpha = 0.0
         shotButton.enabled = true
+        
     }
+    
+    func delay(delay:Double, closure:()->()) {
+        
+        dispatch_after(
+            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    }
+
     
     func updateDeviceSettings(focusValue : Float, isoValue : Float) {
         if let device = captureDevice {

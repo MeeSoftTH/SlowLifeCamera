@@ -13,6 +13,9 @@ class giftDatas {
         
         let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
         
+        userSetting.setInteger(100, forKey: "myCoins")
+        
+        
         userSetting.setObject(["normal", 10], forKey: "film1")
         userSetting.setObject(["normal", 10], forKey: "film2")
         userSetting.setObject(["normal", 10], forKey: "film3")

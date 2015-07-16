@@ -10,12 +10,14 @@ import UIKit
 
 class ShopViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     
+    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    
     @IBOutlet weak var myCoins: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let intCoins: Int = save.variable.myCoins
+        let intCoins: Int = userSetting.integerForKey("myCoins")
         
         var myStringCoins = String(intCoins)
         

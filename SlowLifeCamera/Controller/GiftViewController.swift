@@ -8,94 +8,97 @@
 
 import UIKit
 
-class CustomCell : UITableViewCell {
-   
-    @IBOutlet weak var imageIcon: UIImageView!
-    @IBOutlet weak var coins: UILabel!
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var get: UIButton!
+
+class GiftViewController: UIViewController, UnityAdsDelegate {
+    
+    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    
+    @IBOutlet weak var button1: UIButton! 
+    @IBOutlet weak var button2: UIButton!
+    @IBOutlet weak var button3: UIButton!
     
     
-    func loadItem(nameTitle: String, coinsTitle: String, image: String) {
-        imageIcon.image = UIImage(named: image)
-        coins.text = coinsTitle
-        name.text = nameTitle
-    }
-}
-
-extension Array {
-    func each(callback: T -> ()) {
-        for item in self {
-            callback(item)
-        }
-    }
+    var currentLife: Int = 0
     
-    func eachWithIndex(callback: (T, Int) -> ()) {
-        var index = 0
-        for item in self {
-            callback(item, index)
-            index += 1
-        }
-    }
-}
-
-
-class GiftViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
-    @IBOutlet weak var giftTable: UITableView!
+    var uiClick: UIButton!
     
-    var items: [(String, String, String)] = [
-        ("Gift", "50", "film.png"),
-        ("Sponser", "50", "film.png"),
-        ("Sponser", "50", "film.png"),
-        ("Sponser", "50", "film.png")
-        
-    ]
+    var timer: NSTimer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        var GiftViewController = self
         
-        addEffects()
         
-        var nib = UINib(nibName: "CustomCell", bundle: nil)
+        UnityAds.sharedInstance().delegate = self
+        UnityAds.sharedInstance().startWithGameId("5155")
         
-        giftTable.registerNib(nib, forCellReuseIdentifier: "customCell")
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateScreen"), userInfo: nil, repeats: true)
+        
     }
     
-    func addEffects() {
-        [
-            UIBlurEffectStyle.Light,
-            UIBlurEffectStyle.Dark,
-            UIBlurEffectStyle.ExtraLight
-            ].map {
-                UIBlurEffect(style: $0)
-            }.eachWithIndex { (effect, index) in
-                var effectView = UIVisualEffectView(effect: effect)
-                
-                effectView.frame = CGRectMake(0, CGFloat(50 * index), 320, 50)
-                
-                self.view.addSubview(effectView)
+    func updateScreen() {
+        
+        UnityAds.sharedInstance().setViewController(self)
+        UnityAds.sharedInstance().setZone("rewardedVideoZone")
+        
+        if UnityAds.sharedInstance().canShowAds(){
+            
+            button1.enabled = true
+            button2.enabled = true
+            button3.enabled = true
+            self.stop()
         }
     }
     
-    func tableView(giftTable: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count;
+    func stop() {
+        println("stop timer")
+        self.timer.invalidate()
+    }
+
+    
+    func unityAdsVideoCompleted(rewardItemKey: String, skipped: Bool) -> Void{
+        println("skip \(skipped)")
+        if !skipped {
+            updateUserInterface(uiClick)
+            var intCoins: Int = userSetting.integerForKey("myCoins")
+            
+            intCoins = intCoins + 50
+            
+            userSetting.setInteger(intCoins, forKey: "myCoins")
+            
+            
+        }
     }
     
-    func tableView(giftTable: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:CustomCell = giftTable.dequeueReusableCellWithIdentifier("customCell") as! CustomCell
-        
-        var (nameTitle, coinsTitle, image) = items[indexPath.row]
-        
-        cell.loadItem(nameTitle, coinsTitle: coinsTitle, image: image)
-        
-        return cell
+    @IBAction func ads1(sender: UIButton) {
+        openAds(button1)
     }
     
-    func tableView(giftTable: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        giftTable.deselectRowAtIndexPath(indexPath, animated: true)
-        println("You selected cell #\(indexPath.row)!")
+    @IBAction func ads2(sender: UIButton) {
+        openAds(button2)
+    }
+    
+    @IBAction func ads3(sender: UIButton) {
+        openAds(button3)
+    }
+    
+    func openAds(button: UIButton) {
+        
+        uiClick = button
+        
+        UnityAds.sharedInstance().setViewController(self)
+        UnityAds.sharedInstance().setZone("rewardedVideoZone")
+        
+        if UnityAds.sharedInstance().canShowAds(){
+            UnityAds.sharedInstance().show()
+        }
+    }
+    
+    func updateUserInterface(button: UIButton) {
+        
+        if button.enabled == true {
+            button.enabled = false
+        }else {
+            button.enabled = true
+        }
     }
 }
