@@ -118,22 +118,29 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
                 
                 //Save the captured preview to image
                 if (image != nil) {
+                    
                     var format = NSDateFormatter()
                     format.dateFormat="yyyy-MM-dd-HH-mm-ss"
                     var currentFileName = "img-\(format.stringFromDate(NSDate()))"
-                    var imageName = currentFileName + ".png"
-
-                    println(imageName)
-                    var fileName:String = imageName
+                    println(currentFileName)
+                    
+                    let filmRow: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
+                    println("Key = \(save.variable.key)")
+                    println("path name = \(filmRow)")
+                    var filmId = filmRow!.objectAtIndex(0) as! Int
+                    var filmDir = String(filmId)
+                
+                    var fileName:String = "/\(filmDir)/\(currentFileName).jpg"
                     var arrayPaths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! NSString
                     var pngFileName = arrayPaths.stringByAppendingPathComponent(fileName)
                     UIImagePNGRepresentation(image).writeToFile(pngFileName, atomically:true)
-                     println(arrayPaths)
+                    println(pngFileName)
+                    
+                    //println(save.variable.myNum)
                 }
             })
+            
         }
-        
-        println(save.variable.myNum)
         
         if save.variable.myNum > 0 {
             save.variable.myNum = save.variable.myNum - 1

@@ -11,12 +11,13 @@ import UIKit
 
 class GiftViewController: UIViewController, UnityAdsDelegate {
     
+    @IBOutlet weak var redGift: UIView!
+    @IBOutlet weak var blueGift: UIView!
+    @IBOutlet weak var greenGift: UIView!
+    
+    
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
-    
-    @IBOutlet weak var button1: UIButton! 
-    @IBOutlet weak var button2: UIButton!
-    @IBOutlet weak var button3: UIButton!
-    
+        
     
     var currentLife: Int = 0
     
@@ -27,12 +28,63 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        redGift.hidden = true
+        blueGift.hidden = true
+        greenGift.hidden = true
         
-        UnityAds.sharedInstance().delegate = self
-        UnityAds.sharedInstance().startWithGameId("5155")
+        let stateTime: AnyObject? = userSetting.objectForKey("adsTime")
         
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateScreen"), userInfo: nil, repeats: true)
+        if stateTime != nil {
+            var lastInt: Int = stateTime as! Int
+            var dateFormatter = NSDateFormatter()
+            
+            let date = NSDate()
+            var dateFormatter2 = NSDateFormatter()
+            dateFormatter2.dateFormat = "yyyyMMddHHmm"
+            let currentTime = dateFormatter2.stringFromDate(date)
+            var saveTimeString = currentTime.toInt()
+            
+            var timeCheck = saveTimeString! - lastInt
+            
+            if timeCheck > 5 {
+                let saveTime: Void = userSetting.setObject(saveTimeString!, forKey: "adsTime")
+                UnityAds.sharedInstance().delegate = self
+                UnityAds.sharedInstance().startWithGameId("51551")
+                
+                delay(3.0){
+                    self.startTimer()
+                }
+
+            }
+            println("ads time check = \(timeCheck)")
+        }else {
+            var dateFormatter = NSDateFormatter()
+            let date = NSDate()
+            dateFormatter.dateFormat = "yyyyMMddHHmm"
+            let currentTime = dateFormatter.stringFromDate(date)
+            var saveTimeString = currentTime.toInt()
+            let saveTime: Void = userSetting.setObject(saveTimeString!, forKey: "adsTime")
+            
+            UnityAds.sharedInstance().delegate = self
+            UnityAds.sharedInstance().startWithGameId("51551")
+            
+            delay(3.0){
+                self.startTimer()
+            }
+
+        }
         
+        
+    }
+    
+    func delay(delay:Double, closure:()->()) {
+        
+        dispatch_after(
+            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    }
+    
+    func startTimer() {
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("updateScreen"), userInfo: nil, repeats: true)
     }
     
     func updateScreen() {
@@ -41,11 +93,10 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
         UnityAds.sharedInstance().setZone("rewardedVideoZone")
         
         if UnityAds.sharedInstance().canShowAds(){
-            
-            button1.enabled = true
-            button2.enabled = true
-            button3.enabled = true
-            self.stop()
+            redGift.hidden = false
+            blueGift.hidden = false
+            greenGift.hidden = false
+        self.stop()
         }
     }
     
@@ -58,32 +109,40 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
     func unityAdsVideoCompleted(rewardItemKey: String, skipped: Bool) -> Void{
         println("skip \(skipped)")
         if !skipped {
-            updateUserInterface(uiClick)
+            
+            redGift.hidden = true
+            blueGift.hidden = true
+            greenGift.hidden = true
+            
+            let randomNumber = arc4random_uniform(200)
+            
+            let randomCoins = Int(randomNumber)
+            
             var intCoins: Int = userSetting.integerForKey("myCoins")
             
-            intCoins = intCoins + 50
+            intCoins = intCoins + randomCoins
             
             userSetting.setInteger(intCoins, forKey: "myCoins")
             
+            println("Random coins = \(randomCoins)")
+            println("new coins = \(intCoins)")
             
         }
     }
     
     @IBAction func ads1(sender: UIButton) {
-        openAds(button1)
+        openAds()
     }
     
     @IBAction func ads2(sender: UIButton) {
-        openAds(button2)
+        openAds()
     }
     
     @IBAction func ads3(sender: UIButton) {
-        openAds(button3)
+        openAds()
     }
     
-    func openAds(button: UIButton) {
-        
-        uiClick = button
+    func openAds() {
         
         UnityAds.sharedInstance().setViewController(self)
         UnityAds.sharedInstance().setZone("rewardedVideoZone")
@@ -93,12 +152,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
         }
     }
     
-    func updateUserInterface(button: UIButton) {
-        
-        if button.enabled == true {
-            button.enabled = false
-        }else {
-            button.enabled = true
-        }
+    func hideView() {
+    
     }
 }

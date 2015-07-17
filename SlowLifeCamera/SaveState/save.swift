@@ -14,6 +14,7 @@ class save {
         
         static var myCoins: Int = 999999
         static var myNum: Int = 0
+        static var key: String = ""
     }
     
 }
