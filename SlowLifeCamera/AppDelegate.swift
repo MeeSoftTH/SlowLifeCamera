@@ -19,15 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var navigationBarAppearace = UINavigationBar.appearance()
         
         navigationBarAppearace.tintColor = UIColor.whiteColor()
-        navigationBarAppearace.barTintColor = UIColor.blueColor()
+        navigationBarAppearace.barTintColor = UIColor.brownColor()
         
        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
         
         let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
         
         if userSetting.boolForKey("isFirstUse") == false {
-            giftDatas().setting()
-            userSetting.setBool(true, forKey : "isFirstUse")
+            initial().initial()
         }
         
         return true

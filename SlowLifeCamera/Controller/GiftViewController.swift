@@ -11,43 +11,65 @@ import UIKit
 
 class GiftViewController: UIViewController, UnityAdsDelegate {
     
+    @IBOutlet weak var slowGift: UIButton!
     @IBOutlet weak var redGift: UIView!
     @IBOutlet weak var blueGift: UIView!
     @IBOutlet weak var greenGift: UIView!
     
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
-        
-    
-    var currentLife: Int = 0
     
     var uiClick: UIButton!
-    
     var timer: NSTimer!
+    var stateAds = NSDate()
+    var stateGift = NSDate()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let stateLast: AnyObject? = userSetting.objectForKey("lasttime")
+        if stateLast != nil {
+            let date = NSDate()
+            
+            let date1 : NSDate = stateLast as! NSDate
+            let date2 : NSDate = date
+            
+            let compareResult = date1.compare(date2)
+            
+            let interval = date1.timeIntervalSinceDate(date2)
+            
+            
+            if interval > 21600 {
+                slowGift.enabled = true
+            }
+            println("time check = \(interval)")
+        }else {
+            let date = NSDate()
+            
+            self.stateGift = date
+            
+            slowGift.enabled = true
+            println("button enable = \(slowGift.enabled)")
+        }
         
         redGift.hidden = true
         blueGift.hidden = true
         greenGift.hidden = true
         
         let stateTime: AnyObject? = userSetting.objectForKey("adsTime")
-        
         if stateTime != nil {
-            var lastInt: Int = stateTime as! Int
-            var dateFormatter = NSDateFormatter()
             
             let date = NSDate()
-            var dateFormatter2 = NSDateFormatter()
-            dateFormatter2.dateFormat = "yyyyMMddHHmm"
-            let currentTime = dateFormatter2.stringFromDate(date)
-            var saveTimeString = currentTime.toInt()
             
-            var timeCheck = saveTimeString! - lastInt
+            var date1 : NSDate = stateTime as! NSDate
+            var date2 : NSDate = date
+
+            let compareResult = date2.compare(date1)
             
-            if timeCheck > 5 {
-                let saveTime: Void = userSetting.setObject(saveTimeString!, forKey: "adsTime")
+            let interval = date2.timeIntervalSinceDate(date1)
+            
+            
+            if interval > 300 {
                 UnityAds.sharedInstance().delegate = self
                 UnityAds.sharedInstance().startWithGameId("51551")
                 
@@ -56,14 +78,17 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
                 }
 
             }
-            println("ads time check = \(timeCheck)")
+            
+            println("ads time compareResult = \(compareResult)")
+            println("ads time interval = \(interval)")
+            
+            println("ads time compare = \(date1)")
+            println("ads time check = \(date2)")
+            
         }else {
-            var dateFormatter = NSDateFormatter()
             let date = NSDate()
-            dateFormatter.dateFormat = "yyyyMMddHHmm"
-            let currentTime = dateFormatter.stringFromDate(date)
-            var saveTimeString = currentTime.toInt()
-            let saveTime: Void = userSetting.setObject(saveTimeString!, forKey: "adsTime")
+            
+            self.stateAds = date
             
             UnityAds.sharedInstance().delegate = self
             UnityAds.sharedInstance().startWithGameId("51551")
@@ -71,10 +96,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             delay(3.0){
                 self.startTimer()
             }
-
         }
-        
-        
     }
     
     func delay(delay:Double, closure:()->()) {
@@ -114,7 +136,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             blueGift.hidden = true
             greenGift.hidden = true
             
-            let randomNumber = arc4random_uniform(200)
+            let randomNumber = arc4random_uniform(150)
             
             let randomCoins = Int(randomNumber)
             
@@ -124,10 +146,15 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             
             userSetting.setInteger(intCoins, forKey: "myCoins")
             
+            userSetting.setObject(self.stateAds, forKey: "adsTime")
+            
             println("Random coins = \(randomCoins)")
             println("new coins = \(intCoins)")
             
         }
+    }
+    @IBAction func slowLiftButton(sender: UIButton) {
+        
     }
     
     @IBAction func ads1(sender: UIButton) {
