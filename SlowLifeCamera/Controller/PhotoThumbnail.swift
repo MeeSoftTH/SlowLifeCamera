@@ -17,4 +17,5 @@ class PhotoThumbnail: UICollectionViewCell {
         self.imgView.image = thumbnailImage
     }
     
+    
 }

@@ -14,10 +14,13 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     var keySlot = ""
     var filterImage = [String]()
     
+    @IBOutlet var slotTitle: UINavigationItem!
     @IBOutlet var collectionView : UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        slotTitle.title = self.keySlot
         
         let fileManager:NSFileManager = NSFileManager.defaultManager()
         var fileList = listFilesFromDocumentsFolder()
@@ -51,7 +54,7 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     
     func collectionView(collectionView: UICollectionView,
         numberOfItemsInSection section: Int) -> Int {
-            return filterImage.count
+            return self.filterImage.count
     }
     
     func collectionView(collectionView: UICollectionView,
@@ -78,12 +81,23 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
                 if image != nil {
                     cell.setThumbnailImage(image!)
                 }
+                
             }
-            
             
             return cell
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let controller:ViewPhoto = (segue.destinationViewController as? ViewPhoto)!
+            if let cell = sender as? UICollectionViewCell{
+                    if let indexPath: NSIndexPath = self.collectionView.indexPathForCell(cell){
+                        controller.index = indexPath.item
+                        controller.filterImage = self.filterImage
+                        controller.keySlot = self.keySlot
+                        controller.filterImage = self.filterImage
+                    }
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
