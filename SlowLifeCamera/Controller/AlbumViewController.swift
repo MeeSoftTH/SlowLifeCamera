@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate {
+class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet var myTable: UITableView!
     
     var slot1: String = ""

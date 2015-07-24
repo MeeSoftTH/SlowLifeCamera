@@ -8,11 +8,9 @@
 
 import UIKit
 
-class MyBagViewController: UIViewController {
+class MyBagViewController: UIViewController, updateFilm {
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
-    
-    @IBOutlet weak var myCoins: UILabel!
     
     @IBOutlet weak var film1b: UIButton!
     @IBOutlet weak var num1: UILabel!
@@ -62,6 +60,15 @@ class MyBagViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    
+    @IBAction func shopping(sender: AnyObject) {
+        let selectView = self.storyboard!.instantiateViewControllerWithIdentifier("shop") as! ShopViewController
+        
+        //let selectView: OptionView = OptionView()
+        selectView.update = self
+       self.navigationController?.pushViewController(selectView, animated: true)
     }
     
     @IBAction func slot1(sender: UIButton) {
@@ -116,17 +123,11 @@ class MyBagViewController: UIViewController {
     
     func updateControl() {
         
-        let intCoins: Int = userSetting.integerForKey("myCoins")
-        
-        var myStringCoins = String(intCoins)
-        
-        myCoins.text = myStringCoins
-        
         let film1: AnyObject? = userSetting?.objectForKey(slotName1)
         var film1Bool = film1!.objectAtIndex(4) as! Bool
         if film1Bool == true {
             var film1Text = film1!.objectAtIndex(3) as! Int
-            num1.text = String(film1Text) + ("/10")
+            num1.text = String(film1Text) + (" of 25")
             
             var filmImg1 = film1!.objectAtIndex(2) as! String
             
@@ -144,7 +145,7 @@ class MyBagViewController: UIViewController {
         var film2Bool = film2!.objectAtIndex(4) as! Bool
         if film2Bool == true {
             var film2Text = film2!.objectAtIndex(3) as! Int
-            num2.text = String(film2Text) + ("/10")
+            num2.text = String(film2Text) + (" of 25")
             
             var filmImg2 = film2!.objectAtIndex(2) as! NSString
             
@@ -159,7 +160,7 @@ class MyBagViewController: UIViewController {
         var film3Bool = film3!.objectAtIndex(4) as! Bool
         if film3Bool == true {
             var film3Text = film3!.objectAtIndex(3) as! Int
-            num3.text = String(film3Text) + ("/10")
+            num3.text = String(film3Text) + (" of 25")
             
             var filmImg3 = film3!.objectAtIndex(2) as! NSString
             
@@ -174,7 +175,7 @@ class MyBagViewController: UIViewController {
         var film4Bool = film4!.objectAtIndex(4) as! Bool
         if film4Bool == true {
             var film4Text = film4!.objectAtIndex(3) as! Int
-            num4.text = String(film4Text) + ("/10")
+            num4.text = String(film4Text) + (" of 25")
             
             var filmImg4 = film4!.objectAtIndex(2) as! NSString
             
@@ -191,7 +192,7 @@ class MyBagViewController: UIViewController {
         var film5Bool = film5!.objectAtIndex(4) as! Bool
         if film5Bool == true {
             var film5Text = film5!.objectAtIndex(3) as! Int
-            num5.text = String(film5Text) + ("/10")
+            num5.text = String(film5Text) + (" of 25")
             
             var filmImg5 = film5!.objectAtIndex(2) as! NSString
             
@@ -206,7 +207,7 @@ class MyBagViewController: UIViewController {
         var film6Bool = film6!.objectAtIndex(4) as! Bool
         if film6Bool == true {
             var film6Text = film6!.objectAtIndex(3) as! Int
-            num6.text = String(film6Text) + ("/10")
+            num6.text = String(film6Text) + (" of 25")
             
             var filmImg6 = film6!.objectAtIndex(2) as! NSString
             
@@ -221,7 +222,7 @@ class MyBagViewController: UIViewController {
         var film7Bool = film7!.objectAtIndex(4) as! Bool
         if film7Bool == true {
             var film7Text = film7!.objectAtIndex(3) as! Int
-            num7.text = String(film7Text) + ("/10")
+            num7.text = String(film7Text) + (" of 25")
             
             var filmImg7 = film7!.objectAtIndex(2) as! NSString
             
@@ -236,7 +237,7 @@ class MyBagViewController: UIViewController {
         var film8Bool = film8!.objectAtIndex(4) as! Bool
         if film8Bool == true {
             var film8Text = film8!.objectAtIndex(3) as! Int
-            num8.text = String(film8Text) + ("/10")
+            num8.text = String(film8Text) + (" of 25")
             
             var filmImg8 = film8!.objectAtIndex(2) as! NSString
             
@@ -261,56 +262,73 @@ class MyBagViewController: UIViewController {
     
     func choicesDialog(filmRow:AnyObject?){
         
+        let number = filmRow!.objectAtIndex(3) as! Int
+        
         var chooseDialog = UIAlertController(title: "Options", message: "Choose your action?",preferredStyle: UIAlertControllerStyle.ActionSheet
         )
         
-        chooseDialog.addAction(UIAlertAction(title: "Conver to photos", style: .Default, handler: { (action: UIAlertAction!) in
-            
-            var refreshAlert = UIAlertController(title: "Rebuild photo", message: "Rebuild photo with filter!", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
-                if filmRow != nil {
-                    var filterSlot = filmRow!.objectAtIndex(1) as! String
-                    var keySlot = filmRow!.objectAtIndex(0) as! String
-                    
-                    let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
-                   
-                    filterView.keySlot = keySlot
-                    filterView.keyFilter = filterSlot
-                    
-                    self.presentViewController(filterView, animated: true, completion: nil)
-                }
+        if number < 25 {
+            chooseDialog.addAction(UIAlertAction(title: "Conver to photos", style: .Default, handler: { (action: UIAlertAction!) in
+                
+                var refreshAlert = UIAlertController(title: "Converter", message: "Do you want convert photo with filter?", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                refreshAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+                    if filmRow != nil {
+                        var filterSlot = filmRow!.objectAtIndex(1) as! String
+                        var keySlot = filmRow!.objectAtIndex(0) as! String
+                        
+                        let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
+                        
+                        filterView.keySlot = keySlot
+                        filterView.keyFilter = filterSlot
+                        
+                        self.presentViewController(filterView, animated: true, completion: nil)
+                    }
+                }))
+                
+                refreshAlert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
+                    println("Handle Cancel Logic here")
+                }))
+                
+                self.presentViewController(refreshAlert, animated: true, completion: nil)
+                
             }))
+        }
+        
+        if number > 0 {
+            chooseDialog.addAction(UIAlertAction(title: "Use this film", style: .Default, handler: { (action: UIAlertAction!) in
+                if filmRow != nil {
+                    var filmNum = filmRow!.objectAtIndex(3) as! Int
+                    save.variable.myNum = filmNum
+                    save.variable.rowSlected = true
+                    var slotName = filmRow!.objectAtIndex(0) as! String
+                    
+                    initial().createSubDirectory("RawData", subDir: slotName)
+                    
+                }
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }))
+        }
+        
+        chooseDialog.addAction(UIAlertAction(title: "Delete this film", style: .Default, handler: { (action: UIAlertAction!) in
             
-            refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+            var alert = UIAlertController(title: "Delete film", message: "Do you want delete this film?", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+                if filmRow != nil {
+                    var slot = filmRow!.objectAtIndex(0) as! NSString
+                    
+                    self.userSetting.setObject(["", "", "", 10, false], forKey: save.variable.key)
+                    
+                    self.updateControl()
+                }}))
+            
+            alert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
                 println("Handle Cancel Logic here")
             }))
             
-            self.presentViewController(refreshAlert, animated: true, completion: nil)
+            self.presentViewController(alert, animated: true, completion: nil)
             
-        }))
-        
-        chooseDialog.addAction(UIAlertAction(title: "Use", style: .Default, handler: { (action: UIAlertAction!) in
-            if filmRow != nil {
-                var filmNum = filmRow!.objectAtIndex(3) as! Int
-                save.variable.myNum = filmNum
-                save.variable.rowSlected = true
-                var slotName = filmRow!.objectAtIndex(0) as! String
-                
-                initial().createSubDirectory("RawData", subDir: slotName)
-                
-            }
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }))
-        
-        chooseDialog.addAction(UIAlertAction(title: "Trash", style: .Default, handler: { (action: UIAlertAction!) in
-            if filmRow != nil {
-                var slot = filmRow!.objectAtIndex(0) as! NSString
-                
-                self.userSetting.setObject(["", "", "", 10, false], forKey: save.variable.key)
-                
-                self.updateControl()
-            }
         }))
         
         chooseDialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
@@ -318,13 +336,14 @@ class MyBagViewController: UIViewController {
         presentViewController(chooseDialog, animated: true, completion: nil)
     }
     
-    
-    
-    
     @IBAction func cameraView(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
+    func updateFilmUIView(isTrue: Bool) {
+        if isTrue == true {
+            updateControl()
+        }
+    }
     
 }

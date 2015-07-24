@@ -17,15 +17,15 @@ class initial {
         
         // defind Object [dirId, filterId, iconName, filmCount, isOn,, key]
         
-        userSetting.setObject(["Slot1", "#01", "filter1", 10, true], forKey: "row1")
-        userSetting.setObject(["Slot2", "#02", "filter2", 10, true], forKey: "row2")
-        userSetting.setObject(["Slot3", "#03", "filter3", 10, true], forKey: "row3")
-        userSetting.setObject(["Slot4", "#04", "filter4", 10, true], forKey: "row4")
+        userSetting.setObject(["Slot1", "#01", "filter1", 25, true], forKey: "row1")
+        userSetting.setObject(["Slot2", "#02", "filter2", 25, true], forKey: "row2")
+        userSetting.setObject(["Slot3", "#03", "filter3", 25, true], forKey: "row3")
+        userSetting.setObject(["Slot4", "#04", "filter4", 25, true], forKey: "row4")
         
-        userSetting.setObject(["Slot5", "", "", 10, false], forKey: "row5")
-        userSetting.setObject(["Slot6", "", "", 10, false], forKey: "row6")
-        userSetting.setObject(["Slot7", "", "", 10, false], forKey: "row7")
-        userSetting.setObject(["Slot8", "", "", 10, false], forKey: "row8")
+        userSetting.setObject(["Slot5", "", "", 25, false], forKey: "row5")
+        userSetting.setObject(["Slot6", "", "", 25, false], forKey: "row6")
+        userSetting.setObject(["Slot7", "", "", 25, false], forKey: "row7")
+        userSetting.setObject(["Slot8", "", "", 25, false], forKey: "row8")
         
         // completed photo
         // defind folderName, FilterName, iconName, numPhoto

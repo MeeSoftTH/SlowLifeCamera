@@ -27,7 +27,6 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
     @IBOutlet weak var numberLabel: UILabel!
     @IBOutlet weak var switchCameraButton: UIButton!
     @IBOutlet weak var settingButton: UIButton!
-    @IBOutlet weak var shopButton: UIButton!
     @IBOutlet weak var shotButton: UIButton!
     @IBOutlet weak var capture: UIView!
     @IBOutlet weak var controlView: UIView!
@@ -45,7 +44,7 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
         
         
         if save.variable.rowSlected == true {
-            numberLabel.text = String(save.variable.myNum) + ("/10")
+            numberLabel.text = String(save.variable.myNum) + (" of 25")
         }
         
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
@@ -56,6 +55,7 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
                     captureDevice = device as? AVCaptureDevice
                     if captureDevice != nil {
                         beginSession()
+                        updateDeviceSettings(1.0, isoValue: 1.0)
                     }
                 }
             }
@@ -87,21 +87,56 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
             device.lockForConfiguration(nil)
             if (device.torchMode == AVCaptureTorchMode.On) {
                 device.torchMode = AVCaptureTorchMode.Off
-                flashButton.tintColor = UIColor.blackColor()
+                flashButton.setImage(UIImage(named: "flashOff" as String), forState: UIControlState.Normal)
+                
             } else {
                 device.setTorchModeOnWithLevel(1.0, error: nil)
-                flashButton.tintColor = UIColor.whiteColor()
+                flashButton.setImage(UIImage(named: "flashOn" as String), forState: UIControlState.Normal)
             }
             device.unlockForConfiguration()
         }
     }
     
     @IBAction func switchCamera(sender: UIButton) {
-        
+        captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        for oldInput : AnyObject in captureSession.inputs {
+            if let captureInput = oldInput as? AVCaptureInput {
+                captureSession.removeInput(captureInput)
+            }
+        }
+        captureSession.stopRunning()
+        if(cameratype == true) {
+            let devices = AVCaptureDevice.devices()
+            for device in devices {
+                if (device.hasMediaType(AVMediaTypeVideo)) {
+                    if(device.position == AVCaptureDevicePosition.Front) {
+                        captureDevice = device as? AVCaptureDevice
+                        if captureDevice != nil {
+                            beginSession()
+                            cameratype = false
+                        }
+                    }
+                }
+            }
+        } else {
+            let devices = AVCaptureDevice.devices()
+            for device in devices {
+                if (device.hasMediaType(AVMediaTypeVideo)) {
+                    if(device.position == AVCaptureDevicePosition.Back) {
+                        captureDevice = device as? AVCaptureDevice
+                        if captureDevice != nil {
+                            beginSession()
+                            cameratype = true
+                        }
+                    }
+                }
+            }
+        }
     }
-
+    
     @IBAction func myBag(sender: UIButton) {
-        if save.variable.myNum > 0 && save.variable.myNum < 10{
+        if save.variable.myNum >= 0 && save.variable.myNum < 26 && save.variable.key != ""{
+            
             let path: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
             
             let slotName = path!.objectAtIndex(0) as! String
@@ -111,6 +146,7 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
             let isOn = path!.objectAtIndex(4) as! Bool
             
             num = save.variable.myNum
+            numberLabel.text = ""
             
             self.userSetting?.setObject([slotName, filterCode, filterName, num, isOn], forKey: save.variable.key)
         }
@@ -158,10 +194,10 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
         
         if save.variable.myNum > 0 {
             save.variable.myNum = save.variable.myNum - 1
-            numberLabel.text = String(save.variable.myNum) + ("/10")
+            numberLabel.text = String(save.variable.myNum) + (" of 25")
         }
         
-        delay(2){
+        delay(1){
             self.updateScreen()
         }
     }
@@ -170,13 +206,6 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
         controlView.alpha = 1.0
         capture.alpha = 0.0
         shotButton.enabled = true
-        
-        let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
-        if (device != nil){
-            flashView.hidden = false
-        }else {
-            flashView.hidden = true
-        }
     }
     
     func delay(delay:Double, closure:()->()) {
@@ -197,7 +226,7 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
     
     func beginSession() {
         
-        updateDeviceSettings(1.0, isoValue: 1.0)
+        //updateDeviceSettings(1.0, isoValue: 1.0)
         
         var err : NSError? = nil
         
@@ -207,25 +236,19 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
             println("error: \(err?.localizedDescription)")
         }
         
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         
-        previewLayer!.frame = self.view.frame
+        self.previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         
-        var bounds:CGRect = self.view.layer.bounds
-        previewLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
-        previewLayer!.bounds = bounds
-        previewLayer!.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds))
         
         self.view.layer.addSublayer(previewLayer)
+        self.view.bringSubviewToFront(self.numberLabel)
+        self.view.bringSubviewToFront(self.flashButton)
+        self.view.bringSubviewToFront(self.switchCameraButton)
+        self.view.bringSubviewToFront(self.settingButton)
+        self.view.bringSubviewToFront(self.shotButton)
         
-        self.view.bringSubviewToFront(numberLabel)
-        self.view.bringSubviewToFront(flashButton)
-        self.view.bringSubviewToFront(switchCameraButton)
-        self.view.bringSubviewToFront(settingButton)
-        self.view.bringSubviewToFront(shopButton)
-        self.view.bringSubviewToFront(shotButton)
-        
-        previewLayer?.frame = self.view.layer.frame
+        self.previewLayer?.frame = self.view.layer.frame
         captureSession.startRunning()
     }
     

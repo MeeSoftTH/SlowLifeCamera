@@ -127,6 +127,12 @@ class FilterViewController: UIViewController {
             self.userSetting.setObject(["", "", "", 10, false], forKey: save.variable.key)
            processView.hidden = true
             GaleryView.hidden = false
+            
+            var intCoins: Int = userSetting.integerForKey("myCoins")
+            
+            intCoins = intCoins + self.successPhoto
+            
+            userSetting.setInteger(intCoins, forKey: "myCoins")
 
         }else {
             println("No photo")
@@ -318,8 +324,10 @@ class FilterViewController: UIViewController {
         format.dateFormat="yyyy-MM-dd-HH-mm-ss"
         var currentFileName: String = "img-0\(String(index))\(format.stringFromDate(NSDate())).jpg"
         println(currentFileName)
+        
+        var imageUI = UIImage(CGImage: image.CGImage, scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
 
-        initial().createSubAndFileDirectory("CompletedData", subDir: keySlot, file: currentFileName, image: image)
+        initial().createSubAndFileDirectory("CompletedData", subDir: keySlot, file: currentFileName, image: imageUI!)
         
         self.successPhoto += 1
 

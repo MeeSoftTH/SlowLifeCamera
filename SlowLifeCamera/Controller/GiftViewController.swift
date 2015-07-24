@@ -39,7 +39,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             let interval = date1.timeIntervalSinceDate(date2)
             
             
-            if interval > 21600 {
+            if interval > 18000 {
                 slowGift.enabled = true
             }
             println("time check = \(interval)")
@@ -63,7 +63,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             
             var date1 : NSDate = stateTime as! NSDate
             var date2 : NSDate = date
-
+            
             let compareResult = date2.compare(date1)
             
             let interval = date2.timeIntervalSinceDate(date1)
@@ -76,7 +76,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
                 delay(3.0){
                     self.startTimer()
                 }
-
+                
             }
             
             println("ads time compareResult = \(compareResult)")
@@ -97,6 +97,13 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
                 self.startTimer()
             }
         }
+        
+        var topLeftButton = UIBarButtonItem(title : "Back", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("back"))
+        self.navigationItem.backBarButtonItem = topLeftButton  //nothing happens
+    }
+    
+    func back(){
+        self.startTimer()
     }
     
     func delay(delay:Double, closure:()->()) {
@@ -118,7 +125,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             redGift.hidden = false
             blueGift.hidden = false
             greenGift.hidden = false
-        self.stop()
+            self.stop()
         }
     }
     
@@ -126,7 +133,7 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
         println("stop timer")
         self.timer.invalidate()
     }
-
+    
     
     func unityAdsVideoCompleted(rewardItemKey: String, skipped: Bool) -> Void{
         println("skip \(skipped)")
@@ -136,21 +143,20 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             blueGift.hidden = true
             greenGift.hidden = true
             
-            let randomNumber = arc4random_uniform(150)
-            
-            let randomCoins = Int(randomNumber)
-            
             var intCoins: Int = userSetting.integerForKey("myCoins")
             
-            intCoins = intCoins + randomCoins
+            intCoins = intCoins + 20
             
             userSetting.setInteger(intCoins, forKey: "myCoins")
             
             userSetting.setObject(self.stateAds, forKey: "adsTime")
             
-            println("Random coins = \(randomCoins)")
-            println("new coins = \(intCoins)")
             
+            delay(0.5){
+                let alertController = UIAlertController(title: "Congratulations", message:
+                    "Your got 20 coins from Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
+            }
         }
     }
     @IBAction func slowLiftButton(sender: UIButton) {
@@ -177,9 +183,5 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
         if UnityAds.sharedInstance().canShowAds(){
             UnityAds.sharedInstance().show()
         }
-    }
-    
-    func hideView() {
-    
     }
 }
