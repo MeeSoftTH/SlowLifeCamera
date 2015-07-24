@@ -8,7 +8,9 @@
 
 import UIKit
 
-class MyBagViewController: UIViewController, updateFilm {
+
+
+class MyBagViewController: UIViewController, updateFilm, removeFilm {
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
     
@@ -279,8 +281,10 @@ class MyBagViewController: UIViewController, updateFilm {
                         
                         let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
                         
+                        println("Key slot = \(keySlot)")
                         filterView.keySlot = keySlot
                         filterView.keyFilter = filterSlot
+                        filterView.delegate = self
                         
                         self.presentViewController(filterView, animated: true, completion: nil)
                     }
@@ -341,6 +345,12 @@ class MyBagViewController: UIViewController, updateFilm {
     }
     
     func updateFilmUIView(isTrue: Bool) {
+        if isTrue == true {
+            updateControl()
+        }
+    }
+    
+    func removeAfterSuccess(isTrue: Bool) {
         if isTrue == true {
             updateControl()
         }

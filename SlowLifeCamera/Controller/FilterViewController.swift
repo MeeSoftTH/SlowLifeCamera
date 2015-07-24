@@ -8,24 +8,33 @@
 
 import UIKit
 
+protocol removeFilm {
+    func removeAfterSuccess(isTrue: Bool)
+}
+
+let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+
 class FilterViewController: UIViewController {
-    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
     
     @IBOutlet var GaleryView: UIView!
     @IBOutlet var processView: UIView!
     
+    var delegate: removeFilm? = nil
+    
     var keySlot = String()
     var keyFilter = String()
-    var successPhoto: Int = 0
+    
+    let showCopy = userSetting.boolForKey("showCopyRight")
+    let showTime = userSetting.boolForKey("ShowTime")
+    let showLocation = userSetting.boolForKey("showLocation")
+    
     
     let context = CIContext(options: nil)
     
-    @IBOutlet var progressBar: UIProgressView!
-    @IBOutlet var progressLabel: UILabel!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        progressLabel.text = "0%"
+        
+        
         
         delay(5.0){
             self.processFilter()
@@ -74,96 +83,95 @@ class FilterViewController: UIViewController {
                     var fileURL = NSURL(fileURLWithPath: getImagePath)
                     
                     if keyFilter == "#01" {
-                        ApplyCCtrlFilter(fileURL!, index: i)
+                        ApplyCCtrlFilter(fileURL!, rename: fileList[i])
                         filterName = "CCtrlFilter"
                         iconName = "filter1"
                         
                     }else if keyFilter == "#02" {
-                         ApplySepiaFilter(fileURL!, index: i)
+                        ApplySepiaFilter(fileURL!, rename: fileList[i])
                         filterName = "SepiaFilter"
                         iconName = "filter2"
-
+                        
                     }else if keyFilter == "#03" {
-                         ApplyReduceNoiseFilter(fileURL!, index: i)
+                        ApplyReduceNoiseFilter(fileURL!, rename: fileList[i])
                         filterName = "ReduceNoiseFilter"
                         iconName = "filter3"
-
+                        
                     }else if keyFilter == "#04" {
-                         ApplyMonoFilter(fileURL!, index: i)
+                        ApplyMonoFilter(fileURL!, rename: fileList[i])
                         filterName = "MonoFilter"
                         iconName = "filter4"
-
+                        
                     }else if keyFilter == "#05" {
-                         ApplyPolyFilter(fileURL!, index: i)
+                        ApplyPolyFilter(fileURL!, rename: fileList[i])
                         filterName = "PolyFilter"
                         iconName = "filter5"
-
+                        
                     }else if keyFilter == "#06" {
-                         ApplyFadeFilter(fileURL!, index: i)
+                        ApplyFadeFilter(fileURL!, rename: fileList[i])
                         filterName = "FadeFilter"
                         iconName = "filter6"
-
+                        
                     }else if keyFilter == "#07" {
-                         ApplyNormalFilter(fileURL!, index: i)
+                        ApplyNormalFilter(fileURL!, rename: fileList[i])
                         filterName = "NormalFilter"
                         iconName = "filter7"
-
+                        
                     }else if keyFilter == "#08" {
-                         ApplySmallFilter(fileURL!, index: i)
+                        ApplySmallFilter(fileURL!, rename: fileList[i])
                         filterName = "SmallFilter"
                         iconName = "filter8"
-
+                        
                     }
                     
                     removeFile(fileList[i])
-                    updateProgress(i + 1, count: count)
                 }
             }
             
-            var numberOfPhoto = String(self.successPhoto)
+            var intCoins: Int = userSetting.integerForKey("myCoins")
+            
+            intCoins = intCoins + save.variable.filterSuccess
+            
+            userSetting.setInteger(intCoins, forKey: "myCoins")
+            
+            var numberOfPhoto = String(save.variable.filterSuccess)
             
             userSetting.setObject([self.keySlot, filterName, iconName, numberOfPhoto], forKey: self.keySlot)
             
-            self.userSetting.setObject(["", "", "", 10, false], forKey: save.variable.key)
-           processView.hidden = true
+            userSetting.setObject(["", "", "", 10, false], forKey: save.variable.key)
+            
+            save.variable.filterSuccess = 0
+            
+            println("Set to key = \(self.keySlot)")
+            println("New datas \(userSetting.objectForKey(self.keySlot))")
+            
+            processView.hidden = true
             GaleryView.hidden = false
             
-            var intCoins: Int = userSetting.integerForKey("myCoins")
+            self.delegate?.removeAfterSuccess(true)
             
-            intCoins = intCoins + self.successPhoto
-            
-            userSetting.setInteger(intCoins, forKey: "myCoins")
-
         }else {
             println("No photo")
         }
     }
-        
-        func listFilesFromDocumentsFolder() -> [String]
-        {
-            var theError = NSErrorPointer()
-            let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as? [String]
-            
-            if dirs != nil {
-                println("This slot = \(self.keySlot)")
-                let dir = dirs![0]
-                let fileList = NSFileManager.defaultManager().contentsOfDirectoryAtPath("\(dir)/RawData/\(self.keySlot)", error: theError)
-                println("this dir = \(fileList)")
-                return fileList as! [String]
-            }else{
-                let fileList = [""]
-                return fileList
-            }
-        }
     
-    func updateProgress(last: Int, count:Int) {
-        progressBar?.progress += (Float(last) * 100) / Float(count)
-        let progressValue = self.progressBar?.progress
-        let calCount = progressValue!
-        let intCount = Int((Float(last) * 100) / Float(count))
-        progressLabel?.text = "\(intCount) %"
+    func listFilesFromDocumentsFolder() -> [String]
+    {
+        var theError = NSErrorPointer()
+        let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as? [String]
+        
+        if dirs != nil {
+            println("This slot = \(self.keySlot)")
+            let dir = dirs![0]
+            let fileList = NSFileManager.defaultManager().contentsOfDirectoryAtPath("\(dir)/RawData/\(self.keySlot)", error: theError)
+            println("this dir = \(fileList)")
+            return fileList as! [String]
+        }else{
+            let fileList = [""]
+            return fileList
+        }
     }
-
+    
     
     func removeFile(path: String) {
         let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
@@ -171,7 +179,7 @@ class FilterViewController: UIViewController {
         let documentsDirectory: AnyObject = dir[0]
         
         var imagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.keySlot)/\(path)")
-            
+        
         let filemgr = NSFileManager.defaultManager()
         var error: NSError?
         
@@ -183,7 +191,7 @@ class FilterViewController: UIViewController {
         return
     }
     
-    func ApplyCCtrlFilter(fileURL:NSURL, index: Int) {
+    func ApplyCCtrlFilter(fileURL:NSURL, rename: String) {
         let filter = CIFilter(name: "CIColorControls")
         let ciImage = CIImage(contentsOfURL: fileURL)
         
@@ -198,11 +206,11 @@ class FilterViewController: UIViewController {
         
         // 3
         let newImage = UIImage(CGImage: cgimg)
-        self.moveFile(newImage!, index: index)
-       
+        self.moveFile(newImage!, newName: rename)
+        
     }
     
-    func ApplySepiaFilter(fileURL:NSURL, index: Int) {
+    func ApplySepiaFilter(fileURL:NSURL, rename: String) {
         let filter = CIFilter(name: "CISepiaTone")
         let ciImage = CIImage(contentsOfURL: fileURL)
         
@@ -217,10 +225,10 @@ class FilterViewController: UIViewController {
         
         // 3
         let newImage = UIImage(CGImage: cgimg)
-        self.moveFile(newImage!, index: index)
+        self.moveFile(newImage!, newName: rename)
     }
     
-    func ApplyReduceNoiseFilter(fileURL:NSURL, index: Int) {
+    func ApplyReduceNoiseFilter(fileURL:NSURL, rename: String) {
         let filter = CIFilter(name: "CISharpenLuminance")
         let ciImage = CIImage(contentsOfURL: fileURL)
         
@@ -242,19 +250,19 @@ class FilterViewController: UIViewController {
         
         // 3
         let newImage2 = UIImage(CGImage: cgimg2)
-        self.moveFile(newImage2!, index: index)
+        self.moveFile(newImage2!, newName: rename)
     }
     
-   func ApplyMonoFilter(fileURL:NSURL, index: Int) {
+    func ApplyMonoFilter(fileURL:NSURL, rename: String) {
         //CIMaximumComponent
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIMaximumComponent")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         let newImage = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent()))
-    self.moveFile(newImage!, index: index)
+        self.moveFile(newImage!, newName: rename)
     }
     
-    func ApplyPolyFilter(fileURL:NSURL, index: Int) {
+    func ApplyPolyFilter(fileURL:NSURL, rename: String) {
         //CIColorCrossPolynomial
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CISharpenLuminance")
@@ -272,20 +280,20 @@ class FilterViewController: UIViewController {
         filter2.setValue(vector, forKey: "inputGreenCoefficients")
         
         let newImage = UIImage(CGImage: context.createCGImage(filter2.outputImage, fromRect: filter2.outputImage.extent()))
-        self.moveFile(newImage!, index: index)
+        self.moveFile(newImage!, newName: rename)
         
     }
     
-    func ApplyFadeFilter(fileURL:NSURL, index: Int) {
+    func ApplyFadeFilter(fileURL:NSURL, rename: String) {
         //CIPhotoEffectFade
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIPhotoEffectFade")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         let newImage = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent()))
-        self.moveFile(newImage!, index: index)
+        self.moveFile(newImage!, newName: rename)
     }
     
-    func ApplyNormalFilter(fileURL:NSURL, index: Int) {
+    func ApplyNormalFilter(fileURL:NSURL, rename: String) {
         //CIColorCrossPolynomial
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CISharpenLuminance")
@@ -303,34 +311,31 @@ class FilterViewController: UIViewController {
         filter2.setValue(vector, forKey: "inputGreenCoefficients")
         
         let newImage = UIImage(CGImage: context.createCGImage(filter2.outputImage, fromRect: filter2.outputImage.extent()))
-        self.moveFile(newImage!, index: index)
+        self.moveFile(newImage!, newName: rename)
         
     }
     
-    func ApplySmallFilter(fileURL:NSURL, index: Int) {
+    func ApplySmallFilter(fileURL:NSURL, rename: String) {
         //CIPhotoEffectFade
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIPhotoEffectFade")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         let newImage = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent()))
-        self.moveFile(newImage!, index: index)
+        self.moveFile(newImage!, newName: rename)
     }
     
     
-    func moveFile(image: UIImage, index: Int) {
+    func moveFile(image: UIImage, newName: String) {
         initial().createSubDirectory("CompletedData", subDir: keySlot)
-        
-        var format = NSDateFormatter()
-        format.dateFormat="yyyy-MM-dd-HH-mm-ss"
-        var currentFileName: String = "img-0\(String(index))\(format.stringFromDate(NSDate())).jpg"
+        var currentFileName: String = "affterFilter_\(newName)"
         println(currentFileName)
         
         var imageUI = UIImage(CGImage: image.CGImage, scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
-
+        
         initial().createSubAndFileDirectory("CompletedData", subDir: keySlot, file: currentFileName, image: imageUI!)
         
-        self.successPhoto += 1
-
+        save.variable.filterSuccess += 1
+        
     }
-
+    
 }

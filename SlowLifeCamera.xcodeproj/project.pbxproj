@@ -161,19 +161,19 @@
 		6BF090871B4531F30012ED7C = {
 			isa = PBXGroup;
 			children = (
-				6BE182A81B61386F00F4A2BB /* StoreKit.framework */,
-				6B7A48CC1B5F5A77003DFE4F /* Photos.framework */,
 				6BC74B7F1B579C6C0049C7EC /* UnityAds.bundle */,
-				6BC74B7C1B57982E0049C7EC /* UnityAds.framework */,
 				6BC74B761B5797390049C7EC /* AdSupport.framework */,
-				6BC74B741B5797310049C7EC /* CoreTelephony.framework */,
-				6BC74B721B57970F0049C7EC /* SystemConfiguration.framework */,
-				6BC74B701B5797000049C7EC /* CoreMedia.framework */,
 				6BC74B6E1B5796F40049C7EC /* AVFoundation.framework */,
+				6BC74B701B5797000049C7EC /* CoreMedia.framework */,
+				6BC74B741B5797310049C7EC /* CoreTelephony.framework */,
 				6B9158791B46687800BF3310 /* MobileCoreServices.framework */,
+				6B7A48CC1B5F5A77003DFE4F /* Photos.framework */,
+				6BE182A81B61386F00F4A2BB /* StoreKit.framework */,
+				6BC74B721B57970F0049C7EC /* SystemConfiguration.framework */,
+				6BC74B7C1B57982E0049C7EC /* UnityAds.framework */,
+				6BF090911B4531F30012ED7C /* Products */,
 				6BF090921B4531F30012ED7C /* SlowLifeCamera */,
 				6BF090A81B4531F30012ED7C /* SlowLifeCameraTests */,
-				6BF090911B4531F30012ED7C /* Products */,
 			);
 			sourceTree = "<group>";
 		};

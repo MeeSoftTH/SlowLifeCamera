@@ -56,37 +56,45 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
             {
                 if fileManager.fileExistsAtPath(fileList[i]) != true
                 {
-                    println("File is \(fileList[i])")
-                    let pointer = i + 1
-                    let key = "Slot\(pointer)"
+                    
+                    println("This item = \(fileList[i])")
+                    let key = String(fileList[i])
                     let slot: AnyObject? = userSetting?.objectForKey(key)
+                    println("This key = \(key)")
+                    
                     let folder = slot!.objectAtIndex(0) as! String
                     let filter = slot!.objectAtIndex(1) as! String
                     let icon = slot!.objectAtIndex(2) as! String
                     let number = slot!.objectAtIndex(3) as! String
                     
                     
-                    var row = AlbumDatas(name: folder, filterName: filter, iconName: icon, number: number)
-                    arryOfAlbumDatas.append(row)
+                    if folder != "" &&  filter != "" && icon != "" && number != ""{
+                     println("File is \(userSetting?.objectForKey(key))")
                     
-                    if pointer == 1 {
+                    if i == 0 {
                         slot1 = key
-                    }else if pointer == 2 {
+                    }else if i == 1 {
                         slot2 = key
-                    }else if pointer == 3 {
+                    }else if i == 2 {
                         slot3 = key
-                    }else if pointer == 4 {
+                    }else if i == 3 {
                         slot4 = key
-                    }else if pointer == 5 {
+                    }else if i == 4 {
                         slot5 = key
-                    }else if pointer == 6 {
+                    }else if i == 5 {
                         slot6 = key
-                    }else if pointer == 7 {
+                    }else if i == 6 {
                         slot7 = key
-                    }else if pointer == 8 {
+                    }else if i == 7 {
                         slot8 = key
                     }
+                    
+                    var row = AlbumDatas(name: folder, filterName: filter, iconName: icon, number: number)
+                    arryOfAlbumDatas.append(row)
+                    }
                 }
+                
+                
             }
         }else {
             println("No file in directory")
@@ -145,6 +153,9 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         } else if rowIndex == 7 {
             newVC.keySlot = self.slot8
         }
+        
+         println("Call this = \( newVC.keySlot)")
+    
     }
     
     

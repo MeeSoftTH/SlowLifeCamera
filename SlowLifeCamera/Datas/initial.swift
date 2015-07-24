@@ -29,15 +29,19 @@ class initial {
         
         // completed photo
         // defind folderName, FilterName, iconName, numPhoto
-         userSetting.setObject(["", "", "", ""], forKey: "Slot1")
-         userSetting.setObject(["", "", "", ""], forKey: "Slot2")
-         userSetting.setObject(["", "", "", ""], forKey: "Slot3")
-         userSetting.setObject(["", "", "", ""], forKey: "Slot4")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot1")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot2")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot3")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot4")
         
-         userSetting.setObject(["", "", "", ""], forKey: "Slot5")
-         userSetting.setObject(["", "", "", ""], forKey: "Slot6")
-         userSetting.setObject(["", "", "", ""], forKey: "Slot7")
-         userSetting.setObject(["", "", "", ""], forKey: "Slot8")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot5")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot6")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot7")
+        userSetting.setObject(["", "", "", ""], forKey: "Slot8")
+        
+        userSetting.setBool(true, forKey : "showCopyRight")
+        userSetting.setBool(true, forKey : "ShowTime")
+        userSetting.setBool(true, forKey : "showLocation")
         
         createDirectory("RawData")
         createDirectory("CompletedData")
@@ -69,13 +73,17 @@ class initial {
         
         //println("Path = \(dirPath)")
     }
-
+    
     func createSubAndFileDirectory(dir: String, subDir: String, file: String, image: UIImage) {
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         
         let documentsDirectory: AnyObject = paths[0]
         
         var imagePath = documentsDirectory.stringByAppendingPathComponent("\(dir)/\(subDir)/\(file)")
+        
+        if (!NSFileManager.defaultManager().fileExistsAtPath(imagePath)) {
             UIImageJPEGRepresentation(image, 100).writeToFile(imagePath, atomically: true)
+            
         }
+    }
 }

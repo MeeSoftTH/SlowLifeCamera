@@ -16,6 +16,7 @@ class save {
         static var myNum: Int = 0
         static var key: String = ""
         static var rowSlected: Bool = false
+        static var filterSuccess: Int = 0
     }
     
 }

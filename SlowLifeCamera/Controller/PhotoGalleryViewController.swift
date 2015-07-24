@@ -20,6 +20,8 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        println(String(keySlot))
+        
         slotTitle.title = self.keySlot
         
         let fileManager:NSFileManager = NSFileManager.defaultManager()
