@@ -11,7 +11,7 @@ import AVFoundation
 import MobileCoreServices
 import Foundation
 
-class CameraController: UIViewController, UIPopoverPresentationControllerDelegate  {
+class CameraController: UIViewController  {
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
     
@@ -26,11 +26,13 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var numberLabel: UILabel!
     @IBOutlet weak var switchCameraButton: UIButton!
-    @IBOutlet weak var settingButton: UIButton!
     @IBOutlet weak var shotButton: UIButton!
-    @IBOutlet weak var capture: UIView!
-    @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var flashView: UIButton!
+    @IBOutlet weak var showCopy: UISwitch!
+    
+    
+    @IBOutlet var controllerView: UIView!
+    @IBOutlet var captureView: UIView!
     
     var timer: NSTimer!
     
@@ -40,14 +42,16 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateScreen()
         
+        self.controllerView.alpha = 1.0
+        self.captureView.alpha = 0.0
+
+        showCopy.setOn(userSetting.boolForKey("showCopyRight"), animated:true)
         
         if save.variable.rowSlected == true {
             numberLabel.text = String(save.variable.myNum) + (" of 25")
         }
         
-        captureSession.sessionPreset = AVCaptureSessionPresetHigh
         let devices = AVCaptureDevice.devices()
         for device in devices {
             if (device.hasMediaType(AVMediaTypeVideo)) {
@@ -55,10 +59,19 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
                     captureDevice = device as? AVCaptureDevice
                     if captureDevice != nil {
                         beginSession()
-                        updateDeviceSettings(1.0, isoValue: 1.0)
+                        //updateDeviceSettings(1.0, isoValue: 1.0)
                     }
                 }
             }
+        }
+    }
+    
+    
+    @IBAction func copyRight(sender: UISwitch) {
+        if showCopy.on {
+            userSetting.setBool(true, forKey : "showCopyRight")
+        }else {
+            userSetting.setBool(false, forKey : "showCopyRight")
         }
     }
     
@@ -153,9 +166,8 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
     }
     
     func takePhoto() {
-        shotButton.enabled = false
-        controlView.alpha = 0.0
-        capture.alpha = 1.0
+        controllerView.alpha = 0.0
+        captureView.alpha = 1.0
         
         stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
         if captureSession.canAddOutput(stillImageOutput) {
@@ -198,14 +210,9 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
         }
         
         delay(1){
-            self.updateScreen()
+            self.controllerView.alpha = 1.0
+            self.captureView.alpha = 0.0
         }
-    }
-    
-    func updateScreen() {
-        controlView.alpha = 1.0
-        capture.alpha = 0.0
-        shotButton.enabled = true
     }
     
     func delay(delay:Double, closure:()->()) {
@@ -225,7 +232,6 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
     }
     
     func beginSession() {
-        
         //updateDeviceSettings(1.0, isoValue: 1.0)
         
         var err : NSError? = nil
@@ -235,38 +241,26 @@ class CameraController: UIViewController, UIPopoverPresentationControllerDelegat
         if err != nil {
             println("error: \(err?.localizedDescription)")
         }
-        
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        captureSession.sessionPreset = AVCaptureSessionPresetHigh
         
         self.previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
         
+        self.view.layer.addSublayer(self.previewLayer)
         
-        self.view.layer.addSublayer(previewLayer)
+        self.view.addSubview(self.captureView)
+        self.view.addSubview(self.controllerView)
+        
+        /*
         self.view.bringSubviewToFront(self.numberLabel)
         self.view.bringSubviewToFront(self.flashButton)
         self.view.bringSubviewToFront(self.switchCameraButton)
-        self.view.bringSubviewToFront(self.settingButton)
+        self.view.bringSubviewToFront(self.showCopy)
         self.view.bringSubviewToFront(self.shotButton)
+        */
         
         self.previewLayer?.frame = self.view.layer.frame
         captureSession.startRunning()
-    }
-    
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
-    {
-        if let popupView = segue.destinationViewController as? UIViewController
-        {
-            if let popup = popupView.popoverPresentationController
-            {
-                popup.delegate = self
-            }
-        }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle
-    {
-        return UIModalPresentationStyle.None
     }
     
 }

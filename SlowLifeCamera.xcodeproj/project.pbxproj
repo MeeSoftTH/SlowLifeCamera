@@ -32,13 +32,14 @@
 		6BCE37C51B567B9F00BBE626 /* initial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE37C41B567B9F00BBE626 /* initial.swift */; };
 		6BD2E4411B464CFF006E4020 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4401B464CFF006E4020 /* CameraController.swift */; };
 		6BD2E4451B464D0F006E4020 /* save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4431B464D0F006E4020 /* save.swift */; };
+		6BD4ED091B64003000C52FE8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BD4ED081B64003000C52FE8 /* CoreLocation.framework */; };
 		6BE182A91B61386F00F4A2BB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE182A81B61386F00F4A2BB /* StoreKit.framework */; };
-		6BEC28DB1B4D723700BAA498 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BEC28D91B4D723700BAA498 /* Main.storyboard */; };
 		6BEC28DD1B4D78DA00BAA498 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC28DC1B4D78DA00BAA498 /* SettingViewController.swift */; };
 		6BF090961B4531F30012ED7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF090951B4531F30012ED7C /* AppDelegate.swift */; };
 		6BF0909D1B4531F30012ED7C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BF0909C1B4531F30012ED7C /* Images.xcassets */; };
 		6BF090A01B4531F30012ED7C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */; };
 		6BF090AC1B4531F30012ED7C /* SlowLifeCameraTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF090AB1B4531F30012ED7C /* SlowLifeCameraTests.swift */; };
+		6BFCAE8C1B62BC210079EB02 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6BEC28D91B4D723700BAA498 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		6BCE37C41B567B9F00BBE626 /* initial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = initial.swift; path = Datas/initial.swift; sourceTree = "<group>"; };
 		6BD2E4401B464CFF006E4020 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraController.swift; path = Controller/CameraController.swift; sourceTree = "<group>"; };
 		6BD2E4431B464D0F006E4020 /* save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = save.swift; path = SaveState/save.swift; sourceTree = "<group>"; };
+		6BD4ED081B64003000C52FE8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		6BE182A81B61386F00F4A2BB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6BEC28DA1B4D723700BAA498 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6BEC28DC1B4D78DA00BAA498 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = Controller/SettingViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BD4ED091B64003000C52FE8 /* CoreLocation.framework in Frameworks */,
 				6BE182A91B61386F00F4A2BB /* StoreKit.framework in Frameworks */,
 				6BC74B7D1B57982E0049C7EC /* UnityAds.framework in Frameworks */,
 				6BC74B771B5797390049C7EC /* AdSupport.framework in Frameworks */,
@@ -161,6 +164,7 @@
 		6BF090871B4531F30012ED7C = {
 			isa = PBXGroup;
 			children = (
+				6BD4ED081B64003000C52FE8 /* CoreLocation.framework */,
 				6BC74B7F1B579C6C0049C7EC /* UnityAds.bundle */,
 				6BC74B761B5797390049C7EC /* AdSupport.framework */,
 				6BC74B6E1B5796F40049C7EC /* AVFoundation.framework */,
@@ -315,9 +319,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BF090A01B4531F30012ED7C /* LaunchScreen.xib in Resources */,
-				6BEC28DB1B4D723700BAA498 /* Main.storyboard in Resources */,
 				6BF0909D1B4531F30012ED7C /* Images.xcassets in Resources */,
 				6BC74B811B579C6C0049C7EC /* UnityAds.bundle in Resources */,
+				6BFCAE8C1B62BC210079EB02 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,6 +387,7 @@
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
+			wrapsLines = 1;
 		};
 		6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;

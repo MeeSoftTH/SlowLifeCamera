@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 protocol removeFilm {
     func removeAfterSuccess(isTrue: Bool)
@@ -14,7 +15,7 @@ protocol removeFilm {
 
 let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
 
-class FilterViewController: UIViewController {
+class FilterViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet var GaleryView: UIView!
     @IBOutlet var processView: UIView!
@@ -24,10 +25,13 @@ class FilterViewController: UIViewController {
     var keySlot = String()
     var keyFilter = String()
     
+    var locationText: String = ""
+    
     let showCopy = userSetting.boolForKey("showCopyRight")
     let showTime = userSetting.boolForKey("ShowTime")
     let showLocation = userSetting.boolForKey("showLocation")
     
+    let locationManager = CLLocationManager()
     
     let context = CIContext(options: nil)
     
@@ -83,43 +87,44 @@ class FilterViewController: UIViewController {
                     var fileURL = NSURL(fileURLWithPath: getImagePath)
                     
                     if keyFilter == "#01" {
-                        ApplyCCtrlFilter(fileURL!, rename: fileList[i])
-                        filterName = "CCtrlFilter"
+                        ApplyFilterNO14(fileURL!, rename: fileList[i])
+                        filterName = "No.14"
                         iconName = "filter1"
                         
                     }else if keyFilter == "#02" {
                         ApplySepiaFilter(fileURL!, rename: fileList[i])
-                        filterName = "SepiaFilter"
+                        filterName = "Sepia"
                         iconName = "filter2"
                         
                     }else if keyFilter == "#03" {
-                        ApplyReduceNoiseFilter(fileURL!, rename: fileList[i])
-                        filterName = "ReduceNoiseFilter"
+                        ApplyMonoFilter(fileURL!, rename: fileList[i])
+                        filterName = "Sepia"
                         iconName = "filter3"
                         
                     }else if keyFilter == "#04" {
-                        ApplyMonoFilter(fileURL!, rename: fileList[i])
-                        filterName = "MonoFilter"
+                        ApplyFilterNO10(fileURL!, rename: fileList[i])
+                        filterName = "No.10"
                         iconName = "filter4"
+                        
                         
                     }else if keyFilter == "#05" {
                         ApplyPolyFilter(fileURL!, rename: fileList[i])
-                        filterName = "PolyFilter"
+                        filterName = "Poly"
                         iconName = "filter5"
                         
                     }else if keyFilter == "#06" {
-                        ApplyFadeFilter(fileURL!, rename: fileList[i])
-                        filterName = "FadeFilter"
+                        ApplyFilterNO9(fileURL!, rename: fileList[i])
+                        filterName = "No.9"
                         iconName = "filter6"
                         
                     }else if keyFilter == "#07" {
-                        ApplyNormalFilter(fileURL!, rename: fileList[i])
-                        filterName = "NormalFilter"
+                        ApplyFilterNO7(fileURL!, rename: fileList[i])
+                        filterName = "No.7"
                         iconName = "filter7"
                         
                     }else if keyFilter == "#08" {
-                        ApplySmallFilter(fileURL!, rename: fileList[i])
-                        filterName = "SmallFilter"
+                        ApplyFilterNO13(fileURL!, rename: fileList[i])
+                        filterName = "No.13"
                         iconName = "filter8"
                         
                     }
@@ -202,11 +207,10 @@ class FilterViewController: UIViewController {
         //let context = CIContext(options:nil)
         
         // 2
-        let cgimg = context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent())
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
         
-        // 3
-        let newImage = UIImage(CGImage: cgimg)
-        self.moveFile(newImage!, newName: rename)
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
         
     }
     
@@ -221,11 +225,11 @@ class FilterViewController: UIViewController {
         //let context = CIContext(options:nil)
         
         // 2
-        let cgimg = context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent())
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
         
-        // 3
-        let newImage = UIImage(CGImage: cgimg)
-        self.moveFile(newImage!, newName: rename)
+        let newImage = textImg
+        
+        self.moveFile(newImage, newName: rename)
     }
     
     func ApplyReduceNoiseFilter(fileURL:NSURL, rename: String) {
@@ -246,11 +250,11 @@ class FilterViewController: UIViewController {
         //let context = CIContext(options:nil)
         
         // 2
-        let cgimg2 = context.createCGImage(filter2.outputImage, fromRect: filter2.outputImage.extent())
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
         
-        // 3
-        let newImage2 = UIImage(CGImage: cgimg2)
-        self.moveFile(newImage2!, newName: rename)
+        let newImage = textImg
+        
+        self.moveFile(newImage, newName: rename)
     }
     
     func ApplyMonoFilter(fileURL:NSURL, rename: String) {
@@ -258,8 +262,10 @@ class FilterViewController: UIViewController {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIMaximumComponent")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
-        let newImage = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent()))
-        self.moveFile(newImage!, newName: rename)
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
     }
     
     func ApplyPolyFilter(fileURL:NSURL, rename: String) {
@@ -279,8 +285,10 @@ class FilterViewController: UIViewController {
         filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
         filter2.setValue(vector, forKey: "inputGreenCoefficients")
         
-        let newImage = UIImage(CGImage: context.createCGImage(filter2.outputImage, fromRect: filter2.outputImage.extent()))
-        self.moveFile(newImage!, newName: rename)
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
         
     }
     
@@ -289,42 +297,296 @@ class FilterViewController: UIViewController {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIPhotoEffectFade")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
-        let newImage = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent()))
-        self.moveFile(newImage!, newName: rename)
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
     }
     
-    func ApplyNormalFilter(fileURL:NSURL, rename: String) {
-        //CIColorCrossPolynomial
+    func ApplyFilterNO7(fileURL:NSURL, rename: String) {
         let ciImage = CIImage(contentsOfURL: fileURL)
-        let filter = CIFilter(name: "CISharpenLuminance")
-        filter.setDefaults()
+        let filter = CIFilter(name: "CIHighlightShadowAdjust")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
-        //filter.setValue(0.87, forKey: kCIInputIntensityKey)
+        //filter.setValue(1.8, forKey: "inputHighlightAmount")
+        filter.setValue(0.3, forKey: "inputShadowAmount")
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
         
-        let filter2 = CIFilter(name: "CIColorCrossPolynomial")
-        
-        let floatArr: [CGFloat] = [0,1,0.8,0,-1,-4,0,40,0]
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
+    }
+    
+    func ApplyFilterNO8(fileURL:NSURL, rename: String) {
+        let ciImage = CIImage(contentsOfURL: fileURL)
+        let filter = CIFilter(name: "CIVignetteEffect")
+        //filter.setDefaults()
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        let floatArr: [CGFloat] = [0,0]
         var vector = CIVector(values: floatArr, count: floatArr.count)
+        filter.setValue(vector, forKey: "inputCenter")
+        filter.setValue(0.24, forKey: "inputIntensity")
+        filter.setValue(0, forKey: "inputRadius")
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
         
-        filter2.setDefaults()
-        filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
-        filter2.setValue(vector, forKey: "inputGreenCoefficients")
-        
-        let newImage = UIImage(CGImage: context.createCGImage(filter2.outputImage, fromRect: filter2.outputImage.extent()))
-        self.moveFile(newImage!, newName: rename)
-        
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
     }
     
-    func ApplySmallFilter(fileURL:NSURL, rename: String) {
-        //CIPhotoEffectFade
+    func ApplyFilterNO9(fileURL:NSURL, rename: String) {
         let ciImage = CIImage(contentsOfURL: fileURL)
-        let filter = CIFilter(name: "CIPhotoEffectFade")
+        let filter = CIFilter(name: "CIHighlightShadowAdjust")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
-        let newImage = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: filter.outputImage.extent()))
-        self.moveFile(newImage!, newName: rename)
+        filter.setValue(0.4, forKey: "inputShadowAmount")
+        
+        let filter2 = CIFilter(name: "CIColorMonochrome")
+        filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
+        let color = CIColor(color: UIColor(red: 0.85, green: 0.16, blue: 0.02, alpha: 1.0));
+        filter2.setValue(color, forKey: "inputColor")
+        filter2.setValue(1.0, forKey: "inputIntensity")
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
+    }
+    
+    func ApplyFilterNO10(fileURL:NSURL, rename: String) {
+        let ciImage = CIImage(contentsOfURL: fileURL)
+        let filter = CIFilter(name: "CIColorPosterize")
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        filter.setValue(27, forKey: "inputLevels")
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        self.moveFile(newImage, newName: rename)
+    }
+    
+    func ApplyFilterNO11(fileURL:NSURL, rename: String) {
+        let ciImage = CIImage(contentsOfURL: fileURL)
+        let filter = CIFilter(name: "CIUnsharpMask")
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        filter.setValue(2.9, forKey: "inputRadius")
+        filter.setValue(0.72, forKey: "inputIntensity")
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        
+        self.moveFile(newImage, newName: rename)
+    }
+    
+    func ApplyFilterNO12(fileURL:NSURL, rename: String) {
+        let ciImage = CIImage(contentsOfURL: fileURL)
+        let filter = CIFilter(name: "CIGloom")
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        filter.setValue(8.1, forKey: "inputRadius")
+        filter.setValue(0.5, forKey: "inputIntensity")
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        
+        self.moveFile(newImage, newName: rename)
+    }
+    
+    func ApplyFilterNO13(fileURL:NSURL, rename: String) {
+        let ciImage = CIImage(contentsOfURL: fileURL)
+        let filter = CIFilter(name: "CIConvolution3X3")
+        //filter.setDefaults()
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        let floatArr: [CGFloat] = [0, -2, 0, -2, 9, 0, -2, 0, -2]
+        var vector = CIVector(values: floatArr, count: floatArr.count)
+        filter.setValue(vector, forKey: "inputWeights")
+        filter.setValue(0.0, forKey: "inputBias")
+       
+        
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg
+        
+        self.moveFile(newImage, newName: rename)
+    }
+    
+    func ApplyFilterNO14(fileURL:NSURL, rename: String) {
+        var ciImage = CIImage(contentsOfURL: fileURL)
+        let imgWidth = ciImage.extent().width
+        let imgHeight = ciImage.extent().height
+        let rect = ciImage.extent()
+        let color0 = CIColor(color: UIColor(red: 0.87, green: 0.76, blue: 0.56, alpha: 0.4));
+        let numberOfDots = randomNumberBetween(0, max: 7)
+        //var maskImage : CIImage = nil
+        for i in 0...numberOfDots {
+            let randW = randomNumberBetween(0, max: Int(imgWidth))
+            let randH = randomNumberBetween(0, max: Int(imgHeight))
+            let randR = randomNumberBetween(0, max: 30)
+            let filter = CIFilter(name: "CIStarShineGenerator")
+            filter.setDefaults()
+            let floatArr: [CGFloat] = [CGFloat(randW), CGFloat(randH)]
+            var vector = CIVector(values: floatArr, count: floatArr.count)
+            filter.setValue(vector, forKey: "inputCenter")
+            
+            filter.setValue(color0, forKey: "inputColor")
+            filter.setValue(0.2, forKey: "inputCrossScale")
+            filter.setValue(-10, forKey: "inputCrossOpacity")
+            filter.setValue(randR, forKey: "inputRadius")
+            let filter2 = CIFilter(name: "CISourceOverCompositing")
+            filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
+            filter2.setValue(ciImage, forKey: "inputBackgroundImage")
+            ciImage = filter2.outputImage
+        }
+        
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))!, useFrame: true);
+        
+        let newImage = textImg//UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))
+        
+        self.moveFile(newImage, newName: rename)
+    }
+    
+    func ApplyFilterNO15(fileURL:NSURL, rename: String) {
+        let filter = CIFilter(name: "CIStripesGenerator")
+        let floatArr: [CGFloat] = [100,100]
+        var vector = CIVector(values: floatArr, count: floatArr.count)
+        filter.setValue(vector, forKey: "inputCenter")
+        
+        let color0 = CIColor(color: UIColor(red: 0.87, green: 0.48, blue: 0.12, alpha: 0.4));
+        filter.setValue(color0, forKey: "inputColor0")
+        let color1 = CIColor(color: UIColor(red: 0, green: 10, blue: 0, alpha: 0.01));
+        filter.setValue(color1, forKey: "inputColor1")
+        filter.setValue(0.07, forKey: "inputWidth")
+        filter.setValue(0.5, forKey: "inputSharpness")
+        
+        let ciImage = CIImage(contentsOfURL: fileURL)
+        let imgWidth = ciImage.extent().width
+        let imgHeight = ciImage.extent().height
+        let filter2 = CIFilter(name: "CISourceOverCompositing")
+        filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
+        filter2.setValue(ciImage, forKey: "inputBackgroundImage")
+        
+        
+        println(imgWidth)
+        println(imgHeight)
+        
+        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter2.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        let newImage = textImg// UIImage(CGImage: context.createCGImage(filter3.outputImage, fromRect: ciImage.extent()))
+        
+        self.moveFile(newImage, newName: rename)
     }
     
     
+    func getText()-> String {
+    let text = "Film By SlowLife Camera"
+        return text
+    }
+    
+    func getCurrentTime()-> String {
+        var currentTime = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "d/M/yy, H:mm" // superset of OP's format
+        let str = dateFormatter.stringFromDate(currentTime)
+        
+        return str
+    }
+    
+    func getLocation() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error)->Void in
+            
+            if (error != nil) {
+                println("Reverse geocoder failed with error" + error.localizedDescription)
+                return
+            }
+            
+            if placemarks.count > 0 {
+                let pm = placemarks[0] as! CLPlacemark
+                self.displayLocationInfo(pm)
+            } else {
+                println("Problem with the data received from geocoder")
+            }
+        })
+    }
+    
+    func displayLocationInfo(placemark: CLPlacemark?) {
+        if let containsPlacemark = placemark {
+            //stop updating location to save battery life
+            locationManager.stopUpdatingLocation()
+            let locality = (containsPlacemark.locality != nil) ? containsPlacemark.locality : ""
+            let administrativeArea = (containsPlacemark.administrativeArea != nil) ? containsPlacemark.administrativeArea : ""
+            let country = (containsPlacemark.country != nil) ? containsPlacemark.country : ""
+
+        self.locationText = "\(locality), \(administrativeArea), \(country)"
+            
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        println("Error while updating location " + error.localizedDescription)
+    }
+    
+    func randomNumberBetween(min: Int, max: Int) -> Int {
+        return Int(arc4random_uniform(UInt32(max - min + 1))) + min
+    }
+    
+    func addTextAndFrame(inImage: UIImage, useFrame: Bool)->UIImage{
+        
+        var fontSize: CGFloat = 10
+        var frameSize: CGFloat = 10
+        let imgWidth = inImage.size.width
+        let imgHeight = inImage.size.height
+        
+        if(imgWidth > imgHeight){
+            fontSize = imgHeight * 3 / 100
+            frameSize = imgHeight * 5 / 100
+        }
+        else {
+            fontSize = imgWidth * 3 / 100
+            frameSize = imgWidth * 5 / 100
+        }
+        let gab = ((frameSize - fontSize)/2);
+        println(fontSize)
+        println(frameSize)
+        let atPoint = CGPointMake(frameSize + gab, imgHeight - fontSize - gab)
+        
+        // Setup the font specific variables
+        var textColor: UIColor = useFrame ? UIColor.blackColor() : UIColor.orangeColor()
+        var textFont: UIFont = UIFont(name: "Helvetica Bold", size: fontSize)!
+        
+        //Setup the image context using the passed image.
+        UIGraphicsBeginImageContext(inImage.size)
+        
+        //Setups up the font attributes that will be later used to dictate how the text should be drawn
+        let textFontAttributes = [
+            NSFontAttributeName: textFont,
+            NSForegroundColorAttributeName: textColor,
+        ]
+        
+        //Put the image into a rectangle as large as the original image.
+        if useFrame {
+            inImage.drawInRect(CGRectMake(frameSize, frameSize, inImage.size.width - (frameSize*2), inImage.size.height - (frameSize*2)))
+        }
+        else {
+            inImage.drawInRect(CGRectMake(0, 0, inImage.size.width, inImage.size.height))
+        }
+        
+        // Creating a point within the space that is as bit as the image.
+        var rect: CGRect = CGRectMake(atPoint.x, atPoint.y, inImage.size.width, inImage.size.height)
+        
+        if showCopy == true {
+            getText().drawInRect(rect, withAttributes: textFontAttributes)
+        }
+        
+        // Create a new image out of the images we have created
+        var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        // End the context now that we have the image we need
+        UIGraphicsEndImageContext()
+        
+        //And pass it back up to the caller.
+        return newImage
+    }
+
     func moveFile(image: UIImage, newName: String) {
         initial().createSubDirectory("CompletedData", subDir: keySlot)
         var currentFileName: String = "affterFilter_\(newName)"

@@ -13,12 +13,12 @@ class SettingViewController: UIViewController {
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
     
     @IBOutlet weak var showCopy: UISwitch!
-    @IBOutlet weak var showTime: UISwitch!
-    @IBOutlet weak var showLocation: UISwitch!
+    //@IBOutlet weak var showTime: UISwitch!
+    //@IBOutlet weak var showLocation: UISwitch!
     
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: 300, height: 200)
+            return CGSize(width: 310, height: 200)
         }
         set {
             super.preferredContentSize = newValue
@@ -30,10 +30,15 @@ class SettingViewController: UIViewController {
         
         showCopy.setOn(userSetting.boolForKey("showCopyRight"), animated:true)
         
-        showTime.setOn(userSetting.boolForKey("ShowTime"), animated:true)
+        //showTime.setOn(userSetting.boolForKey("ShowTime"), animated:true)
         
-        showLocation.setOn(userSetting.boolForKey("showLocation"), animated:true)
+        //showLocation.setOn(userSetting.boolForKey("showLocation"), animated:true)
      
+    }
+    
+    @IBAction func done(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        println("done")
     }
 
     @IBAction func copyRight(sender: UISwitch) {
@@ -44,7 +49,7 @@ class SettingViewController: UIViewController {
         }
     }
 
-    @IBAction func time(sender: UISwitch) {
+    /*@IBAction func time(sender: UISwitch) {
         if showTime.on {
             userSetting.setBool(true, forKey : "ShowTime")
         }else {
@@ -58,5 +63,5 @@ class SettingViewController: UIViewController {
         }else {
             userSetting.setBool(false, forKey : "showLocation")
         }
-    }
+    }*/
 }

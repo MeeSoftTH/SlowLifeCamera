@@ -40,8 +40,8 @@ class initial {
         userSetting.setObject(["", "", "", ""], forKey: "Slot8")
         
         userSetting.setBool(true, forKey : "showCopyRight")
-        userSetting.setBool(true, forKey : "ShowTime")
-        userSetting.setBool(true, forKey : "showLocation")
+        //userSetting.setBool(true, forKey : "ShowTime")
+        //userSetting.setBool(true, forKey : "showLocation")
         
         createDirectory("RawData")
         createDirectory("CompletedData")

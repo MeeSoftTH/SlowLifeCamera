@@ -12,7 +12,8 @@ protocol updateFilm {
     func updateFilmUIView(isTrue: Bool)
 }
 
-class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate, updateCoins {
+class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, updateCoins {
+    
     @IBOutlet var myTableView: UITableView!
     var arryOfShopDatas:[ShopDatas] = [ShopDatas]()
      var getCoins = GetCoinsViewController()
@@ -52,24 +53,24 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         println("This index = \(indexPath?.item)")
         
-        var text = "CCtrlFilter"
+        var text = "No.14"
         
         if indexPath?.item == 0 {
-            text = "CCtrlFilter"
+            text = "No.14"
         }else if indexPath?.item == 1 {
-            text = "SepiaFilter"
+            text = "Sepia"
         }else if indexPath?.item == 2 {
-            text = "ReduceNoiseFilter"
+            text = "Mono"
         }else if indexPath?.item == 3 {
-            text = "MonoFilter"
+            text = "No.10"
         }else if indexPath?.item == 4 {
-            text = "PolyFilter"
+            text = "Poly"
         }else if indexPath?.item == 5 {
-            text = "FadeFilter"
+            text = "No.9"
         }else if indexPath?.item == 6 {
-            text = "NormalFilter"
+            text = "No.7"
         }else if indexPath?.item == 7 {
-            text = "SmallFilter"
+            text = "No.13"
         }
         
         var alert = UIAlertController(title: text, message: "Do you want to get \(text)?", preferredStyle: UIAlertControllerStyle.Alert)
@@ -86,6 +87,15 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
+    @IBAction func GetMoreCoins(sender: UIButton) {
+        
+        let newViewControler = self.storyboard!.instantiateViewControllerWithIdentifier("getMoreCoins") as! GetCoinsViewController
+        newViewControler.delegate = self
+        
+        self.presentViewController(newViewControler, animated: true, completion: nil)
+    }
+    
     
     func getFilter(index: Int) {
         
@@ -108,6 +118,8 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }else if index == 7 {
             datas = ["#08", "filter8", 80]
         }
+        
+        
         
         
         for index in 1...9 {
@@ -135,6 +147,8 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         self.myCoins.text = String(intCoins)
                         
                         userSetting.setInteger(intCoins, forKey: "myCoins")
+                        
+                        removeFile(slotName)
                         
                         self.update?.updateFilmUIView(true)
                         
@@ -169,15 +183,15 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         self.myTableView.rowHeight = 70
         
-        var filmType1 = ShopDatas(iconName: "filter1", name: "CCtrlFilter", coins: 10)
-        var filmType2 = ShopDatas(iconName: "filter2", name: "SepiaFilter", coins: 20)
-        var filmType3 = ShopDatas(iconName: "filter3", name: "ReduceNoiseFilter", coins: 40)
-        var filmType4 = ShopDatas(iconName: "filter4", name: "MonoFilter", coins: 50)
+        var filmType1 = ShopDatas(iconName: save.variable.iconFilter1, name: save.variable.filter1, coins: 10)
+        var filmType2 = ShopDatas(iconName: save.variable.iconFilter2, name: save.variable.filter2, coins: 20)
+        var filmType3 = ShopDatas(iconName: save.variable.iconFilter3, name: save.variable.filter3, coins: 40)
+        var filmType4 = ShopDatas(iconName: save.variable.iconFilter4, name: save.variable.filter4, coins: 50)
         
-        var filmType5 = ShopDatas(iconName: "filter5", name: "PolyFilter", coins: 80)
-        var filmType6 = ShopDatas(iconName: "filter6", name: "FadeFilter", coins: 80)
-        var filmType7 = ShopDatas(iconName: "filter7", name: "NormalFilter", coins: 80)
-        var filmType8 = ShopDatas(iconName: "filter8", name: "SmallFilter", coins: 80)
+        var filmType5 = ShopDatas(iconName: save.variable.iconFilter5, name: save.variable.filter5, coins: 80)
+        var filmType6 = ShopDatas(iconName: save.variable.iconFilter6, name: save.variable.filter6, coins: 80)
+        var filmType7 = ShopDatas(iconName: save.variable.iconFilter7, name: save.variable.filter7, coins: 80)
+        var filmType8 = ShopDatas(iconName: save.variable.iconFilter8, name: save.variable.filter8, coins: 80)
         
         arryOfShopDatas.append(filmType1)
         arryOfShopDatas.append(filmType2)
@@ -203,21 +217,22 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
-    {
-        if let popupView = segue.destinationViewController as? UIViewController
-        {
-            if let popup = popupView.popoverPresentationController
-            {
-                popup.delegate = self
-            }
-        }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle
-    {
+    func removeFile(path: String) {
+        let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         
-        return UIModalPresentationStyle.None
+        let documentsDirectory: AnyObject = dir[0]
+        
+        var imagePath = documentsDirectory.stringByAppendingPathComponent("CompletedData/\(path)")
+        
+        let filemgr = NSFileManager.defaultManager()
+        var error: NSError?
+        
+        if filemgr.removeItemAtPath(imagePath, error: &error) {
+            println("\(imagePath) = Remove successful")
+        } else {
+            println("Remove failed: \(error!.localizedDescription)")
+        }
+        return
     }
     
     func updateCoinsText(text: String){

@@ -16,6 +16,7 @@ protocol updateCoins {
 class GetCoinsViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
     var delegate: updateCoins? = nil
+    @IBOutlet var myCoise: UILabel!
     
     let groupId: String = "th.co.meesoft.slowlifecamera"
     
@@ -28,23 +29,23 @@ class GetCoinsViewController: UIViewController, SKProductsRequestDelegate, SKPay
     
     var index: Int = 0
     
-    override var preferredContentSize: CGSize {
-        get {
-            return CGSize(width: 300, height: 225)
-        }
-        set {
-            super.preferredContentSize = newValue
-        }
-    }
-    
     override func viewDidLoad() {
-        super.viewDidLoad() 
+        super.viewDidLoad()
+        
+        var intCoins: Int = userSetting.integerForKey("myCoins")
+        self.myCoise.text = String(intCoins)
+        
         // Do any additional setup after loading the view.
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func done(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        println("done")
     }
     
     @IBAction func buttonIndex0(sender: UIButton) {
@@ -216,7 +217,6 @@ class GetCoinsViewController: UIViewController, SKProductsRequestDelegate, SKPay
                 
                 let prodID = p.productIdentifier as String
                 if(prodID == productIndex){
-                    println("Unlock to full version.")
                     
                     var intCoins: Int = userSetting.integerForKey("myCoins")
                     
@@ -234,6 +234,8 @@ class GetCoinsViewController: UIViewController, SKProductsRequestDelegate, SKPay
                         intCoins = intCoins + 1000
                         
                     }
+                    
+                    self.myCoise.text = String(intCoins)
                     
                     self.userSetting.setInteger(intCoins, forKey: "myCoins")
                     
