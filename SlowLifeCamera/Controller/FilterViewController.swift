@@ -17,11 +17,13 @@ let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise
 
 class FilterViewController: UIViewController, CLLocationManagerDelegate {
     
-    @IBOutlet var GaleryView: UIView!
-    @IBOutlet var processView: UIView!
+    @IBOutlet var status: UILabel!
+    @IBOutlet var act: UIActivityIndicatorView!
+    @IBOutlet var imageSet: UIImageView!
+    @IBOutlet var actionButton: UIButton!
     
     var delegate: removeFilm? = nil
-    
+
     var keySlot = String()
     var keyFilter = String()
     
@@ -38,11 +40,8 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        delay(5.0){
             self.processFilter()
-        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -150,8 +149,10 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
             println("Set to key = \(self.keySlot)")
             println("New datas \(userSetting.objectForKey(self.keySlot))")
             
-            processView.hidden = true
-            GaleryView.hidden = false
+            self.status.text = "Successful"
+            self.act.hidden = true
+            self.actionButton.setTitle("Button Title", forState: UIControlState.Normal)
+            self.imageSet.image = UIImage(named: "success")
             
             self.delegate?.removeAfterSuccess(true)
             
