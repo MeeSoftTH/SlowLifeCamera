@@ -45,11 +45,9 @@ class CameraController: UIViewController  {
         
         self.controllerView.alpha = 1.0
         self.captureView.alpha = 0.0
-
-        showCopy.setOn(userSetting.boolForKey("showCopyRight"), animated:true)
         
         if save.variable.rowSlected == true {
-            numberLabel.text = String(save.variable.myNum) + (" of 25")
+            numberLabel.text = String(save.variable.myNum)
         }
         
         let devices = AVCaptureDevice.devices()
@@ -63,15 +61,6 @@ class CameraController: UIViewController  {
                     }
                 }
             }
-        }
-    }
-    
-    
-    @IBAction func copyRight(sender: UISwitch) {
-        if showCopy.on {
-            userSetting.setBool(true, forKey : "showCopyRight")
-        }else {
-            userSetting.setBool(false, forKey : "showCopyRight")
         }
     }
     
@@ -187,7 +176,6 @@ class CameraController: UIViewController  {
                 
                 //Save the captured preview to image
                 if (imageUI != nil) {
-                    
                     var format = NSDateFormatter()
                     format.dateFormat="yyyy-MM-dd-HH-mm-ss"
                     var currentFileName: String = "img-\(format.stringFromDate(NSDate())).jpg"
@@ -201,15 +189,14 @@ class CameraController: UIViewController  {
                     initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: imageUI!)
                 }
             })
-            
         }
         
         if save.variable.myNum > 0 {
             save.variable.myNum = save.variable.myNum - 1
-            numberLabel.text = String(save.variable.myNum) + (" of 25")
+            numberLabel.text = String(save.variable.myNum)
         }
         
-        delay(1){
+        delay(0.1){
             self.controllerView.alpha = 1.0
             self.captureView.alpha = 0.0
         }

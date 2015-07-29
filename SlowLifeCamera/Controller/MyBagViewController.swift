@@ -8,9 +8,7 @@
 
 import UIKit
 
-
-
-class MyBagViewController: UIViewController, updateFilm, removeFilm {
+class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins {
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
     
@@ -45,6 +43,9 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm {
     @IBOutlet weak var film8b: UIButton!
     @IBOutlet weak var num8: UILabel!
     
+    @IBOutlet var myCoins: UILabel!
+    
+    
     let slotName1: String = "row1"
     let slotName2: String = "row2"
     let slotName3: String = "row3"
@@ -55,9 +56,57 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm {
     let slotName7: String = "row7"
     let slotName8: String = "row8"
     
+    
+    @IBOutlet var filmView1: UIView!
+    @IBOutlet var filmView2: UIView!
+    @IBOutlet var filmView3: UIView!
+    @IBOutlet var filmView4: UIView!
+    
+    @IBOutlet var filmView5: UIView!
+    @IBOutlet var filmView6: UIView!
+    @IBOutlet var filmView7: UIView!
+    @IBOutlet var filmView8: UIView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.myCoins.text = String(userSetting.integerForKey("myCoins"))
         updateControl()
+        
+        if save.variable.filmIndex == 1 {
+            filmView1.layer.cornerRadius = 14
+            filmView1.layer.masksToBounds = true
+            filmView1.backgroundColor = UIColor.brownColor()
+        }else if save.variable.filmIndex == 2 {
+            filmView2.layer.cornerRadius = 14
+            filmView2.layer.masksToBounds = true
+            filmView2.backgroundColor = UIColor.brownColor()
+        }else if save.variable.filmIndex == 3 {
+            filmView3.layer.cornerRadius = 14
+            filmView3.layer.masksToBounds = true
+            filmView3.backgroundColor = UIColor.brownColor()
+        }else if save.variable.filmIndex == 4 {
+            filmView4.layer.cornerRadius = 14
+            filmView4.layer.masksToBounds = true
+            filmView4.backgroundColor = UIColor.brownColor()
+        }else if save.variable.filmIndex == 5 {
+            filmView5.layer.cornerRadius = 14
+            filmView5.layer.masksToBounds = true
+            filmView5.backgroundColor = UIColor.brownColor()
+        }else if save.variable.filmIndex == 6 {
+            filmView6.layer.cornerRadius = 14
+            filmView6.layer.masksToBounds = true
+            filmView6.backgroundColor = UIColor.brownColor()
+        }else if save.variable.filmIndex == 7 {
+            filmView7.layer.cornerRadius = 14
+            filmView7.layer.masksToBounds = true
+            filmView7.backgroundColor = UIColor.brownColor()
+        }else if save.variable.filmIndex == 8 {
+            filmView8.layer.cornerRadius = 14
+            filmView8.layer.masksToBounds = true
+            filmView8.backgroundColor = UIColor.brownColor()
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,57 +119,99 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm {
         
         //let selectView: OptionView = OptionView()
         selectView.update = self
-       self.navigationController?.pushViewController(selectView, animated: true)
+        self.navigationController?.pushViewController(selectView, animated: true)
+    }
+    
+    
+    @IBAction func giftButton(sender: AnyObject) {
+        
+        let GiftView = self.storyboard!.instantiateViewControllerWithIdentifier("gift") as! GiftViewController
+        GiftView.delegate = self
+        self.navigationController?.pushViewController(GiftView, animated: true)
     }
     
     @IBAction func slot1(sender: UIButton) {
+        isSelect(self.filmView1)
         let film: AnyObject? = userSetting?.objectForKey(slotName1)
         save.variable.key = slotName1
+        save.variable.filmIndex = 1
         choicesDialog(film!)
     }
     
     @IBAction func slot2(sender: UIButton) {
+        isSelect(self.filmView2)
         let film: AnyObject? = userSetting?.objectForKey(slotName2)
         save.variable.key = slotName2
+        save.variable.filmIndex = 2
         choicesDialog(film!)
     }
     
     @IBAction func slot3(sender: UIButton) {
+        isSelect(self.filmView3)
         let film: AnyObject? = userSetting?.objectForKey(slotName3)
         save.variable.key = slotName3
+        save.variable.filmIndex = 3
         choicesDialog(film!)
         
     }
     
     @IBAction func slot4(sender: UIButton) {
+        isSelect(self.filmView4)
         let film: AnyObject? = userSetting?.objectForKey(slotName4)
         save.variable.key = slotName4
+        save.variable.filmIndex = 4
         choicesDialog(film!)
     }
     
     
     @IBAction func slot5(sender: UIButton) {
+        isSelect(self.filmView5)
         let film: AnyObject? = userSetting?.objectForKey(slotName5)
         save.variable.key = slotName5
+        save.variable.filmIndex = 5
         choicesDialog(film!)
     }
     
     @IBAction func slot6(sender: UIButton) {
+        isSelect(self.filmView6)
         let film: AnyObject? = userSetting?.objectForKey(slotName6)
         save.variable.key = slotName6
+        save.variable.filmIndex = 6
         choicesDialog(film!)
     }
     
     @IBAction func slot7(sender: UIButton) {
+        isSelect(self.filmView7)
         let film: AnyObject? = userSetting?.objectForKey(slotName7)
         save.variable.key = slotName7
+        save.variable.filmIndex = 7
         choicesDialog(film!)
     }
     
     @IBAction func slot8(sender: UIButton) {
+        isSelect(self.filmView8)
         let film: AnyObject? = userSetting?.objectForKey(slotName8)
         save.variable.key = slotName8
+        save.variable.filmIndex = 8
         choicesDialog(film!)
+    }
+    
+    func isSelect(filmView: UIView) {
+        
+        self.filmView1.backgroundColor = UIColor.clearColor()
+        self.filmView2.backgroundColor = UIColor.clearColor()
+        self.filmView3.backgroundColor = UIColor.clearColor()
+        self.filmView4.backgroundColor = UIColor.clearColor()
+        
+        self.filmView5.backgroundColor = UIColor.clearColor()
+        self.filmView6.backgroundColor = UIColor.clearColor()
+        self.filmView7.backgroundColor = UIColor.clearColor()
+        self.filmView8.backgroundColor = UIColor.clearColor()
+        
+        filmView.layer.cornerRadius = 14
+        filmView.layer.masksToBounds = true
+        filmView.backgroundColor = UIColor.brownColor()
+        
     }
     
     func updateControl() {
@@ -275,19 +366,9 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm {
                 var refreshAlert = UIAlertController(title: "Converter", message: "Do you want convert photo with filter?", preferredStyle: UIAlertControllerStyle.Alert)
                 
                 refreshAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
-                    if filmRow != nil {
-                        var filterSlot = filmRow!.objectAtIndex(1) as! String
-                        var keySlot = filmRow!.objectAtIndex(0) as! String
-                        
-                        let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
-                        
-                        println("Key slot = \(keySlot)")
-                        filterView.keySlot = keySlot
-                        filterView.keyFilter = filterSlot
-                        filterView.delegate = self
-                        
-                        self.presentViewController(filterView, animated: true, completion: nil)
-                    }
+                    let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
+                    filterView.delegate = self
+                    self.presentViewController(filterView, animated: true, completion: nil)
                 }))
                 
                 refreshAlert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
@@ -344,16 +425,33 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func updateFilmUIView(isTrue: Bool) {
+    func updateFilmUIViewAndCoins(isTrue: Bool, myCoins: String) {
         if isTrue == true {
             updateControl()
         }
+        
+        self.myCoins.text = myCoins
     }
     
     func removeAfterSuccess(isTrue: Bool) {
         if isTrue == true {
             updateControl()
+            save.variable.filmIndex = 0
+            self.filmView1.backgroundColor = UIColor.clearColor()
+            self.filmView2.backgroundColor = UIColor.clearColor()
+            self.filmView3.backgroundColor = UIColor.clearColor()
+            self.filmView4.backgroundColor = UIColor.clearColor()
+            
+            self.filmView5.backgroundColor = UIColor.clearColor()
+            self.filmView6.backgroundColor = UIColor.clearColor()
+            self.filmView7.backgroundColor = UIColor.clearColor()
+            self.filmView8.backgroundColor = UIColor.clearColor()
         }
+    }
+    
+    
+    func updateCoinsGift(myCoins: String) {
+        self.myCoins.text = myCoins
     }
     
 }

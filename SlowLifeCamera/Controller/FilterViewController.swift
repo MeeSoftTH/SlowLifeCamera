@@ -23,15 +23,18 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var actionButton: UIButton!
     
     var delegate: removeFilm? = nil
-
-    var keySlot = String()
-    var keyFilter = String()
+    var datas:String = save.variable.key
+    var subDir:String = ""
+    var subDir2:String = ""
+    var keyFilter: String = ""
     
     var locationText: String = ""
     
     let showCopy = userSetting.boolForKey("showCopyRight")
     let showTime = userSetting.boolForKey("ShowTime")
     let showLocation = userSetting.boolForKey("showLocation")
+    
+    @IBOutlet var galleryButton: UIButton!
     
     let locationManager = CLLocationManager()
     
@@ -40,8 +43,19 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-            self.processFilter()
+        var currentTime = NSDate()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "dMMyy-H:mm" // superset of OP's format
+        let str = dateFormatter.stringFromDate(currentTime)
         
+        self.subDir2 = str
+        let datas: AnyObject? = userSetting?.objectForKey(save.variable.key)
+        self.subDir = datas!.objectAtIndex(0) as! String
+        self.keyFilter = datas!.objectAtIndex(1) as! String
+        
+        delay(3.0){
+            self.processFilter()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,6 +66,7 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func cancel(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
     
     func delay(delay:Double, closure:()->()) {
         
@@ -64,11 +79,9 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         var fileList = listFilesFromDocumentsFolder()
         
         let count = fileList.count
-        var isDir:Bool = true;
-        
         
         if count > 0 {
-            var filterName = "CCtrlFilter"
+            var filterName = "No.14"
             var iconName = "filter1"
             
             let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
@@ -81,7 +94,7 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
                 {
                     println("File is \(fileList[i])")
                     
-                    var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.keySlot)/\(fileList[i])")
+                    var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(fileList[i])")
                     
                     var fileURL = NSURL(fileURLWithPath: getImagePath)
                     
@@ -140,21 +153,25 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
             
             var numberOfPhoto = String(save.variable.filterSuccess)
             
-            userSetting.setObject([self.keySlot, filterName, iconName, numberOfPhoto], forKey: self.keySlot)
+            userSetting.setObject([self.subDir2, filterName, iconName, numberOfPhoto], forKey: self.subDir2)
             
-            userSetting.setObject(["", "", "", 10, false], forKey: save.variable.key)
-            
-            save.variable.filterSuccess = 0
-            
-            println("Set to key = \(self.keySlot)")
-            println("New datas \(userSetting.objectForKey(self.keySlot))")
+            userSetting.setObject(["", "", "", 25, false], forKey: save.variable.key)
             
             self.status.text = "Successful"
             self.act.hidden = true
-            self.actionButton.setTitle("Button Title", forState: UIControlState.Normal)
+            self.actionButton.setTitle("Close", forState: UIControlState.Normal)
             self.imageSet.image = UIImage(named: "success")
             
+            save.variable.filterSuccess = 0
+            save.variable.key = ""
+            
+            println("Set to key = \(self.subDir2)")
+            println("New datas \(userSetting.objectForKey(self.subDir2))")
+            
             self.delegate?.removeAfterSuccess(true)
+            
+            save.variable.rowSlected = false
+            
             
         }else {
             println("No photo")
@@ -167,9 +184,9 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         let dirs = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as? [String]
         
         if dirs != nil {
-            println("This slot = \(self.keySlot)")
+            println("This slot = \(self.subDir)")
             let dir = dirs![0]
-            let fileList = NSFileManager.defaultManager().contentsOfDirectoryAtPath("\(dir)/RawData/\(self.keySlot)", error: theError)
+            let fileList = NSFileManager.defaultManager().contentsOfDirectoryAtPath("\(dir)/RawData/\(self.subDir)", error: theError)
             println("this dir = \(fileList)")
             return fileList as! [String]
         }else{
@@ -184,7 +201,7 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         
         let documentsDirectory: AnyObject = dir[0]
         
-        var imagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.keySlot)/\(path)")
+        var imagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(path)")
         
         let filemgr = NSFileManager.defaultManager()
         var error: NSError?
@@ -395,7 +412,7 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         var vector = CIVector(values: floatArr, count: floatArr.count)
         filter.setValue(vector, forKey: "inputWeights")
         filter.setValue(0.0, forKey: "inputBias")
-       
+        
         
         let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
         
@@ -472,7 +489,7 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
     
     
     func getText()-> String {
-    let text = "Film By SlowLife Camera"
+        let text = "Film By SlowLife Camera"
         return text
     }
     
@@ -516,8 +533,8 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
             let locality = (containsPlacemark.locality != nil) ? containsPlacemark.locality : ""
             let administrativeArea = (containsPlacemark.administrativeArea != nil) ? containsPlacemark.administrativeArea : ""
             let country = (containsPlacemark.country != nil) ? containsPlacemark.country : ""
-
-        self.locationText = "\(locality), \(administrativeArea), \(country)"
+            
+            self.locationText = "\(locality), \(administrativeArea), \(country)"
             
         }
     }
@@ -587,18 +604,14 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         //And pass it back up to the caller.
         return newImage
     }
-
+    
     func moveFile(image: UIImage, newName: String) {
-        initial().createSubDirectory("CompletedData", subDir: keySlot)
+        initial().createSubDirectory("CompletedData", subDir: self.subDir2)
         var currentFileName: String = "affterFilter_\(newName)"
         println(currentFileName)
         
-        var imageUI = UIImage(CGImage: image.CGImage, scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
-        
-        initial().createSubAndFileDirectory("CompletedData", subDir: keySlot, file: currentFileName, image: imageUI!)
+        initial().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: image)
         
         save.variable.filterSuccess += 1
-        
     }
-    
 }

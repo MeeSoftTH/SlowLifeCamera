@@ -39,6 +39,10 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func done(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        println("done")
+    }
     
     func setUpAlbumRow() {
         

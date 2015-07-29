@@ -7,16 +7,16 @@
 //
 
 import UIKit
+import StoreKit
 
 protocol updateFilm {
-    func updateFilmUIView(isTrue: Bool)
+    func updateFilmUIViewAndCoins(isTrue: Bool, myCoins: String)
 }
 
-class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, updateCoins {
+class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
     @IBOutlet var myTableView: UITableView!
     var arryOfShopDatas:[ShopDatas] = [ShopDatas]()
-     var getCoins = GetCoinsViewController()
     
     var update: updateFilm? = nil
     
@@ -24,8 +24,18 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var myCoins: UILabel!
     
+    let groupId: String = "th.co.meesoft.slowlifecamera"
+    let get150: String = "th.co.meesoft.slowlifecamera.coins150"
+    let get320: String = "th.co.meesoft.slowlifecamera.coins320"
+    let get500: String = "th.co.meesoft.slowlifecamera.coins500"
+    let get1000: String = "th.co.meesoft.slowlifecamera.coins1000"
+    
+    var index: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         let intCoins: Int = userSetting.integerForKey("myCoins")
         
@@ -33,9 +43,12 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         myCoins.text = myStringCoins
         
-        getCoins.delegate = self
-        
         self.setUpShopDatas()
+        preloadPurchase(get150)
+        preloadPurchase(get320)
+        preloadPurchase(get500)
+        preloadPurchase(get1000)
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -43,6 +56,34 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func getMoreCoins(sender: UIButton) {
+        
+        var chooseDialog = UIAlertController(title: "Get more coins", message: "Choose you want coins?",preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
+        chooseDialog.addAction(UIAlertAction(title: "150 coins - $0.99", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            self.alertDialog(self.get150)
+        }))
+        
+        chooseDialog.addAction(UIAlertAction(title: "320 coins - $1.99", style: .Default, handler: { (action: UIAlertAction!) in
+            self.alertDialog(self.get320)
+        }))
+        
+        chooseDialog.addAction(UIAlertAction(title: "500 coins - $2.99", style: .Default, handler: { (action: UIAlertAction!) in
+            self.alertDialog(self.get500)
+        }))
+        
+        
+        chooseDialog.addAction(UIAlertAction(title: "1000 coins - $3.99", style: .Default, handler: { (action: UIAlertAction!) in
+            self.alertDialog(self.get1000)
+        }))
+        
+        chooseDialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        presentViewController(chooseDialog, animated: true, completion: nil)
+        
+        
+    }
     
     @IBAction func buy(sender: UIButton) {
         
@@ -86,14 +127,6 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }))
         
         self.presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    @IBAction func GetMoreCoins(sender: UIButton) {
-        
-        let newViewControler = self.storyboard!.instantiateViewControllerWithIdentifier("getMoreCoins") as! GetCoinsViewController
-        newViewControler.delegate = self
-        
-        self.presentViewController(newViewControler, animated: true, completion: nil)
     }
     
     
@@ -148,9 +181,9 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         
                         userSetting.setInteger(intCoins, forKey: "myCoins")
                         
-                        removeFile(slotName)
+                        let currentMyCoins = String(userSetting.integerForKey("myCoins"))
                         
-                        self.update?.updateFilmUIView(true)
+                        self.update?.updateFilmUIViewAndCoins(true, myCoins: currentMyCoins)
                         
                         let alertController = UIAlertController(title: "Successfuly", message:
                             "Add to your bag successful", preferredStyle: UIAlertControllerStyle.Alert)
@@ -217,25 +250,170 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell
     }
     
-    func removeFile(path: String) {
-        let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+    func preloadPurchase(productId: String) {
         
-        let documentsDirectory: AnyObject = dir[0]
-        
-        var imagePath = documentsDirectory.stringByAppendingPathComponent("CompletedData/\(path)")
-        
-        let filemgr = NSFileManager.defaultManager()
-        var error: NSError?
-        
-        if filemgr.removeItemAtPath(imagePath, error: &error) {
-            println("\(imagePath) = Remove successful")
+        if(SKPaymentQueue.canMakePayments()) {
+            println("IAP is enabled, loading")
+            var productID:NSSet = NSSet(objects: productId)
+            var request: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as Set<NSObject>)
+            request.delegate = self
+            request.start()
         } else {
-            println("Remove failed: \(error!.localizedDescription)")
+            println("please enable IAPS")
         }
+        
         return
     }
     
-    func updateCoinsText(text: String){
-        self.myCoins.text = text
+    func alertDialog(productId: String) {
+        
+        var alertText = ["", ""]
+        
+        if productId == self.get150 {
+            alertText = ["$0.99", "150"]
+            
+        }else if productId == self.get320{
+            alertText = ["$1.99", "320"]
+            
+        }else if productId == self.get500 {
+            alertText = ["$2.99", "500"]
+            
+        }else if productId == self.get1000 {
+            alertText = ["$3.99", "1000"]
+            
+        }
+        
+        var alert = UIAlertController(title: "Get coins", message: "Do you want to pay \(alertText[0]) for \(alertText[1]) coins?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            for product in self.list {
+                var prodID = product.productIdentifier
+                if(prodID == productId) {
+                    self.p = product
+                    self.makePurchase()
+                    break;
+                }
+                
+            }
+            
+        }))
+        
+        alert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
+            println("Handle Cancel Logic here")
+        }))
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+    }
+    
+    // Purchase function
+    
+    var list = [SKProduct]()
+    var p = SKProduct()
+    
+    func makePurchase() {
+        println("purchasing: " + p.productIdentifier)
+        var pay = SKPayment(product: p)
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        SKPaymentQueue.defaultQueue().addPayment(pay as SKPayment)
+    }
+    
+    func productsRequest(request: SKProductsRequest!, didReceiveResponse response: SKProductsResponse!) {
+        println("product request")
+        var myProduct = response.products
+        
+        for product in myProduct {
+            println("product added")
+            println(product.productIdentifier)
+            println(product.localizedTitle)
+            println(product.localizedDescription)
+            println(product.price)
+            
+            list.append(product as! SKProduct)
+        }
+    }
+    
+    func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!) {
+        for transaction:AnyObject in transactions {
+            var trans = transaction as! SKPaymentTransaction
+            println(trans.error)
+            
+            switch trans.transactionState {
+            case .Purchased:
+                
+                
+                println("Buying success: Unlock features.")
+                println(p.productIdentifier)
+                
+                
+                var productIndex = String()
+                if self.index == 0 {
+                    productIndex = self.get150
+                    
+                }else if self.index == 1{
+                    productIndex = self.get320
+                    
+                }else if self.index == 2 {
+                    productIndex = self.get500
+                    
+                }else if self.index == 3 {
+                    productIndex = self.get1000
+                    
+                }
+                
+                let prodID = p.productIdentifier as String
+                if(prodID == productIndex){
+                    
+                    var intCoins: Int = userSetting.integerForKey("myCoins")
+                    
+                    if self.index == 0 {
+                        
+                        intCoins = intCoins +  150
+                        
+                    }else if self.index == 1{
+                        intCoins = intCoins + 320
+                        
+                    }else if self.index == 2 {
+                        intCoins = intCoins + 500
+                        
+                    }else if self.index == 3 {
+                        intCoins = intCoins + 1000
+                        
+                    }
+                    
+                    self.myCoins.text = String(intCoins)
+                    
+                    self.userSetting.setInteger(intCoins, forKey: "myCoins")
+                    
+                    let currentMyCoins = String(userSetting.integerForKey("myCoins"))
+                    
+                    self.update?.updateFilmUIViewAndCoins(false, myCoins: currentMyCoins)
+                    
+                    println("current coins = \(intCoins)")
+                    
+                }
+                
+                queue.finishTransaction(trans)
+                break;
+            case .Failed:
+                println("buy error")
+                queue.finishTransaction(trans)
+                break;
+            default:
+                println("default")
+                break;
+                
+            }
+        }
+    }
+    
+    func finishTransaction(trans:SKPaymentTransaction){
+        println("finish trans")
+        SKPaymentQueue.defaultQueue().finishTransaction(trans)
+    }
+    
+    func paymentQueue(queue: SKPaymentQueue!, removedTransactions transactions: [AnyObject]!){
+        println("remove trans");
     }
 }

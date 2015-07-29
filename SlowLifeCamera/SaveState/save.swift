@@ -17,6 +17,7 @@ class save {
         static var key: String = ""
         static var rowSlected: Bool = false
         static var filterSuccess: Int = 0
+        static var filmIndex: Int = 0
         
         //Filter define
         

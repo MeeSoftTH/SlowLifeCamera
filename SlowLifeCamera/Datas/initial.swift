@@ -71,7 +71,7 @@ class initial {
             NSFileManager.defaultManager() .createDirectoryAtPath(dirPath, withIntermediateDirectories: false, attributes: nil, error: &error)
         }
         
-        //println("Path = \(dirPath)")
+        println("Path = \(dirPath)")
     }
     
     func createSubAndFileDirectory(dir: String, subDir: String, file: String, image: UIImage) {
@@ -83,7 +83,7 @@ class initial {
         
         if (!NSFileManager.defaultManager().fileExistsAtPath(imagePath)) {
             UIImageJPEGRepresentation(image, 100).writeToFile(imagePath, atomically: true)
-            
+             println("Save datas = \(imagePath)")
         }
     }
 }

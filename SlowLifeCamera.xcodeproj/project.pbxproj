@@ -20,7 +20,6 @@
 		6B95488C1B4E7FDF002E6170 /* GiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B95488B1B4E7FDF002E6170 /* GiftViewController.swift */; };
 		6B9DCDDD1B5D6A6300B522E4 /* ShopCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9DCDDC1B5D6A6300B522E4 /* ShopCustomCell.swift */; };
 		6B9F72521B4CEDCD00EA8B15 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9F72511B4CEDCD00EA8B15 /* ShopViewController.swift */; };
-		6BB9899F1B60F1EE00C6E2F6 /* GetCoinsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB9899E1B60F1EE00C6E2F6 /* GetCoinsViewController.swift */; };
 		6BC74B6F1B5796F40049C7EC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC74B6E1B5796F40049C7EC /* AVFoundation.framework */; };
 		6BC74B711B5797000049C7EC /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC74B701B5797000049C7EC /* CoreMedia.framework */; };
 		6BC74B731B57970F0049C7EC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC74B721B57970F0049C7EC /* SystemConfiguration.framework */; };
@@ -67,7 +66,6 @@
 		6B95488B1B4E7FDF002E6170 /* GiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GiftViewController.swift; path = Controller/GiftViewController.swift; sourceTree = "<group>"; };
 		6B9DCDDC1B5D6A6300B522E4 /* ShopCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShopCustomCell.swift; path = Controller/ShopCustomCell.swift; sourceTree = "<group>"; };
 		6B9F72511B4CEDCD00EA8B15 /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShopViewController.swift; path = Controller/ShopViewController.swift; sourceTree = "<group>"; };
-		6BB9899E1B60F1EE00C6E2F6 /* GetCoinsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetCoinsViewController.swift; path = Controller/GetCoinsViewController.swift; sourceTree = "<group>"; };
 		6BC74B6E1B5796F40049C7EC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6BC74B701B5797000049C7EC /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		6BC74B721B57970F0049C7EC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -140,7 +138,6 @@
 				6BD2E4401B464CFF006E4020 /* CameraController.swift */,
 				6B73A24E1B5E4929007A7822 /* FilterViewController.swift */,
 				6BC74B851B57C0770049C7EC /* GetGift.swift */,
-				6BB9899E1B60F1EE00C6E2F6 /* GetCoinsViewController.swift */,
 				6B95488B1B4E7FDF002E6170 /* GiftViewController.swift */,
 				6B2D35C81B4A635500F7D31E /* MyBagViewController.swift */,
 				6B7A48C61B5F5A57003DFE4F /* PhotoGalleryViewController.swift */,
@@ -347,7 +344,6 @@
 				6BEC28DD1B4D78DA00BAA498 /* SettingViewController.swift in Sources */,
 				6B9462911B5D0F0100315367 /* AlbumViewController.swift in Sources */,
 				6B7A48CA1B5F5A57003DFE4F /* PhotoThumbnail.swift in Sources */,
-				6BB9899F1B60F1EE00C6E2F6 /* GetCoinsViewController.swift in Sources */,
 				6B7A48CB1B5F5A57003DFE4F /* ViewPhoto.swift in Sources */,
 				6B7A48C91B5F5A57003DFE4F /* PhotoGalleryViewController.swift in Sources */,
 				6B94628F1B5D0EAD00315367 /* AlbumCustomCell.swift in Sources */,

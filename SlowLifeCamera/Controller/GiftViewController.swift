@@ -8,14 +8,19 @@
 
 import UIKit
 
+protocol updateCoins {
+    func updateCoinsGift(myCoins: String)
+}
 
-class GiftViewController: UIViewController, UnityAdsDelegate {
+class GiftViewController: UIViewController, UnityAdsDelegate, disableUI {
     
     @IBOutlet weak var slowGift: UIButton!
     @IBOutlet weak var redGift: UIView!
     @IBOutlet weak var blueGift: UIView!
     @IBOutlet weak var greenGift: UIView!
     
+    @IBOutlet var actInd: UIActivityIndicatorView!
+    @IBOutlet var giftStatueNot: UILabel!
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
     
@@ -24,8 +29,14 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
     var stateAds = NSDate()
     var stateGift = NSDate()
     
+    var delegate: updateCoins? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        println("Preload")
+        UnityAds.sharedInstance().delegate = self
+        UnityAds.sharedInstance().startWithGameId("51551")
         
         let stateLast: AnyObject? = userSetting.objectForKey("lasttime")
         if stateLast != nil {
@@ -34,9 +45,9 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             let date1 : NSDate = stateLast as! NSDate
             let date2 : NSDate = date
             
-            let compareResult = date1.compare(date2)
+            let compareResult = date2.compare(date1)
             
-            let interval = date1.timeIntervalSinceDate(date2)
+            let interval = date2.timeIntervalSinceDate(date1)
             
             
             if interval > 18000 {
@@ -45,16 +56,11 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             println("time check = \(interval)")
         }else {
             let date = NSDate()
-            
-            self.stateGift = date
-            
             slowGift.enabled = true
             println("button enable = \(slowGift.enabled)")
         }
         
-        redGift.hidden = true
-        blueGift.hidden = true
-        greenGift.hidden = true
+        var stateTimeTemp = NSDate()
         
         let stateTime: AnyObject? = userSetting.objectForKey("adsTime")
         if stateTime != nil {
@@ -70,13 +76,12 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             
             
             if interval > 300 {
-                UnityAds.sharedInstance().delegate = self
-                UnityAds.sharedInstance().startWithGameId("51551")
-                
-                delay(3.0){
-                    self.startTimer()
+                delay(3.0) {
+                    self.updateScreen()
                 }
-                
+            }else{
+                actInd.hidden = true
+                giftStatueNot.hidden = false
             }
             
             println("ads time compareResult = \(compareResult)")
@@ -86,34 +91,10 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             println("ads time check = \(date2)")
             
         }else {
-            let date = NSDate()
-            
-            self.stateAds = date
-            
-            UnityAds.sharedInstance().delegate = self
-            UnityAds.sharedInstance().startWithGameId("51551")
-            
-            delay(3.0){
-                self.startTimer()
+            delay(3.0) {
+                self.updateScreen()
             }
         }
-        
-        var topLeftButton = UIBarButtonItem(title : "Back", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("back"))
-        self.navigationItem.backBarButtonItem = topLeftButton  //nothing happens
-    }
-    
-    func back(){
-        self.startTimer()
-    }
-    
-    func delay(delay:Double, closure:()->()) {
-        
-        dispatch_after(
-            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
-    }
-    
-    func startTimer() {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("updateScreen"), userInfo: nil, repeats: true)
     }
     
     func updateScreen() {
@@ -122,26 +103,21 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
         UnityAds.sharedInstance().setZone("rewardedVideoZone")
         
         if UnityAds.sharedInstance().canShowAds(){
+            actInd.hidden = true
+            giftStatueNot.hidden = true
             redGift.hidden = false
             blueGift.hidden = false
             greenGift.hidden = false
-            self.stop()
+        }else {
+            actInd.hidden = true
+            giftStatueNot.hidden = false
         }
     }
     
-    func stop() {
-        println("stop timer")
-        self.timer.invalidate()
-    }
     
-    
-    func unityAdsVideoCompleted(rewardItemKey: String, skipped: Bool) -> Void{
+    func unityAdsVideoCompleted(rewardItemKey: String, skipped: Bool) -> Void {
         println("skip \(skipped)")
         if !skipped {
-            
-            redGift.hidden = true
-            blueGift.hidden = true
-            greenGift.hidden = true
             
             var intCoins: Int = userSetting.integerForKey("myCoins")
             
@@ -151,16 +127,21 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
             
             userSetting.setObject(self.stateAds, forKey: "adsTime")
             
+            self.redGift.hidden = true
+            self.blueGift.hidden = true
+            self.greenGift.hidden = true
             
-            delay(0.5){
-                let alertController = UIAlertController(title: "Congratulations", message:
-                    "Your got 20 coins from Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
-            }
+            self.giftStatueNot.text = "Congratulations, Your got 20 coins from Gift, you current coins is \(intCoins)"
+            self.delegate!.updateCoinsGift(String(userSetting.integerForKey("myCoins")))
+            self.giftStatueNot.hidden = false
         }
     }
+    
     @IBAction func slowLiftButton(sender: UIButton) {
+        let slowGift = self.storyboard!.instantiateViewControllerWithIdentifier("getGift") as! GetGift
+        slowGift.delegate = self
         
+        self.navigationController?.pushViewController(slowGift, animated: true)
     }
     
     @IBAction func ads1(sender: UIButton) {
@@ -175,13 +156,42 @@ class GiftViewController: UIViewController, UnityAdsDelegate {
         openAds()
     }
     
+    func delay(delay:Double, closure:()->()) {
+        
+        dispatch_after(
+            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    }
+    
     func openAds() {
         
-        UnityAds.sharedInstance().setViewController(self)
-        UnityAds.sharedInstance().setZone("rewardedVideoZone")
+        var refreshAlert = UIAlertController(title: "Advertise", message: "See advertise for gift?", preferredStyle: UIAlertControllerStyle.Alert)
         
-        if UnityAds.sharedInstance().canShowAds(){
-            UnityAds.sharedInstance().show()
+        refreshAlert.addAction(UIAlertAction(title: "Watch", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            let date = NSDate()
+            self.stateAds = date
+            
+            UnityAds.sharedInstance().setViewController(self)
+            UnityAds.sharedInstance().setZone("rewardedVideoZone")
+            
+            if UnityAds.sharedInstance().canShowAds(){
+                UnityAds.sharedInstance().show()
+            }
+            
+        }))
+        
+        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+            println("Handle Cancel Logic here")
+        }))
+        
+        self.presentViewController(refreshAlert, animated: true, completion: nil)
+    }
+    
+    func disableGift(isTrue: Bool) {
+        if isTrue == true {
+            self.slowGift.enabled = false
+            var coins = String(userSetting.integerForKey("myCoins"))
+            self.delegate!.updateCoinsGift(coins)
         }
     }
 }
