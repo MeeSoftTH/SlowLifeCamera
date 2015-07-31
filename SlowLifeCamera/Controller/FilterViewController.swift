@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreLocation
 
 protocol removeFilm {
     func removeAfterSuccess(isTrue: Bool)
@@ -15,7 +14,7 @@ protocol removeFilm {
 
 let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
 
-class FilterViewController: UIViewController, CLLocationManagerDelegate {
+class FilterViewController: UIViewController {
     
     @IBOutlet var status: UILabel!
     @IBOutlet var act: UIActivityIndicatorView!
@@ -28,15 +27,12 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
     var subDir2:String = ""
     var keyFilter: String = ""
     
-    var locationText: String = ""
     
     let showCopy = userSetting.boolForKey("showCopyRight")
     let showTime = userSetting.boolForKey("ShowTime")
     let showLocation = userSetting.boolForKey("showLocation")
     
     @IBOutlet var galleryButton: UIButton!
-    
-    let locationManager = CLLocationManager()
     
     let context = CIContext(options: nil)
     
@@ -95,6 +91,8 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
                     println("File is \(fileList[i])")
                     
                     var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(fileList[i])")
+                    
+                    
                     
                     var fileURL = NSURL(fileURLWithPath: getImagePath)
                     
@@ -224,8 +222,11 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         filter.setValue(0.98, forKey: kCIInputContrastKey)
         //let context = CIContext(options:nil)
         
-        // 2
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -242,8 +243,10 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         
         //let context = CIContext(options:nil)
         
-        // 2
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg
         
@@ -267,8 +270,9 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         
         //let context = CIContext(options:nil)
         
-        // 2
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg
         
@@ -280,7 +284,11 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIMaximumComponent")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
+
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -303,7 +311,10 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
         filter2.setValue(vector, forKey: "inputGreenCoefficients")
         
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
+
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -315,7 +326,13 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIPhotoEffectFade")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
+
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -327,7 +344,12 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         //filter.setValue(1.8, forKey: "inputHighlightAmount")
         filter.setValue(0.3, forKey: "inputShadowAmount")
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
+
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -343,7 +365,12 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         filter.setValue(vector, forKey: "inputCenter")
         filter.setValue(0.24, forKey: "inputIntensity")
         filter.setValue(0, forKey: "inputRadius")
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
+
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -360,7 +387,12 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         let color = CIColor(color: UIColor(red: 0.85, green: 0.16, blue: 0.02, alpha: 1.0));
         filter2.setValue(color, forKey: "inputColor")
         filter2.setValue(1.0, forKey: "inputIntensity")
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
+
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -371,7 +403,11 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         let filter = CIFilter(name: "CIColorPosterize")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(27, forKey: "inputLevels")
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -383,7 +419,11 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(2.9, forKey: "inputRadius")
         filter.setValue(0.72, forKey: "inputIntensity")
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+       
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg
         
@@ -396,7 +436,10 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(8.1, forKey: "inputRadius")
         filter.setValue(0.5, forKey: "inputIntensity")
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg
         
@@ -413,8 +456,9 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         filter.setValue(vector, forKey: "inputWeights")
         filter.setValue(0.0, forKey: "inputBias")
         
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
         
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg
         
@@ -448,8 +492,8 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
             filter2.setValue(ciImage, forKey: "inputBackgroundImage")
             ciImage = filter2.outputImage
         }
-        
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))!, useFrame: true);
+        var image = UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        let textImg = addTextAndFrame(image!, useFrame: true);
         
         let newImage = textImg//UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))
         
@@ -480,7 +524,9 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
         println(imgWidth)
         println(imgHeight)
         
-        let textImg = addTextAndFrame(UIImage(CGImage: context.createCGImage(filter2.outputImage, fromRect: ciImage.extent()))!, useFrame: false);
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        let textImg = addTextAndFrame(image!, useFrame: false);
         
         let newImage = textImg// UIImage(CGImage: context.createCGImage(filter3.outputImage, fromRect: ciImage.extent()))
         
@@ -491,56 +537,6 @@ class FilterViewController: UIViewController, CLLocationManagerDelegate {
     func getText()-> String {
         let text = "Film By SlowLife Camera"
         return text
-    }
-    
-    func getCurrentTime()-> String {
-        var currentTime = NSDate()
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "d/M/yy, H:mm" // superset of OP's format
-        let str = dateFormatter.stringFromDate(currentTime)
-        
-        return str
-    }
-    
-    func getLocation() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error)->Void in
-            
-            if (error != nil) {
-                println("Reverse geocoder failed with error" + error.localizedDescription)
-                return
-            }
-            
-            if placemarks.count > 0 {
-                let pm = placemarks[0] as! CLPlacemark
-                self.displayLocationInfo(pm)
-            } else {
-                println("Problem with the data received from geocoder")
-            }
-        })
-    }
-    
-    func displayLocationInfo(placemark: CLPlacemark?) {
-        if let containsPlacemark = placemark {
-            //stop updating location to save battery life
-            locationManager.stopUpdatingLocation()
-            let locality = (containsPlacemark.locality != nil) ? containsPlacemark.locality : ""
-            let administrativeArea = (containsPlacemark.administrativeArea != nil) ? containsPlacemark.administrativeArea : ""
-            let country = (containsPlacemark.country != nil) ? containsPlacemark.country : ""
-            
-            self.locationText = "\(locality), \(administrativeArea), \(country)"
-            
-        }
-    }
-    
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
-        println("Error while updating location " + error.localizedDescription)
     }
     
     func randomNumberBetween(min: Int, max: Int) -> Int {

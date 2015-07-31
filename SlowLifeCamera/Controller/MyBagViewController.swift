@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins {
+class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins, updateLabel {
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
     
@@ -67,9 +67,12 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     @IBOutlet var filmView7: UIView!
     @IBOutlet var filmView8: UIView!
     
+    @IBOutlet var topBar: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.topBar.backgroundColor = UIColor.brownColor()
+        self.navigationController?.navigationBarHidden = true
         self.myCoins.text = String(userSetting.integerForKey("myCoins"))
         updateControl()
         
@@ -122,12 +125,18 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         self.navigationController?.pushViewController(selectView, animated: true)
     }
     
-    
     @IBAction func giftButton(sender: AnyObject) {
         
         let GiftView = self.storyboard!.instantiateViewControllerWithIdentifier("gift") as! GiftViewController
         GiftView.delegate = self
         self.navigationController?.pushViewController(GiftView, animated: true)
+    }
+    
+    @IBAction func cameraButton(sender: AnyObject) {
+        
+        let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
+        cameraView.delegate = self
+        self.presentViewController(cameraView, animated: true, completion: nil)
     }
     
     @IBAction func slot1(sender: UIButton) {
@@ -390,8 +399,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
                     
                     initial().createSubDirectory("RawData", subDir: slotName)
                     
+                    let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
+                    cameraView.delegate = self
+                    self.presentViewController(cameraView, animated: true, completion: nil)
                 }
-                self.dismissViewControllerAnimated(true, completion: nil)
             }))
         }
         
@@ -403,7 +414,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
                 if filmRow != nil {
                     var slot = filmRow!.objectAtIndex(0) as! NSString
                     
-                    self.userSetting.setObject(["", "", "", 10, false], forKey: save.variable.key)
+                    self.userSetting.setObject(["", "", "", 25, false], forKey: save.variable.key)
                     
                     self.updateControl()
                 }}))
@@ -419,10 +430,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         chooseDialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
         presentViewController(chooseDialog, animated: true, completion: nil)
-    }
-    
-    @IBAction func cameraView(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func updateFilmUIViewAndCoins(isTrue: Bool, myCoins: String) {
@@ -452,6 +459,28 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func updateCoinsGift(myCoins: String) {
         self.myCoins.text = myCoins
+    }
+    
+    func updateLabelCamera(text: String) {
+        if save.variable.filmIndex == 1 {
+            self.num1.text = ("\(text) of 25")
+        }else if save.variable.filmIndex == 2 {
+            self.num2.text = ("\(text) of 25")
+        }else if save.variable.filmIndex == 3 {
+            self.num3.text = ("\(text) of 25")
+        }else if save.variable.filmIndex == 4 {
+            self.num4.text = ("\(text) of 25")
+        }else if save.variable.filmIndex == 5 {
+            self.num5.text = ("\(text) of 25")
+        }else if save.variable.filmIndex == 6 {
+            self.num6.text = ("\(text) of 25")
+        }else if save.variable.filmIndex == 7 {
+            self.num7.text = ("\(text) of 25")
+        }else if save.variable.filmIndex == 8 {
+            self.num8.text = ("\(text) of 25")
+        }
+        
+        save.variable.filmIndex = 0
     }
     
 }

@@ -10,30 +10,33 @@ import UIKit
 import AVFoundation
 import MobileCoreServices
 import Foundation
+import CoreLocation
 
-class CameraController: UIViewController  {
+protocol updateLabel {
+    func updateLabelCamera(text: String)
+}
+
+class CameraController: UIViewController, CLLocationManagerDelegate  {
     
     let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    let locationManager = CLLocationManager()
     
-    let captureSession = AVCaptureSession()
-    var previewLayer : AVCaptureVideoPreviewLayer?
+    var delegate: updateLabel? = nil
+    
+    @IBOutlet weak var previewView: UIView!
+    
+    var captureSession: AVCaptureSession?
+    var stillImageOutput: AVCaptureStillImageOutput?
+    var previewLayer: AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
-    var stillImageOutput = AVCaptureStillImageOutput()
-    var imageData: NSData!
-    var shotImage: UIImage!
     var cameratype: Bool = true
     
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var numberLabel: UILabel!
-    @IBOutlet weak var switchCameraButton: UIButton!
-    @IBOutlet weak var shotButton: UIButton!
-    @IBOutlet weak var flashView: UIButton!
-    @IBOutlet weak var showCopy: UISwitch!
+    @IBOutlet var topBar: UIView!
+    @IBOutlet var foolbal: UIView!
     
-    
-    @IBOutlet var controllerView: UIView!
-    @IBOutlet var captureView: UIView!
-    
+    var locationText = String()
     var timer: NSTimer!
     
     override func prefersStatusBarHidden() -> Bool {
@@ -42,31 +45,128 @@ class CameraController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.controllerView.alpha = 1.0
-        self.captureView.alpha = 0.0
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
         
         if save.variable.rowSlected == true {
             numberLabel.text = String(save.variable.myNum)
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        reloadCamera()
         
-        let devices = AVCaptureDevice.devices()
-        for device in devices {
-            if (device.hasMediaType(AVMediaTypeVideo)) {
-                if(device.position == AVCaptureDevicePosition.Back) {
-                    captureDevice = device as? AVCaptureDevice
-                    if captureDevice != nil {
-                        beginSession()
-                        //updateDeviceSettings(1.0, isoValue: 1.0)
-                    }
-                }
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        previewLayer!.frame = previewView.bounds
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error)->Void in
+            
+            if (error != nil) {
+                println("Reverse geocoder failed with error" + error.localizedDescription)
+                return
+            }
+            
+            if placemarks.count > 0 {
+                let pm = placemarks[0] as! CLPlacemark
+                self.displayLocationInfo(pm)
+            } else {
+                println("Problem with the data received from geocoder")
+            }
+        })
+    }
+    
+    func displayLocationInfo(placemark: CLPlacemark?) {
+        if let containsPlacemark = placemark {
+            //stop updating location to save battery life
+            locationManager.stopUpdatingLocation()
+            let locality = (containsPlacemark.locality != nil) ? containsPlacemark.locality : ""
+            let administrativeArea = (containsPlacemark.administrativeArea != nil) ? containsPlacemark.administrativeArea : ""
+            let country = (containsPlacemark.country != nil) ? containsPlacemark.country : ""
+            
+            self.locationText = ("\(locality), \(administrativeArea), \(country)")
+        }
+        
+    }
+    
+    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        println("Error while updating location " + error.localizedDescription)
+    }
+    
+    func reloadCamera() {
+        captureSession = AVCaptureSession()
+        captureSession!.sessionPreset = AVCaptureSessionPresetPhoto
+        
+        var error: NSError?
+        var input = AVCaptureDeviceInput(device: captureDevice, error: &error)
+        
+        if error == nil && captureSession!.canAddInput(input) {
+            captureSession!.addInput(input)
+            
+            stillImageOutput = AVCaptureStillImageOutput()
+            stillImageOutput!.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+            if captureSession!.canAddOutput(stillImageOutput) {
+                captureSession!.addOutput(stillImageOutput)
+                
+                previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+                previewLayer!.videoGravity = AVLayerVideoGravityResizeAspect
+                previewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.Portrait
+                previewView.layer.addSublayer(previewLayer)
+                
+                self.view.addSubview(self.topBar)
+                self.view.addSubview(self.foolbal)
+                
+                captureSession!.startRunning()
+                previewLayer!.frame = previewView.bounds
             }
         }
+        
     }
     
     @IBAction func shotPress(sender: UIButton) {
         if save.variable.myNum > 0 && save.variable.rowSlected == true{
-            takePhoto()
+            if let videoConnection = stillImageOutput!.connectionWithMediaType(AVMediaTypeVideo) {
+                videoConnection.videoOrientation = AVCaptureVideoOrientation.Portrait
+                stillImageOutput!.captureStillImageAsynchronouslyFromConnection(videoConnection, completionHandler: {(sampleBuffer, error) in
+                    if (sampleBuffer != nil) {
+                        var imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
+                        var dataProvider = CGDataProviderCreateWithCFData(imageData)
+                        var cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, kCGRenderingIntentDefault)
+                        
+                        var image = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: UIImageOrientation.Right)
+                        if (image != nil) {
+                            self.previewLayer?.removeFromSuperlayer()
+                            var format = NSDateFormatter()
+                            format.dateFormat="yyyy-MM-dd-HH-mm-ss"
+                            var currentFileName: String = "\(format.stringFromDate(NSDate())) + \(self.locationText).jpg"
+                            println(currentFileName)
+                            
+                            let filmRow: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
+                            println("Key = \(save.variable.key)")
+                            println("path name = \(filmRow)")
+                            var filmDir = filmRow!.objectAtIndex(0) as! String
+                            
+                            initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: image!)
+                            
+                            
+                            if save.variable.myNum > 0 {
+                                save.variable.myNum = save.variable.myNum - 1
+                                self.numberLabel.text = String(save.variable.myNum)
+                            }
+                            
+                            self.captureSession!.stopRunning()
+                            self.reloadCamera()
+                            self.delegate?.updateLabelCamera(String(save.variable.myNum))
+                        }
+                    }
+                })
+            }
         }else if save.variable.myNum == 0 && save.variable.rowSlected == true{
             let alertController = UIAlertController(title: "", message:
                 "This film is have no photo!", preferredStyle: UIAlertControllerStyle.Alert)
@@ -100,13 +200,14 @@ class CameraController: UIViewController  {
     }
     
     @IBAction func switchCamera(sender: UIButton) {
-        captureSession.sessionPreset = AVCaptureSessionPresetHigh
-        for oldInput : AnyObject in captureSession.inputs {
+        captureSession!.sessionPreset = AVCaptureSessionPresetHigh
+        for oldInput : AnyObject in captureSession!.inputs {
             if let captureInput = oldInput as? AVCaptureInput {
-                captureSession.removeInput(captureInput)
+                captureSession!.removeInput(captureInput)
             }
         }
-        captureSession.stopRunning()
+        captureSession!.stopRunning()
+        previewLayer?.removeFromSuperlayer()
         if(cameratype == true) {
             let devices = AVCaptureDevice.devices()
             for device in devices {
@@ -114,7 +215,7 @@ class CameraController: UIViewController  {
                     if(device.position == AVCaptureDevicePosition.Front) {
                         captureDevice = device as? AVCaptureDevice
                         if captureDevice != nil {
-                            beginSession()
+                            reloadCamera()
                             cameratype = false
                         }
                     }
@@ -127,7 +228,7 @@ class CameraController: UIViewController  {
                     if(device.position == AVCaptureDevicePosition.Back) {
                         captureDevice = device as? AVCaptureDevice
                         if captureDevice != nil {
-                            beginSession()
+                            reloadCamera()
                             cameratype = true
                         }
                     }
@@ -151,61 +252,10 @@ class CameraController: UIViewController  {
             numberLabel.text = ""
             
             self.userSetting?.setObject([slotName, filterCode, filterName, num, isOn], forKey: save.variable.key)
-        }
-    }
-    
-    func takePhoto() {
-        controllerView.alpha = 0.0
-        captureView.alpha = 1.0
-        
-        stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
-        if captureSession.canAddOutput(stillImageOutput) {
-            captureSession.addOutput(stillImageOutput)
+            self.delegate?.updateLabelCamera(String(save.variable.myNum))
         }
         
-        var videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo)
-        
-        if videoConnection != nil {
-            stillImageOutput.captureStillImageAsynchronouslyFromConnection(videoConnection, completionHandler: {
-                (sampleBuffer, error) in
-                var imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
-                var dataProvider = CGDataProviderCreateWithCFData(imageData)
-                var cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, kCGRenderingIntentDefault)
-                var imageUI = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: UIImageOrientation.Right)
-                
-                
-                //Save the captured preview to image
-                if (imageUI != nil) {
-                    var format = NSDateFormatter()
-                    format.dateFormat="yyyy-MM-dd-HH-mm-ss"
-                    var currentFileName: String = "img-\(format.stringFromDate(NSDate())).jpg"
-                    println(currentFileName)
-                    
-                    let filmRow: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
-                    println("Key = \(save.variable.key)")
-                    println("path name = \(filmRow)")
-                    var filmDir = filmRow!.objectAtIndex(0) as! String
-                    
-                    initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: imageUI!)
-                }
-            })
-        }
-        
-        if save.variable.myNum > 0 {
-            save.variable.myNum = save.variable.myNum - 1
-            numberLabel.text = String(save.variable.myNum)
-        }
-        
-        delay(0.1){
-            self.controllerView.alpha = 1.0
-            self.captureView.alpha = 0.0
-        }
-    }
-    
-    func delay(delay:Double, closure:()->()) {
-        
-        dispatch_after(
-            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     
@@ -217,37 +267,4 @@ class CameraController: UIViewController  {
             }
         }
     }
-    
-    func beginSession() {
-        //updateDeviceSettings(1.0, isoValue: 1.0)
-        
-        var err : NSError? = nil
-        
-        captureSession.addInput(AVCaptureDeviceInput(device: captureDevice, error: &err))
-        
-        if err != nil {
-            println("error: \(err?.localizedDescription)")
-        }
-        self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        captureSession.sessionPreset = AVCaptureSessionPresetHigh
-        
-        self.previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
-        
-        self.view.layer.addSublayer(self.previewLayer)
-        
-        self.view.addSubview(self.captureView)
-        self.view.addSubview(self.controllerView)
-        
-        /*
-        self.view.bringSubviewToFront(self.numberLabel)
-        self.view.bringSubviewToFront(self.flashButton)
-        self.view.bringSubviewToFront(self.switchCameraButton)
-        self.view.bringSubviewToFront(self.showCopy)
-        self.view.bringSubviewToFront(self.shotButton)
-        */
-        
-        self.previewLayer?.frame = self.view.layer.frame
-        captureSession.startRunning()
-    }
-    
 }
