@@ -84,6 +84,10 @@ class initial {
         if (!NSFileManager.defaultManager().fileExistsAtPath(imagePath)) {
             UIImageJPEGRepresentation(image, 100).writeToFile(imagePath, atomically: true)
              println("Save datas = \(imagePath)")
+            
+            if save.variable.rowSlected == true {
+                save.variable.myNum = save.variable.myNum - 1
+            }
         }
     }
 }

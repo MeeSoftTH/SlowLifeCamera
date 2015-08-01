@@ -141,7 +141,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             self.topBar.alpha = 0.0
             self.foolbal.alpha = 0.0
             self.shotButton.enabled = false
-
+            
             if let videoConnection = stillImageOutput!.connectionWithMediaType(AVMediaTypeVideo) {
                 videoConnection.videoOrientation = AVCaptureVideoOrientation.Portrait
                 stillImageOutput!.captureStillImageAsynchronouslyFromConnection(videoConnection, completionHandler: {(sampleBuffer, error) in
@@ -165,19 +165,16 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                             
                             initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: image!)
                             
-                            if save.variable.myNum > 0 {
-                                save.variable.myNum = save.variable.myNum - 1
+                            self.captureView.alpha = 0.0
+                            self.previewView.alpha = 1.0
+                            self.topBar.alpha = 1.0
+                            self.foolbal.alpha = 1.0
+                            
+                            if save.variable.myNum >= 0 {
                                 self.numberLabel.text = String(save.variable.myNum)
                             }
                             
-                            
-                            self.delay(0.1){
-                                self.captureView.alpha = 0.0
-                                self.previewView.alpha = 1.0
-                                self.topBar.alpha = 1.0
-                                self.foolbal.alpha = 1.0
-                                self.shotButton.enabled = true
-                            }
+                            self.shotButton.enabled = true
                         }
                     }
                 })

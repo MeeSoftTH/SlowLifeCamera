@@ -34,7 +34,6 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         }
     }
     
-    
     func listFilesFromDocumentsFolder() -> [String]
     {
         var theError = NSErrorPointer()

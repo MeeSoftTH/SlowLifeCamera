@@ -9,7 +9,7 @@
 import UIKit
 
 protocol removeFilm {
-    func removeAfterSuccess(isTrue: Bool)
+    func removeAfterSuccess(isTrue: Bool, coinsUpdate: String)
 }
 
 let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
@@ -26,6 +26,7 @@ class FilterViewController: UIViewController {
     var subDir:String = ""
     var subDir2:String = ""
     var keyFilter: String = ""
+    var isCancel: Bool = false
     
     
     let showCopy = userSetting.boolForKey("showCopyRight")
@@ -38,10 +39,10 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        releaseMemory()
         var currentTime = NSDate()
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dMMyy-H:mm" // superset of OP's format
+        dateFormatter.dateFormat = "ddMMyy-H:mm" // superset of OP's format
         let str = dateFormatter.stringFromDate(currentTime)
         
         self.subDir2 = str
@@ -49,8 +50,13 @@ class FilterViewController: UIViewController {
         self.subDir = datas!.objectAtIndex(0) as! String
         self.keyFilter = datas!.objectAtIndex(1) as! String
         
-        delay(3.0){
-            self.processFilter()
+        delay(5.0){
+            
+            if !self.isCancel {
+                self.processFilter()
+            }else{
+            println("Process is cancel")
+            }
         }
     }
     
@@ -60,6 +66,7 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func cancel(sender: UIButton) {
+        self.isCancel = true
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -71,11 +78,13 @@ class FilterViewController: UIViewController {
     }
     
     func processFilter() {
+        self.actionButton.enabled = false
         let fileManager:NSFileManager = NSFileManager.defaultManager()
         var fileList = listFilesFromDocumentsFolder()
         
         let count = fileList.count
         
+        println("Number of photos = \(count)")
         if count > 0 {
             var filterName = "No.14"
             var iconName = "filter1"
@@ -86,6 +95,7 @@ class FilterViewController: UIViewController {
             
             for var i:Int = 0; i < count; i++
             {
+                releaseMemory()
                 if fileManager.fileExistsAtPath(fileList[i]) != true
                 {
                     println("File is \(fileList[i])")
@@ -140,28 +150,9 @@ class FilterViewController: UIViewController {
                     }
                     
                     removeFile(fileList[i])
+                    releaseMemory()
                 }
             }
-            
-            var intCoins: Int = userSetting.integerForKey("myCoins")
-            
-            intCoins = intCoins + save.variable.filterSuccess
-            
-            userSetting.setInteger(intCoins, forKey: "myCoins")
-            
-            var numberOfPhoto = String(save.variable.filterSuccess)
-            
-            userSetting.setObject([self.subDir2, filterName, iconName, numberOfPhoto], forKey: self.subDir2)
-            
-            userSetting.setObject(["", "", "", 25, false], forKey: save.variable.key)
-            
-            self.status.text = "Successful"
-            self.act.hidden = true
-            self.actionButton.setTitle("Close", forState: UIControlState.Normal)
-            self.imageSet.image = UIImage(named: "success")
-            
-            save.variable.filterSuccess = 0
-            save.variable.key = ""
             
             println("Set to key = \(self.subDir2)")
             println("New datas \(userSetting.objectForKey(self.subDir2))")
@@ -181,10 +172,40 @@ class FilterViewController: UIViewController {
                 println("Remove failed: \(removeErrorrror!.localizedDescription)")
             }
             
-            self.delegate?.removeAfterSuccess(true)
+            var intCoins: Int = userSetting.integerForKey("myCoins")
+            
+            intCoins = intCoins + save.variable.filterSuccess
+            
+            userSetting.setInteger(intCoins, forKey: "myCoins")
+            
+            var numberOfPhoto = String(save.variable.filterSuccess)
+            
+            userSetting.setObject([self.subDir2, filterName, iconName, numberOfPhoto], forKey: self.subDir2)
+            
+            userSetting.setObject(["", "", "", 25, false], forKey: save.variable.key)
+            save.variable.key = ""
+            
+            save.variable.filterSuccess = 0
+            save.variable.key = ""
+            
+            
+            self.delegate?.removeAfterSuccess(true, coinsUpdate: String(intCoins))
             
             save.variable.rowSlected = false
             
+            self.actionButton.enabled = true
+            self.status.text = "Successful"
+            self.act.hidden = true
+            self.actionButton.setTitle("Close", forState: UIControlState.Normal)
+            self.imageSet.image = UIImage(named: "success")
+            
+            let alertController = UIAlertController(title: "Successful", message:
+                "Convert photos with filter successfuly!", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
             
         }else {
             println("No photo")
@@ -662,5 +683,17 @@ class FilterViewController: UIViewController {
         initial().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: UIimg!)
         
         save.variable.filterSuccess += 1
+    }
+    
+    func releaseMemory() {
+        var counter = 0
+        for i in 0..<10 {
+            autoreleasepool {
+                if i == 5 {
+                    return
+                }
+                counter++
+            }
+        }
     }
 }

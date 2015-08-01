@@ -67,11 +67,9 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     @IBOutlet var filmView7: UIView!
     @IBOutlet var filmView8: UIView!
     
-    @IBOutlet var topBar: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.topBar.backgroundColor = UIColor.brownColor()
         self.myCoins.text = String(userSetting.integerForKey("myCoins"))
         updateControl()
         
@@ -111,6 +109,11 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        MyBagViewController().navigationController?.setNavigationBarHidden(true, animated: animated)
+        super.viewDidAppear(animated)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -132,10 +135,16 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     }
     
     @IBAction func cameraButton(sender: AnyObject) {
-        
-        let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
-        cameraView.delegate = self
-        self.presentViewController(cameraView, animated: true, completion: nil)
+        if save.variable.rowSlected == true {
+            let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
+            cameraView.delegate = self
+            self.presentViewController(cameraView, animated: true, completion: nil)
+        }else {
+            let alertController = UIAlertController(title: "Alert", message:
+                "Select film first!", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
     @IBAction func slot1(sender: UIButton) {
@@ -223,7 +232,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     }
     
     func updateControl() {
-        
         let film1: AnyObject? = userSetting?.objectForKey(slotName1)
         var film1Bool = film1!.objectAtIndex(4) as! Bool
         if film1Bool == true {
@@ -437,7 +445,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         self.myCoins.text = myCoins
     }
     
-    func removeAfterSuccess(isTrue: Bool) {
+    func removeAfterSuccess(isTrue: Bool, coinsUpdate: String) {
         if isTrue == true {
             updateControl()
             save.variable.filmIndex = 0
@@ -450,6 +458,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
             self.filmView6.backgroundColor = UIColor.clearColor()
             self.filmView7.backgroundColor = UIColor.clearColor()
             self.filmView8.backgroundColor = UIColor.clearColor()
+            
+            self.myCoins.text = coinsUpdate
         }
     }
     

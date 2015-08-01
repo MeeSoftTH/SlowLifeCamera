@@ -31,8 +31,11 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.setUpAlbumRow()
     }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -56,6 +59,7 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         
         if count > 0 {
+            releaseMemory()
             for var i:Int = 0; i < count; i++
             {
                 if fileManager.fileExistsAtPath(fileList[i]) != true
@@ -128,6 +132,7 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         let AlbumData = arryOfAlbumDatas[indexPath.row]
         cell.setAlbumCell(AlbumData.name, filterName: AlbumData.filterName, iconName: AlbumData.iconName, number: AlbumData.number)
+        releaseMemory()
         return cell
     }
     
@@ -160,6 +165,18 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
          println("Call this = \( newVC.keySlot)")
     
+    }
+    
+    func releaseMemory() {
+        var counter = 0
+        for i in 0..<10 {
+            autoreleasepool {
+                if i == 5 {
+                    return
+                }
+                counter++
+            }
+        }
     }
     
 }
