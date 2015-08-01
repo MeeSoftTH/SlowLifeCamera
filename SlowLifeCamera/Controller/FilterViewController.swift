@@ -166,6 +166,21 @@ class FilterViewController: UIViewController {
             println("Set to key = \(self.subDir2)")
             println("New datas \(userSetting.objectForKey(self.subDir2))")
             
+            let removeDir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+            
+            let removeIndexDir: AnyObject = removeDir[0]
+            
+            var removePath = removeIndexDir.stringByAppendingPathComponent("RawData/\(self.subDir)")
+            
+            let fileDir = NSFileManager.defaultManager()
+            var removeErrorrror: NSError?
+            
+            if fileDir.removeItemAtPath(removePath, error: &removeErrorrror) {
+                println("\(removePath) = Remove Dir successful")
+            } else {
+                println("Remove failed: \(removeErrorrror!.localizedDescription)")
+            }
+            
             self.delegate?.removeAfterSuccess(true)
             
             save.variable.rowSlected = false
@@ -223,10 +238,10 @@ class FilterViewController: UIViewController {
         //let context = CIContext(options:nil)
         
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -243,10 +258,10 @@ class FilterViewController: UIViewController {
         
         //let context = CIContext(options:nil)
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg
         
@@ -270,9 +285,9 @@ class FilterViewController: UIViewController {
         
         //let context = CIContext(options:nil)
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg
         
@@ -285,10 +300,10 @@ class FilterViewController: UIViewController {
         let filter = CIFilter(name: "CIMaximumComponent")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
-
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
+        
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -311,10 +326,10 @@ class FilterViewController: UIViewController {
         filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
         filter2.setValue(vector, forKey: "inputGreenCoefficients")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
-
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
+        
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -328,11 +343,11 @@ class FilterViewController: UIViewController {
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
-
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
+        
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -345,11 +360,11 @@ class FilterViewController: UIViewController {
         //filter.setValue(1.8, forKey: "inputHighlightAmount")
         filter.setValue(0.3, forKey: "inputShadowAmount")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
-
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
+        
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -366,11 +381,11 @@ class FilterViewController: UIViewController {
         filter.setValue(0.24, forKey: "inputIntensity")
         filter.setValue(0, forKey: "inputRadius")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
-
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
+        
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -388,11 +403,11 @@ class FilterViewController: UIViewController {
         filter2.setValue(color, forKey: "inputColor")
         filter2.setValue(1.0, forKey: "inputIntensity")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
-
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
+        
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -407,7 +422,7 @@ class FilterViewController: UIViewController {
         var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg
         self.moveFile(newImage, newName: rename)
@@ -419,11 +434,11 @@ class FilterViewController: UIViewController {
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(2.9, forKey: "inputRadius")
         filter.setValue(0.72, forKey: "inputIntensity")
-       
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg
         
@@ -437,9 +452,9 @@ class FilterViewController: UIViewController {
         filter.setValue(8.1, forKey: "inputRadius")
         filter.setValue(0.5, forKey: "inputIntensity")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg
         
@@ -456,9 +471,9 @@ class FilterViewController: UIViewController {
         filter.setValue(vector, forKey: "inputWeights")
         filter.setValue(0.0, forKey: "inputBias")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg
         
@@ -492,8 +507,8 @@ class FilterViewController: UIViewController {
             filter2.setValue(ciImage, forKey: "inputBackgroundImage")
             ciImage = filter2.outputImage
         }
-        var image = UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
-        let textImg = addTextAndFrame(image!, useFrame: true);
+        var image = UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))
+        let textImg = addTextAndFrame(image!, useFrame: true, nameText: rename);
         
         let newImage = textImg//UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))
         
@@ -524,9 +539,9 @@ class FilterViewController: UIViewController {
         println(imgWidth)
         println(imgHeight)
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
         
-        let textImg = addTextAndFrame(image!, useFrame: false);
+        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
         
         let newImage = textImg// UIImage(CGImage: context.createCGImage(filter3.outputImage, fromRect: ciImage.extent()))
         
@@ -534,8 +549,40 @@ class FilterViewController: UIViewController {
     }
     
     
-    func getText()-> String {
-        let text = "Film By SlowLife Camera"
+    func getText(nameText: String)-> String {
+        
+        var cutLocation = nameText
+        var cutTime = nameText
+        
+        var copyText: String = ""
+        var timeText: String = ""
+        var locationText: String = ""
+        
+        
+        if showTime == true {
+            let endIndex = advance(cutTime.startIndex, 19)
+            let needle = cutTime.substringToIndex(endIndex)
+            println("Time is = \(needle)")
+            timeText = " : \(needle)"
+        }
+        
+        if showLocation == true{
+            if count(nameText) > 19 {
+                cutLocation.removeRange(cutLocation.startIndex..<advance(cutLocation.startIndex, 20))
+                let newStr = cutLocation[advance(cutLocation.startIndex, 0)...advance(cutLocation.endIndex, -4)]
+                println("Location is = \(newStr)")
+                locationText = " : \(newStr)"
+            }
+        }
+        
+        if showCopy == true {
+            copyText = "Film By SlowLife Camera"
+        }
+        
+        let text = "\(copyText) \(timeText) \(locationText)"
+        
+        println("Text is = \(text)")
+        
         return text
     }
     
@@ -543,7 +590,7 @@ class FilterViewController: UIViewController {
         return Int(arc4random_uniform(UInt32(max - min + 1))) + min
     }
     
-    func addTextAndFrame(inImage: UIImage, useFrame: Bool)->UIImage{
+    func addTextAndFrame(inImage: UIImage, useFrame: Bool, nameText: String)->UIImage{
         
         var fontSize: CGFloat = 10
         var frameSize: CGFloat = 10
@@ -586,10 +633,7 @@ class FilterViewController: UIViewController {
         
         // Creating a point within the space that is as bit as the image.
         var rect: CGRect = CGRectMake(atPoint.x, atPoint.y, inImage.size.width, inImage.size.height)
-        
-        if showCopy == true {
-            getText().drawInRect(rect, withAttributes: textFontAttributes)
-        }
+        getText(nameText).drawInRect(rect, withAttributes: textFontAttributes)
         
         // Create a new image out of the images we have created
         var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -603,10 +647,19 @@ class FilterViewController: UIViewController {
     
     func moveFile(image: UIImage, newName: String) {
         initial().createSubDirectory("CompletedData", subDir: self.subDir2)
-        var currentFileName: String = "affterFilter_\(newName)"
-        println(currentFileName)
         
-        initial().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: image)
+        let endIndex = advance(newName.startIndex, 19)
+        let needle = newName.substringToIndex(endIndex)
+        println("Time is = \(needle)")
+        
+        //newName.substringWithRange(Range(0, 19))
+        
+        var currentFileName: String = "slowlife-\(needle).jpg"
+        println("NewName = \(currentFileName)")
+        
+        let UIimg = UIImage(CGImage: image.CGImage, scale: 1.0, orientation: UIImageOrientation.Right)
+        
+        initial().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: UIimg!)
         
         save.variable.filterSuccess += 1
     }

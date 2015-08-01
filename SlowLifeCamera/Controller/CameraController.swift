@@ -24,6 +24,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     var delegate: updateLabel? = nil
     
     @IBOutlet weak var previewView: UIView!
+    @IBOutlet var captureView: UIView!
     
     var captureSession: AVCaptureSession?
     var stillImageOutput: AVCaptureStillImageOutput?
@@ -33,6 +34,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var numberLabel: UILabel!
+    @IBOutlet var shotButton: UIButton!
     @IBOutlet var topBar: UIView!
     @IBOutlet var foolbal: UIView!
     
@@ -100,6 +102,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     }
     
     func reloadCamera() {
+        self.numberLabel.text = String(save.variable.myNum)
         captureSession = AVCaptureSession()
         captureSession!.sessionPreset = AVCaptureSessionPresetPhoto
         
@@ -119,6 +122,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                 previewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.Portrait
                 previewView.layer.addSublayer(previewLayer)
                 
+                self.view.addSubview(self.captureView)
                 self.view.addSubview(self.topBar)
                 self.view.addSubview(self.foolbal)
                 
@@ -130,7 +134,14 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     }
     
     @IBAction func shotPress(sender: UIButton) {
-        if save.variable.myNum > 0 && save.variable.rowSlected == true{
+        if save.variable.myNum > 0 && save.variable.rowSlected == true {
+            
+            self.captureView.alpha = 1.0
+            self.previewView.alpha = 0.0
+            self.topBar.alpha = 0.0
+            self.foolbal.alpha = 0.0
+            self.shotButton.enabled = false
+
             if let videoConnection = stillImageOutput!.connectionWithMediaType(AVMediaTypeVideo) {
                 videoConnection.videoOrientation = AVCaptureVideoOrientation.Portrait
                 stillImageOutput!.captureStillImageAsynchronouslyFromConnection(videoConnection, completionHandler: {(sampleBuffer, error) in
@@ -140,11 +151,11 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                         var cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, kCGRenderingIntentDefault)
                         
                         var image = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: UIImageOrientation.Right)
+                        
                         if (image != nil) {
-                            self.previewLayer?.removeFromSuperlayer()
                             var format = NSDateFormatter()
-                            format.dateFormat="yyyy-MM-dd-HH-mm-ss"
-                            var currentFileName: String = "\(format.stringFromDate(NSDate())) + \(self.locationText).jpg"
+                            format.dateFormat="yyyy-MM-dd HH:mm:ss"
+                            var currentFileName: String = "\(format.stringFromDate(NSDate())),\(self.locationText).jpg"
                             println(currentFileName)
                             
                             let filmRow: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
@@ -154,15 +165,19 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                             
                             initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: image!)
                             
-                            
                             if save.variable.myNum > 0 {
                                 save.variable.myNum = save.variable.myNum - 1
                                 self.numberLabel.text = String(save.variable.myNum)
                             }
                             
-                            self.captureSession!.stopRunning()
-                            self.reloadCamera()
-                            self.delegate?.updateLabelCamera(String(save.variable.myNum))
+                            
+                            self.delay(0.1){
+                                self.captureView.alpha = 0.0
+                                self.previewView.alpha = 1.0
+                                self.topBar.alpha = 1.0
+                                self.foolbal.alpha = 1.0
+                                self.shotButton.enabled = true
+                            }
                         }
                     }
                 })
@@ -181,6 +196,12 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             
             self.presentViewController(alertController, animated: true, completion: nil)
         }
+    }
+    
+    func delay(delay:Double, closure:()->()) {
+        
+        dispatch_after(
+            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
     }
     
     @IBAction func flashEnable(sender: UIButton) {
@@ -239,7 +260,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     
     @IBAction func myBag(sender: UIButton) {
         if save.variable.myNum >= 0 && save.variable.myNum < 26 && save.variable.key != ""{
-            
+            self.delegate?.updateLabelCamera(String(save.variable.myNum))
             let path: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
             
             let slotName = path!.objectAtIndex(0) as! String
@@ -252,9 +273,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             numberLabel.text = ""
             
             self.userSetting?.setObject([slotName, filterCode, filterName, num, isOn], forKey: save.variable.key)
-            self.delegate?.updateLabelCamera(String(save.variable.myNum))
         }
-        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

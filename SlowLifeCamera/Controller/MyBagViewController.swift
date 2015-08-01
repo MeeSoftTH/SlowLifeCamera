@@ -72,7 +72,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     override func viewDidLoad() {
         super.viewDidLoad()
         self.topBar.backgroundColor = UIColor.brownColor()
-        self.navigationController?.navigationBarHidden = true
         self.myCoins.text = String(userSetting.integerForKey("myCoins"))
         updateControl()
         
@@ -232,8 +231,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
             num1.text = String(film1Text) + (" of 25")
             
             var filmImg1 = film1!.objectAtIndex(2) as! String
-            
-            println(filmImg1)
             
             self.film1b!.setImage(UIImage(named: filmImg1), forState: UIControlState.Normal)
             

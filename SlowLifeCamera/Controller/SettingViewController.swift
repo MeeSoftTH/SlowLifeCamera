@@ -19,11 +19,11 @@ class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //showCopy.setOn(userSetting.boolForKey("showCopyRight"), animated:true)
+        showCopy.setOn(userSetting.boolForKey("showCopyRight"), animated:true)
         
-        //showTime.setOn(userSetting.boolForKey("ShowTime"), animated:true)
+        showTime.setOn(userSetting.boolForKey("ShowTime"), animated:true)
         
-        //showLocation.setOn(userSetting.boolForKey("showLocation"), animated:true)
+        showLocation.setOn(userSetting.boolForKey("showLocation"), animated:true)
      
     }
     

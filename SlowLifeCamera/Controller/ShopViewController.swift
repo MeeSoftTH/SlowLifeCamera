@@ -163,7 +163,6 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 var filmCoins = datas[2] as! Int
                 
                 if intCoins >= filmCoins {
-                    
                     var poiter = "row\(index)"
                     var dataCheck: AnyObject? = self.userSetting.objectForKey(poiter)
                     var film = dataCheck!.objectAtIndex(4) as! Bool
@@ -191,7 +190,6 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         
                         self.presentViewController(alertController, animated: true, completion: nil)
                         
-                        return
                     }
                 }else {
                     let alertController = UIAlertController(title: "Not enough coins", message:
@@ -207,7 +205,6 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
-                return
             }
         }
     }
