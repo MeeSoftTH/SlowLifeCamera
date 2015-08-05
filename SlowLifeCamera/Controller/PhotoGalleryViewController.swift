@@ -29,8 +29,15 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         
         let count = fileList.count
         
+        println("Num = \(count)")
         if count > 0 {
-            self.filterImage = fileList
+            
+            for var i = fileList.count - 1; i > 0; i-- {
+                self.filterImage.append(fileList[i])
+                println("Gallery datas = \(self.filterImage)")
+            }
+            
+            
         }
     }
     
@@ -90,13 +97,13 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller:ViewPhoto = (segue.destinationViewController as? ViewPhoto)!
-            if let cell = sender as? UICollectionViewCell{
-                    if let indexPath: NSIndexPath = self.collectionView.indexPathForCell(cell){
-                        controller.index = indexPath.item
-                        controller.filterImage = self.filterImage
-                        controller.keySlot = self.keySlot
-                        controller.filterImage = self.filterImage
-                    }
+        if let cell = sender as? UICollectionViewCell{
+            if let indexPath: NSIndexPath = self.collectionView.indexPathForCell(cell){
+                controller.index = indexPath.item
+                controller.filterImage = self.filterImage
+                controller.keySlot = self.keySlot
+                controller.filterImage = self.filterImage
+            }
         }
     }
     override func didReceiveMemoryWarning() {

@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
         
-        let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+        let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
         
         if userSetting.boolForKey("isFirstUse") == false {
             initial().initial()

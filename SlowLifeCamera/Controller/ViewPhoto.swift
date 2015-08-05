@@ -77,7 +77,7 @@ class ViewPhoto: UIViewController {
         presentViewController(chooseDialog, animated: true, completion: nil)
     }
     
-    @IBAction func close(sender: UIButton) {
+    @IBAction func close(sender: UIBarButtonItem) {
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }

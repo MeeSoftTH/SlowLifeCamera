@@ -13,7 +13,7 @@ protocol disableUI {
 }
 
 class GetGift: UIViewController {
-    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     
     var delegate: disableUI? = nil
     
@@ -31,9 +31,13 @@ class GetGift: UIViewController {
     
     @IBAction func getgift(sender: UIButton) {
         
+        
+        let randomNumber = arc4random_uniform(100) + 20
+        var randomCoins = Int(randomNumber)
+        
         var intCoins: Int = userSetting.integerForKey("myCoins")
         
-        intCoins = intCoins + self.randomCoins
+        intCoins = intCoins + randomCoins
         
         userSetting.setInteger(intCoins, forKey: "myCoins")
         
@@ -44,7 +48,7 @@ class GetGift: UIViewController {
         userSetting.setObject(date, forKey: "lasttime")
         self.delegate?.disableGift(true)
         let alertController = UIAlertController(title: "Congratulations", message:
-            "Your got \(self.randomCoins) coins from Slow Lift Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
+            "Your got \(randomCoins) coins from Slow Lift Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
             self.navigationController!.popViewControllerAnimated(true)
         }))

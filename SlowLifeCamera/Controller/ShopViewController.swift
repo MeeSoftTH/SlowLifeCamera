@@ -20,7 +20,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     var update: updateFilm? = nil
     
-    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     
     @IBOutlet weak var myCoins: UILabel!
     
@@ -152,10 +152,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
             datas = ["#08", "filter8", 80]
         }
         
-        
-        
-        
-        for index in 1...9 {
+        for var index = 1; index < 9; index++ {
             
             if index <= 8 {
                 var intCoins: Int = self.userSetting.integerForKey("myCoins")
@@ -172,24 +169,29 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         
                         println("set slot name is = \(slotName)")
                         println("set to key is = \(poiter)")
+                        println("Index is = \(index)")
                         println(self.userSetting.objectForKey(poiter))
+                        index = 10
                         
                         intCoins = intCoins - filmCoins
                         
                         self.myCoins.text = String(intCoins)
                         
-                        userSetting.setInteger(intCoins, forKey: "myCoins")
+                        self.userSetting.setInteger(intCoins, forKey: "myCoins")
                         
-                        let currentMyCoins = String(userSetting.integerForKey("myCoins"))
+                        let currentMyCoins = String(self.userSetting.integerForKey("myCoins"))
                         
                         self.update?.updateFilmUIViewAndCoins(true, myCoins: currentMyCoins)
+
                         
                         let alertController = UIAlertController(title: "Successfuly", message:
                             "Add to your bag successful", preferredStyle: UIAlertControllerStyle.Alert)
-                        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
+                        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+                        }))
                         
                         self.presentViewController(alertController, animated: true, completion: nil)
                         
+                        return
                     }
                 }else {
                     let alertController = UIAlertController(title: "Not enough coins", message:
@@ -197,6 +199,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil ))
                     
                     self.presentViewController(alertController, animated: true, completion: nil)
+                    
                 }
             }else {
                 
@@ -205,6 +208,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
+                
             }
         }
     }

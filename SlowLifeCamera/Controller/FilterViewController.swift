@@ -12,7 +12,7 @@ protocol removeFilm {
     func removeAfterSuccess(isTrue: Bool, coinsUpdate: String)
 }
 
-let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
 
 class FilterViewController: UIViewController {
     
@@ -55,7 +55,7 @@ class FilterViewController: UIViewController {
             if !self.isCancel {
                 self.processFilter()
             }else{
-            println("Process is cancel")
+                println("Process is cancel")
             }
         }
     }
@@ -108,44 +108,44 @@ class FilterViewController: UIViewController {
                     
                     if keyFilter == "#01" {
                         ApplyFilterNO14(fileURL!, rename: fileList[i])
-                        filterName = "No.14"
-                        iconName = "filter1"
+                        filterName = save.variable.filter1
+                        iconName = save.variable.iconFilter1
                         
                     }else if keyFilter == "#02" {
                         ApplySepiaFilter(fileURL!, rename: fileList[i])
-                        filterName = "Sepia"
-                        iconName = "filter2"
+                        filterName = save.variable.filter2
+                        iconName = save.variable.iconFilter2
                         
                     }else if keyFilter == "#03" {
                         ApplyMonoFilter(fileURL!, rename: fileList[i])
-                        filterName = "Sepia"
-                        iconName = "filter3"
+                        filterName = save.variable.filter3
+                        iconName = save.variable.iconFilter3
                         
                     }else if keyFilter == "#04" {
                         ApplyFilterNO10(fileURL!, rename: fileList[i])
-                        filterName = "No.10"
-                        iconName = "filter4"
+                        filterName = save.variable.filter4
+                        iconName = save.variable.iconFilter4
                         
                         
                     }else if keyFilter == "#05" {
                         ApplyPolyFilter(fileURL!, rename: fileList[i])
-                        filterName = "Poly"
-                        iconName = "filter5"
+                        filterName = save.variable.filter5
+                        iconName = save.variable.iconFilter5
                         
                     }else if keyFilter == "#06" {
                         ApplyFilterNO9(fileURL!, rename: fileList[i])
-                        filterName = "No.9"
-                        iconName = "filter6"
+                        filterName = save.variable.filter6
+                        iconName = save.variable.iconFilter6
                         
                     }else if keyFilter == "#07" {
                         ApplyFilterNO7(fileURL!, rename: fileList[i])
-                        filterName = "No.7"
-                        iconName = "filter7"
+                        filterName = save.variable.filter7
+                        iconName = save.variable.iconFilter7
                         
                     }else if keyFilter == "#08" {
                         ApplyFilterNO13(fileURL!, rename: fileList[i])
-                        filterName = "No.13"
-                        iconName = "filter8"
+                        filterName = save.variable.filter8
+                        iconName = save.variable.iconFilter8
                         
                     }
                     
@@ -199,14 +199,9 @@ class FilterViewController: UIViewController {
             self.actionButton.setTitle("Close", forState: UIControlState.Normal)
             self.imageSet.image = UIImage(named: "success")
             
-            let alertController = UIAlertController(title: "Successful", message:
-                "Convert photos with filter successfuly!", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+            delay(1.0) {
                 self.dismissViewControllerAnimated(true, completion: nil)
-            }))
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-            
+            }
         }else {
             println("No photo")
         }

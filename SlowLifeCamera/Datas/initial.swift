@@ -10,7 +10,7 @@ import UIKit
 
 class initial {
     func initial() {
-        let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+        let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
         
         userSetting.setInteger(100, forKey: "myCoins")
         userSetting.setBool(true, forKey : "isFirstUse")

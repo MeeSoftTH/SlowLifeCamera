@@ -18,7 +18,7 @@ protocol updateLabel {
 
 class CameraController: UIViewController, CLLocationManagerDelegate  {
     
-    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     let locationManager = CLLocationManager()
     
     var delegate: updateLabel? = nil
@@ -152,6 +152,11 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                         
                         var image = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: UIImageOrientation.Right)
                         
+                        self.captureView.alpha = 0.0
+                        self.previewView.alpha = 1.0
+                        self.topBar.alpha = 1.0
+                        self.foolbal.alpha = 1.0
+                        
                         if (image != nil) {
                             var format = NSDateFormatter()
                             format.dateFormat="yyyy-MM-dd HH:mm:ss"
@@ -164,11 +169,6 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                             var filmDir = filmRow!.objectAtIndex(0) as! String
                             
                             initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: image!)
-                            
-                            self.captureView.alpha = 0.0
-                            self.previewView.alpha = 1.0
-                            self.topBar.alpha = 1.0
-                            self.foolbal.alpha = 1.0
                             
                             if save.variable.myNum >= 0 {
                                 self.numberLabel.text = String(save.variable.myNum)

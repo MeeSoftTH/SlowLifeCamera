@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import AVFoundation
 
 protocol updateCoins {
     func updateCoinsGift(myCoins: String)
 }
 
-class GiftViewController: UIViewController, UnityAdsDelegate, disableUI {
+class GiftViewController: UIViewController, AVAudioPlayerDelegate, UnityAdsDelegate {
     
     @IBOutlet weak var slowGift: UIButton!
     @IBOutlet weak var redGift: UIView!
@@ -22,12 +23,15 @@ class GiftViewController: UIViewController, UnityAdsDelegate, disableUI {
     @IBOutlet var actInd: UIActivityIndicatorView!
     @IBOutlet var giftStatueNot: UILabel!
     
-    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     
     var uiClick: UIButton!
     var timer: NSTimer!
     var stateAds = NSDate()
     var stateGift = NSDate()
+    var numberTime: Int = 0
+    
+    var soundPlayer:AVAudioPlayer!
     
     var delegate: updateCoins? = nil
     
@@ -74,31 +78,25 @@ class GiftViewController: UIViewController, UnityAdsDelegate, disableUI {
             
             let interval = date2.timeIntervalSinceDate(date1)
             
-            
             if interval > 300 {
-                delay(3.0) {
-                    self.updateScreen()
-                }
-            }else{
-                actInd.hidden = true
-                giftStatueNot.hidden = false
+                timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateScreen"), userInfo: nil, repeats: true)
+            }
+            else{
+                self.actInd.hidden = true
+                self.giftStatueNot.hidden = false
             }
             
-            println("ads time compareResult = \(compareResult)")
             println("ads time interval = \(interval)")
             
             println("ads time compare = \(date1)")
             println("ads time check = \(date2)")
             
         }else {
-            delay(3.0) {
-                self.updateScreen()
-            }
+            timer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateScreen"), userInfo: nil, repeats: true)
         }
     }
     
     func updateScreen() {
-        
         UnityAds.sharedInstance().setViewController(self)
         UnityAds.sharedInstance().setZone("rewardedVideoZone")
         
@@ -108,9 +106,22 @@ class GiftViewController: UIViewController, UnityAdsDelegate, disableUI {
             redGift.hidden = false
             blueGift.hidden = false
             greenGift.hidden = false
+            
+            self.timer.invalidate()
+            self.timer = nil
+            
+            println("Stop Timer")
+            
         }else {
-            actInd.hidden = true
-            giftStatueNot.hidden = false
+            if self.numberTime > 10 {
+                self.timer.invalidate()
+                self.timer = nil
+                actInd.hidden = true
+                giftStatueNot.hidden = false
+                self.numberTime = 0
+                println("Stop Timer")
+            }
+            self.numberTime++
         }
     }
     
@@ -119,29 +130,60 @@ class GiftViewController: UIViewController, UnityAdsDelegate, disableUI {
         println("skip \(skipped)")
         if !skipped {
             
-            var intCoins: Int = userSetting.integerForKey("myCoins")
-            
-            intCoins = intCoins + 20
-            
-            userSetting.setInteger(intCoins, forKey: "myCoins")
-            
-            userSetting.setObject(self.stateAds, forKey: "adsTime")
-            
-            self.redGift.hidden = true
-            self.blueGift.hidden = true
-            self.greenGift.hidden = true
-            
-            self.giftStatueNot.text = "Congratulations, Your got 20 coins from Gift, you current coins is \(intCoins)"
-            self.delegate!.updateCoinsGift(String(userSetting.integerForKey("myCoins")))
-            self.giftStatueNot.hidden = false
+            delay(3.0) {
+                self.audioPlayer()
+                var intCoins: Int = self.userSetting.integerForKey("myCoins")
+                let alertController = UIAlertController(title: "Congratulations", message:
+                    "Your got 20 coins from Slow Lift Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+                    
+                    //self.giftStatueNot.text = "Congratulations, Your got 20 coins from Gift, you current coins is \(intCoins)"
+                    
+                    self.giftStatueNot.hidden = false
+                    
+                    intCoins = intCoins + 20
+                    self.userSetting.setInteger(intCoins, forKey: "myCoins")
+                    
+                    self.userSetting.setObject(self.stateAds, forKey: "adsTime")
+                    self.delegate!.updateCoinsGift(String(self.userSetting.integerForKey("myCoins")))
+                    self.redGift.hidden = true
+                    self.blueGift.hidden = true
+                    self.greenGift.hidden = true
+                }))
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     
     @IBAction func slowLiftButton(sender: UIButton) {
-        let slowGift = self.storyboard!.instantiateViewControllerWithIdentifier("getGift") as! GetGift
-        slowGift.delegate = self
         
-        self.navigationController?.pushViewController(slowGift, animated: true)
+        let randomNumber = arc4random_uniform(100) + 20
+        var randomCoins = Int(randomNumber)
+        
+        var intCoins: Int = userSetting.integerForKey("myCoins")
+        
+        intCoins = intCoins + randomCoins
+        
+        userSetting.setInteger(intCoins, forKey: "myCoins")
+        
+        
+        var dateFormatter = NSDateFormatter()
+        let date = NSDate()
+        
+        userSetting.setObject(date, forKey: "lasttime")
+        
+        self.audioPlayer()
+        
+        let alertController = UIAlertController(title: "Congratulations", message:
+            "Your got \(randomCoins) coins from Slow Lift Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+            
+            self.slowGift.enabled = false
+            var coins = String(self.userSetting.integerForKey("myCoins"))
+            self.delegate!.updateCoinsGift(coins)
+            
+        }))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     @IBAction func ads1(sender: UIButton) {
@@ -187,11 +229,25 @@ class GiftViewController: UIViewController, UnityAdsDelegate, disableUI {
         self.presentViewController(refreshAlert, animated: true, completion: nil)
     }
     
-    func disableGift(isTrue: Bool) {
-        if isTrue == true {
-            self.slowGift.enabled = false
-            var coins = String(userSetting.integerForKey("myCoins"))
-            self.delegate!.updateCoinsGift(coins)
+    func audioPlayer() {
+        var error: NSError?
+        
+        let resourcePath = NSBundle.mainBundle().URLForResource("effect", withExtension: "WAV")!
+        
+        soundPlayer = AVAudioPlayer(contentsOfURL: resourcePath, error: nil)
+        
+        if let err = error {
+            println("AVAudioPlayer error: \(err.localizedDescription)")
+        } else {
+            println("AVAudioPlayer Play: \(resourcePath)")
+            soundPlayer.stop()
+            soundPlayer.delegate = self
+            soundPlayer.volume = 1.0
+            soundPlayer.prepareToPlay()
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            soundPlayer.play()
+            
         }
     }
+    
 }

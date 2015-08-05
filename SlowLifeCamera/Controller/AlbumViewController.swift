@@ -10,6 +10,7 @@ import UIKit
 
 class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet var myTable: UITableView!
+    @IBOutlet var noLabel: UILabel!
     
     var slot1: String = ""
     var slot2: String = ""
@@ -22,9 +23,8 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
     var slot8: String = ""
     
     var rowIndex: Int = 0
-    
-    
-    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+
+    let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     var arryOfAlbumDatas:[AlbumDatas] = [AlbumDatas]()
     
     
@@ -34,8 +34,6 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         self.setUpAlbumRow()
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -60,6 +58,7 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         if count > 0 {
             releaseMemory()
+            
             for var i:Int = 0; i < count; i++
             {
                 if fileManager.fileExistsAtPath(fileList[i]) != true
@@ -101,11 +100,13 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
                     arryOfAlbumDatas.append(row)
                     }
                 }
-                
-                
             }
+            self.myTable.hidden = false
+            self.noLabel.hidden = true
         }else {
             println("No file in directory")
+            self.myTable.hidden = true
+            self.noLabel.hidden = false
         }
     }
     

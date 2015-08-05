@@ -10,7 +10,7 @@ import UIKit
 
 class SettingViewController: UIViewController {
     
-    let userSetting: NSUserDefaults! = NSUserDefaults(suiteName: "group.brainexecise")
+    let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     
     @IBOutlet weak var showCopy: UISwitch!
     @IBOutlet weak var showTime: UISwitch!
