@@ -23,7 +23,7 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
     var slot8: String = ""
     
     var rowIndex: Int = 0
-
+    
     let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     var arryOfAlbumDatas:[AlbumDatas] = [AlbumDatas]()
     
@@ -76,28 +76,28 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
                     
                     
                     if folder != "" &&  filter != "" && icon != "" && number != ""{
-                     println("File is \(userSetting?.objectForKey(key))")
-                    
-                    if i == 0 {
-                        slot1 = key
-                    }else if i == 1 {
-                        slot2 = key
-                    }else if i == 2 {
-                        slot3 = key
-                    }else if i == 3 {
-                        slot4 = key
-                    }else if i == 4 {
-                        slot5 = key
-                    }else if i == 5 {
-                        slot6 = key
-                    }else if i == 6 {
-                        slot7 = key
-                    }else if i == 7 {
-                        slot8 = key
-                    }
-                    
-                    var row = AlbumDatas(name: folder, filterName: filter, iconName: icon, number: number)
-                    arryOfAlbumDatas.append(row)
+                        println("File is \(userSetting?.objectForKey(key))")
+                        
+                        if i == 0 {
+                            slot1 = key
+                        }else if i == 1 {
+                            slot2 = key
+                        }else if i == 2 {
+                            slot3 = key
+                        }else if i == 3 {
+                            slot4 = key
+                        }else if i == 4 {
+                            slot5 = key
+                        }else if i == 5 {
+                            slot6 = key
+                        }else if i == 6 {
+                            slot7 = key
+                        }else if i == 7 {
+                            slot8 = key
+                        }
+                        
+                        var row = AlbumDatas(name: folder, filterName: filter, iconName: icon, number: number)
+                        arryOfAlbumDatas.append(row)
                     }
                 }
             }
@@ -164,9 +164,48 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
             newVC.keySlot = self.slot8
         }
         
-         println("Call this = \( newVC.keySlot)")
-    
+        println("Call this = \( newVC.keySlot)")
+        
     }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            
+            arryOfAlbumDatas.removeAtIndex(indexPath.row)
+        
+            println("indexPath.row = \(indexPath.row)")
+            
+                    var fileList = listFilesFromDocumentsFolder()
+                    println("Dir is = \(fileList[indexPath.row])")
+                    self.removeDir(fileList[indexPath.row])
+            
+            self.myTable.reloadData()
+        }
+    }
+    
+    func removeDir(fileName: String) {
+        
+        println("File name = \(fileName)")
+        
+        let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        
+        let documentsDirectory: AnyObject = dir[0]
+        
+        var path = documentsDirectory.stringByAppendingPathComponent("CompletedData/\(fileName)")
+        println("current path = \(path)")
+        
+        let filemgr = NSFileManager.defaultManager()
+        var error: NSError?
+        
+        if filemgr.removeItemAtPath(path, error: &error) {
+            println("\(path) = dir Remove successful")
+        } else {
+            println("Remove failed: \(error!.localizedDescription)")
+        }
+        return
+    }
+    
     
     func releaseMemory() {
         var counter = 0

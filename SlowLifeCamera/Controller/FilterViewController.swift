@@ -27,6 +27,7 @@ class FilterViewController: UIViewController {
     var subDir2:String = ""
     var keyFilter: String = ""
     var isCancel: Bool = false
+    var isCreated: Bool = false
     
     
     let showCopy = userSetting.boolForKey("showCopyRight")
@@ -39,13 +40,7 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        releaseMemory()
-        var currentTime = NSDate()
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "ddMMyy-H:mm" // superset of OP's format
-        let str = dateFormatter.stringFromDate(currentTime)
         
-        self.subDir2 = str
         let datas: AnyObject? = userSetting?.objectForKey(save.variable.key)
         self.subDir = datas!.objectAtIndex(0) as! String
         self.keyFilter = datas!.objectAtIndex(1) as! String
@@ -95,14 +90,14 @@ class FilterViewController: UIViewController {
             
             for var i:Int = 0; i < count; i++
             {
-                releaseMemory()
+                
                 if fileManager.fileExistsAtPath(fileList[i]) != true
                 {
                     println("File is \(fileList[i])")
                     
+                    releaseMemory()
+                    
                     var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(fileList[i])")
-                    
-                    
                     
                     var fileURL = NSURL(fileURLWithPath: getImagePath)
                     
@@ -150,12 +145,10 @@ class FilterViewController: UIViewController {
                     }
                     
                     removeFile(fileList[i])
-                    releaseMemory()
                 }
             }
             
             println("Set to key = \(self.subDir2)")
-            println("New datas \(userSetting.objectForKey(self.subDir2))")
             
             let removeDir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
             
@@ -662,7 +655,23 @@ class FilterViewController: UIViewController {
     }
     
     func moveFile(image: UIImage, newName: String) {
-        initial().createSubDirectory("CompletedData", subDir: self.subDir2)
+        
+        if isCreated == false {
+            releaseMemory()
+            var currentTime = NSDate()
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "ddMMyy-H:mm" // superset of OP's format
+            let str = dateFormatter.stringFromDate(currentTime)
+
+        let newKey =  initial().createSubDirectory("CompletedData", subDir: str)
+            isCreated = true
+            
+            self.subDir2 = newKey
+            
+            println("New path = \(newKey)")
+        }
+        
+        
         
         let endIndex = advance(newName.startIndex, 19)
         let needle = newName.substringToIndex(endIndex)
@@ -677,15 +686,17 @@ class FilterViewController: UIViewController {
         
         initial().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: UIimg!)
         
+        
         save.variable.filterSuccess += 1
     }
     
     func releaseMemory() {
-        var counter = 0
+      var counter = 0
+        println("release memory")
         for i in 0..<10 {
             autoreleasepool {
                 if i == 5 {
-                    return
+                   return
                 }
                 counter++
             }

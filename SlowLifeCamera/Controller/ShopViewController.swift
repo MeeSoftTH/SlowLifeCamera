@@ -43,6 +43,16 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         myCoins.text = myStringCoins
         
+        let myNum = count(myStringCoins)
+        
+        if myNum <= 3 {
+            self.myCoins.frame.size.width = 40
+        }else  if myNum > 3 && myNum < 5{
+            self.myCoins.frame.size.width = 58
+        }else if myNum >= 5 {
+            self.myCoins.frame.size.width = 73
+        }
+        
         self.setUpShopDatas()
         preloadPurchase(get150)
         preloadPurchase(get320)
@@ -176,6 +186,21 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         intCoins = intCoins - filmCoins
                         
                         self.myCoins.text = String(intCoins)
+                        
+                        var myStringCoins = String(intCoins)
+                        
+                        myCoins.text = myStringCoins
+                        
+                        let myNum = count(myStringCoins)
+                        
+                        if myNum <= 3 {
+                            self.myCoins.frame.size.width = 40
+                        }else  if myNum > 3 && myNum < 5{
+                            self.myCoins.frame.size.width = 58
+                        }else if myNum >= 5 {
+                            self.myCoins.frame.size.width = 73
+                        }
+
                         
                         self.userSetting.setInteger(intCoins, forKey: "myCoins")
                         
@@ -384,6 +409,21 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     }
                     
                     self.myCoins.text = String(intCoins)
+                    
+                    var myStringCoins = String(intCoins)
+                    
+                    myCoins.text = myStringCoins
+                    
+                    let myNum = count(myStringCoins)
+                    
+                    if myNum <= 3 {
+                        self.myCoins.frame.size.width = 40
+                    }else  if myNum > 3 && myNum < 5{
+                        self.myCoins.frame.size.width = 58
+                    }else if myNum >= 5 {
+                        self.myCoins.frame.size.width = 73
+                    }
+
                     
                     self.userSetting.setInteger(intCoins, forKey: "myCoins")
                     

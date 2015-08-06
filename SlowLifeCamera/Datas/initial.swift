@@ -59,7 +59,7 @@ class initial {
         }
     }
     
-    func createSubDirectory(dir: String, subDir: String) {
+    func createSubDirectory(dir: String, subDir: String) -> String{
         var error: NSError?
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         
@@ -67,11 +67,24 @@ class initial {
         
         var dirPath = documentsDirectory.stringByAppendingPathComponent("\(dir)/\(subDir)" )
         
+        var key = subDir
+        
         if (!NSFileManager.defaultManager().fileExistsAtPath(dirPath)) {
             NSFileManager.defaultManager() .createDirectoryAtPath(dirPath, withIntermediateDirectories: false, attributes: nil, error: &error)
+        }else {
+            var n = 1
+            while n > 0 {
+                
+                dirPath = "\(dirPath)(\(n))"
+                key = "\(subDir)(\(n))"
+                
+                NSFileManager.defaultManager() .createDirectoryAtPath(dirPath, withIntermediateDirectories: false, attributes: nil, error: &error)
+                n = 0
+            }
         }
         
-        println("Path = \(dirPath)")
+        println("Path = \(key)")
+        return key
     }
     
     func createSubAndFileDirectory(dir: String, subDir: String, file: String, image: UIImage) {

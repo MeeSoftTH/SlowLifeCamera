@@ -71,8 +71,23 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.myCoins.text = String(userSetting.integerForKey("myCoins"))
+        
+        let myNum = count(String(userSetting.integerForKey("myCoins")))
+        
+        if myNum <= 3 {
+         self.myCoins.frame.size.width = 40
+        }else  if myNum > 3 && myNum < 5{
+            self.myCoins.frame.size.width = 58
+        }else if myNum >= 5 {
+            self.myCoins.frame.size.width = 73
+        }
+        
+        println("\(self.myCoins.frame.size.width)")
+        
         updateControl()
+        defineButton()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -113,71 +128,202 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         }
     }
     
-    @IBAction func slot1(sender: AnyObject) {
+    func tap1() {
         let film: AnyObject? = userSetting?.objectForKey(slotName1)
         save.variable.key = slotName1
         save.variable.filmIndex = 1
         self.isSelect(buttonView1)
-        if sender.state == UIGestureRecognizerState.Began{
-            choicesDialog(film!)
-        }
+        useFilm(film!)
+        println("Tap happend")
     }
     
-    @IBAction func slot2(sender: UIButton) {
+    func longTap1() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName1)
+        save.variable.key = slotName1
+        save.variable.filmIndex = 1
+        self.isSelect(buttonView1)
+        choicesDialog(film!)
+        println("Long press")
+    }
+    
+    func tap2() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName2)
+        save.variable.key = slotName2
+        save.variable.filmIndex = 2
+        self.isSelect(buttonView2)
+        useFilm(film!)
+        println("Tap happend")
+    }
+    
+    func longTap2() {
         let film: AnyObject? = userSetting?.objectForKey(slotName2)
         save.variable.key = slotName2
         save.variable.filmIndex = 2
         self.isSelect(buttonView2)
         choicesDialog(film!)
+        println("Long press")
     }
     
-    @IBAction func slot3(sender: UIButton) {
+    func tap3() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName3)
+        save.variable.key = slotName3
+        save.variable.filmIndex = 3
+        self.isSelect(buttonView3)
+        useFilm(film!)
+        println("Tap happend")
+    }
+    
+    func longTap3() {
         let film: AnyObject? = userSetting?.objectForKey(slotName3)
         save.variable.key = slotName3
         save.variable.filmIndex = 3
         self.isSelect(buttonView3)
         choicesDialog(film!)
+        println("Long press")
     }
     
-    @IBAction func slot4(sender: UIButton) {
+    func tap4() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName4)
+        save.variable.key = slotName4
+        save.variable.filmIndex = 4
+        self.isSelect(buttonView4)
+        useFilm(film!)
+        println("Tap happend")
+    }
+    
+    func longTap4() {
         let film: AnyObject? = userSetting?.objectForKey(slotName4)
         save.variable.key = slotName4
         save.variable.filmIndex = 4
         self.isSelect(buttonView4)
         choicesDialog(film!)
+        println("Long press")
     }
     
+    func tap5() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName5)
+        save.variable.key = slotName5
+        save.variable.filmIndex = 5
+        self.isSelect(buttonView5)
+        useFilm(film!)
+        println("Tap happend")
+    }
     
-    @IBAction func slot5(sender: UIButton) {
+    func longTap5() {
         let film: AnyObject? = userSetting?.objectForKey(slotName5)
         save.variable.key = slotName5
         save.variable.filmIndex = 5
         self.isSelect(buttonView5)
         choicesDialog(film!)
+        println("Long press")
     }
     
-    @IBAction func slot6(sender: UIButton) {
+    func tap6() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName6)
+        save.variable.key = slotName6
+        save.variable.filmIndex = 6
+        self.isSelect(buttonView6)
+        useFilm(film!)
+        println("Tap happend")
+    }
+    
+    func longTap6() {
         let film: AnyObject? = userSetting?.objectForKey(slotName6)
         save.variable.key = slotName6
         save.variable.filmIndex = 6
         self.isSelect(buttonView6)
         choicesDialog(film!)
+        println("Long press")
     }
     
-    @IBAction func slot7(sender: UIButton) {
+    func tap7() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName7)
+        save.variable.key = slotName7
+        save.variable.filmIndex = 7
+        self.isSelect(buttonView7)
+        useFilm(film!)
+        println("Tap happend")
+    }
+    
+    func longTap7() {
         let film: AnyObject? = userSetting?.objectForKey(slotName7)
         save.variable.key = slotName7
         save.variable.filmIndex = 7
         self.isSelect(buttonView7)
         choicesDialog(film!)
+        println("Long press")
     }
     
-    @IBAction func slot8(sender: UIButton) {
+    func tap8() {
+        let film: AnyObject? = userSetting?.objectForKey(slotName8)
+        save.variable.key = slotName8
+        save.variable.filmIndex = 8
+        self.isSelect(buttonView8)
+        useFilm(film!)
+        println("Tap happend")
+    }
+    
+    func longTap8() {
         let film: AnyObject? = userSetting?.objectForKey(slotName8)
         save.variable.key = slotName8
         save.variable.filmIndex = 8
         self.isSelect(buttonView8)
         choicesDialog(film!)
+        println("Long press")
+    }
+    
+    
+    func defineButton() {
+        
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: "tap1")
+        let longGesture1 = UILongPressGestureRecognizer(target: self, action: "longTap1")
+        tapGesture1.numberOfTapsRequired = 1
+        film1b.addGestureRecognizer(tapGesture1)
+        film1b.addGestureRecognizer(longGesture1)
+        
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: "tap2")
+        let longGesture2 = UILongPressGestureRecognizer(target: self, action: "longTap2")
+        tapGesture2.numberOfTapsRequired = 1
+        film2b.addGestureRecognizer(tapGesture2)
+        film2b.addGestureRecognizer(longGesture2)
+        
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: "tap3")
+        let longGesture3 = UILongPressGestureRecognizer(target: self, action: "longTap3")
+        tapGesture3.numberOfTapsRequired = 1
+        film3b.addGestureRecognizer(tapGesture3)
+        film3b.addGestureRecognizer(longGesture3)
+        
+        let tapGesture4 = UITapGestureRecognizer(target: self, action: "tap4")
+        let longGesture4 = UILongPressGestureRecognizer(target: self, action: "longTap4")
+        tapGesture4.numberOfTapsRequired = 1
+        film4b.addGestureRecognizer(tapGesture4)
+        film4b.addGestureRecognizer(longGesture4)
+        
+        
+        let tapGesture5 = UITapGestureRecognizer(target: self, action: "tap5")
+        let longGesture5 = UILongPressGestureRecognizer(target: self, action: "longTap5")
+        tapGesture5.numberOfTapsRequired = 1
+        film5b.addGestureRecognizer(tapGesture5)
+        film5b.addGestureRecognizer(longGesture5)
+        
+        let tapGesture6 = UITapGestureRecognizer(target: self, action: "tap6")
+        let longGesture6 = UILongPressGestureRecognizer(target: self, action: "longTap6")
+        tapGesture6.numberOfTapsRequired = 1
+        film6b.addGestureRecognizer(tapGesture6)
+        film6b.addGestureRecognizer(longGesture6)
+        
+        let tapGesture7 = UITapGestureRecognizer(target: self, action: "tap7")
+        let longGesture7 = UILongPressGestureRecognizer(target: self, action: "longTap7")
+        tapGesture7.numberOfTapsRequired = 1
+        film7b.addGestureRecognizer(tapGesture7)
+        film7b.addGestureRecognizer(longGesture7)
+        
+        let tapGesture8 = UITapGestureRecognizer(target: self, action: "tap8")
+        let longGesture8 = UILongPressGestureRecognizer(target: self, action: "longTap8")
+        tapGesture8.numberOfTapsRequired = 1
+        film8b.addGestureRecognizer(tapGesture8)
+        film8b.addGestureRecognizer(longGesture8)
+
     }
     
     func isSelect(view: UIView) {
@@ -334,6 +480,82 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     }
     
     
+    func useFilm(filmRow:AnyObject?){
+        
+        let keyFilterName = filmRow!.objectAtIndex(1) as! String
+        
+        var nameText: String = ""
+        
+        if keyFilterName == "#01" {
+            nameText = save.variable.filter1
+            
+        }else if keyFilterName == "#02" {
+            nameText = save.variable.filter2
+            
+        }else if keyFilterName == "#03" {
+            nameText = save.variable.filter3
+            
+        }else if keyFilterName == "#04" {
+            nameText = save.variable.filter4
+            
+        }else if keyFilterName == "#05" {
+            nameText = save.variable.filter5
+            
+        }else if keyFilterName == "#06" {
+            nameText = save.variable.filter6
+            
+        }else if keyFilterName == "#07" {
+            nameText = save.variable.filter7
+            
+        }else if keyFilterName == "#08" {
+            nameText = save.variable.filter8
+            
+        }
+
+        
+        if filmRow != nil {
+            var filmNum = filmRow!.objectAtIndex(3) as! Int
+            
+            if filmNum > 0 {
+            save.variable.myNum = filmNum
+            save.variable.rowSlected = true
+            var slotName = filmRow!.objectAtIndex(0) as! String
+            
+            initial().createSubDirectory("RawData", subDir: slotName)
+            
+            var refreshAlert = UIAlertController(title: "Camera", message: "Open camera now?", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            refreshAlert.addAction(UIAlertAction(title: "Open", style: .Default, handler: { (action: UIAlertAction!) in
+                let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
+                cameraView.delegate = self
+                self.presentViewController(cameraView, animated: true, completion: nil)
+            }))
+            
+            refreshAlert.addAction(UIAlertAction(title: "Nothing", style: .Default, handler: { (action: UIAlertAction!) in
+                println("Handle Cancel Logic here")
+            }))
+            
+            self.presentViewController(refreshAlert, animated: true, completion: nil)
+                
+            }else if filmNum == 0 {
+            
+                var refreshAlert = UIAlertController(title: "Process", message: "Process this \(nameText) film", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                refreshAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+                    let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
+                    filterView.delegate = self
+                    self.presentViewController(filterView, animated: true, completion: nil)
+                }))
+                
+                refreshAlert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
+                    println("Handle Cancel Logic here")
+                }))
+                
+                self.presentViewController(refreshAlert, animated: true, completion: nil)
+            }
+        }
+    }
+    
     func choicesDialog(filmRow:AnyObject?){
         
         let number = filmRow!.objectAtIndex(3) as! Int
@@ -372,9 +594,9 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         )
         
         if number < 25 {
-            chooseDialog.addAction(UIAlertAction(title: "Conver to photos", style: .Default, handler: { (action: UIAlertAction!) in
+            chooseDialog.addAction(UIAlertAction(title: "Process this \(nameText) film?", style: .Default, handler: { (action: UIAlertAction!) in
                 
-                var refreshAlert = UIAlertController(title: "Converter", message: "Do you want convert photo with filter?", preferredStyle: UIAlertControllerStyle.Alert)
+                var refreshAlert = UIAlertController(title: "Process", message: "Process this \(nameText) film", preferredStyle: UIAlertControllerStyle.Alert)
                 
                 refreshAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
                     let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
@@ -391,23 +613,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
             }))
         }
         
-        if number > 0 {
-            chooseDialog.addAction(UIAlertAction(title: "Use this film", style: .Default, handler: { (action: UIAlertAction!) in
-                if filmRow != nil {
-                    var filmNum = filmRow!.objectAtIndex(3) as! Int
-                    save.variable.myNum = filmNum
-                    save.variable.rowSlected = true
-                    var slotName = filmRow!.objectAtIndex(0) as! String
-                    
-                    initial().createSubDirectory("RawData", subDir: slotName)
-                    
-                    let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
-                    cameraView.delegate = self
-                    self.presentViewController(cameraView, animated: true, completion: nil)
-                }
-            }))
-        }
-        
         chooseDialog.addAction(UIAlertAction(title: "Delete this film", style: .Default, handler: { (action: UIAlertAction!) in
             
             var alert = UIAlertController(title: "Delete film", message: "Do you want delete this film?", preferredStyle: UIAlertControllerStyle.Alert)
@@ -419,6 +624,18 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
                     self.userSetting.setObject(["", "", "", 25, false], forKey: save.variable.key)
                     
                     self.updateControl()
+                    
+                    save.variable.filmIndex = 0
+                    self.buttonView1.backgroundColor = UIColor.clearColor()
+                    self.buttonView2.backgroundColor = UIColor.clearColor()
+                    self.buttonView3.backgroundColor = UIColor.clearColor()
+                    self.buttonView4.backgroundColor = UIColor.clearColor()
+                    
+                    self.buttonView5.backgroundColor = UIColor.clearColor()
+                    self.buttonView6.backgroundColor = UIColor.clearColor()
+                    self.buttonView7.backgroundColor = UIColor.clearColor()
+                    self.buttonView8.backgroundColor = UIColor.clearColor()
+
                 }}))
             
             alert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
@@ -451,6 +668,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
             self.buttonView6.backgroundColor = UIColor.clearColor()
             self.buttonView7.backgroundColor = UIColor.clearColor()
             self.buttonView8.backgroundColor = UIColor.clearColor()
+            save.variable.rowSlected = false
         }))
         presentViewController(chooseDialog, animated: true, completion: nil)
     }
@@ -484,6 +702,16 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func updateCoinsGift(myCoins: String) {
         self.myCoins.text = myCoins
+        
+        let myNum = count(String(userSetting.integerForKey("myCoins")))
+        
+        if myNum <= 3 {
+            self.myCoins.frame.size.width = 40
+        }else  if myNum > 3 && myNum < 5{
+            self.myCoins.frame.size.width = 58
+        }else if myNum >= 5 {
+            self.myCoins.frame.size.width = 73
+        }
     }
     
     func updateLabelCamera(text: String) {

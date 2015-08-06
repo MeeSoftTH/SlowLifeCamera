@@ -46,15 +46,18 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
+
+        super.viewDidLoad()
         
         if save.variable.rowSlected == true {
             numberLabel.text = String(save.variable.myNum)
         }
+        releaseMemory()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -170,10 +173,12 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                             
                             initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: image!)
                             
+                            
                             if save.variable.myNum >= 0 {
                                 self.numberLabel.text = String(save.variable.myNum)
                             }
                             
+                            self.releaseMemory()
                             self.shotButton.enabled = true
                         }
                     }
@@ -225,6 +230,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             }
         }
         captureSession!.stopRunning()
+        releaseMemory()
         previewLayer?.removeFromSuperlayer()
         if(cameratype == true) {
             let devices = AVCaptureDevice.devices()
@@ -256,6 +262,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     }
     
     @IBAction func myBag(sender: UIButton) {
+        releaseMemory()
         if save.variable.myNum >= 0 && save.variable.myNum < 26 && save.variable.key != ""{
             self.delegate?.updateLabelCamera(String(save.variable.myNum))
             let path: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
@@ -283,4 +290,17 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             }
         }
     }
+    
+    func releaseMemory() {
+        var counter = 0
+        for i in 0..<10 {
+            autoreleasepool {
+                if i == 5 {
+                    return
+                }
+                counter++
+            }
+        }
+    }
+
 }

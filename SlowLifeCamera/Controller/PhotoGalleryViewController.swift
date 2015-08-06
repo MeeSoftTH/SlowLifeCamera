@@ -32,7 +32,7 @@ class PhotoGalleryViewController: UIViewController, UICollectionViewDelegate, UI
         println("Num = \(count)")
         if count > 0 {
             
-            for var i = fileList.count - 1; i > 0; i-- {
+            for var i = fileList.count - 1; i > -1; i-- {
                 self.filterImage.append(fileList[i])
                 println("Gallery datas = \(self.filterImage)")
             }
