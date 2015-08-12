@@ -16,12 +16,17 @@ protocol updateLabel {
     func updateLabelCamera(text: String)
 }
 
+protocol developFilm {
+    func developNewFilm()
+}
+
 class CameraController: UIViewController, CLLocationManagerDelegate  {
     
     let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     let locationManager = CLLocationManager()
     
     var delegate: updateLabel? = nil
+    var filmDevelop: developFilm? = nil
     
     @IBOutlet weak var previewView: UIView!
     @IBOutlet var captureView: UIView!
@@ -46,24 +51,25 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if DataSetting.variable.rowSlected == true {
+            numberLabel.text = "Service's starting..."
+        }
+        
+        self.shotButton.enabled = false
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-
-        super.viewDidLoad()
         
-        if save.variable.rowSlected == true {
-            numberLabel.text = String(save.variable.myNum)
-        }
         releaseMemory()
     }
     
     override func viewWillAppear(animated: Bool) {
         captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         reloadCamera()
-        
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -91,21 +97,32 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
         if let containsPlacemark = placemark {
             //stop updating location to save battery life
             locationManager.stopUpdatingLocation()
-            let locality = (containsPlacemark.locality != nil) ? containsPlacemark.locality : ""
             let administrativeArea = (containsPlacemark.administrativeArea != nil) ? containsPlacemark.administrativeArea : ""
             let country = (containsPlacemark.country != nil) ? containsPlacemark.country : ""
             
-            self.locationText = ("\(locality), \(administrativeArea), \(country)")
+            self.locationText = ("\(administrativeArea),\(country)")
+            
+            println("Location on, Ready to take photos")
+            
+            if DataSetting.variable.rowSlected == true {
+                
+                numberLabel.text = "Service's ready!"
+                self.shotButton.enabled = true
+                
+                delay(2.0) {
+                    self.numberLabel.text = String(DataSetting.variable.myNum)
+                    
+                }
+            }
         }
-        
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         println("Error while updating location " + error.localizedDescription)
     }
     
+    
     func reloadCamera() {
-        self.numberLabel.text = String(save.variable.myNum)
         captureSession = AVCaptureSession()
         captureSession!.sessionPreset = AVCaptureSessionPresetPhoto
         
@@ -137,12 +154,10 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     }
     
     @IBAction func shotPress(sender: UIButton) {
-        if save.variable.myNum > 0 && save.variable.rowSlected == true {
+        if DataSetting.variable.myNum > 0 && DataSetting.variable.rowSlected == true {
             
             self.captureView.alpha = 1.0
             self.previewView.alpha = 0.0
-            self.topBar.alpha = 0.0
-            self.foolbal.alpha = 0.0
             self.shotButton.enabled = false
             
             if let videoConnection = stillImageOutput!.connectionWithMediaType(AVMediaTypeVideo) {
@@ -155,43 +170,68 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                         
                         var image = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: UIImageOrientation.Right)
                         
-                        self.captureView.alpha = 0.0
-                        self.previewView.alpha = 1.0
-                        self.topBar.alpha = 1.0
-                        self.foolbal.alpha = 1.0
-                        
                         if (image != nil) {
                             var format = NSDateFormatter()
-                            format.dateFormat="yyyy-MM-dd HH:mm:ss"
+                            format.dateFormat="yyyyMMdd_HHmmss"
                             var currentFileName: String = "\(format.stringFromDate(NSDate())),\(self.locationText).jpg"
                             println(currentFileName)
                             
-                            let filmRow: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
-                            println("Key = \(save.variable.key)")
+                            let filmRow: AnyObject? = self.userSetting?.objectForKey(DataSetting.variable.key)
+                            println("Key = \(DataSetting.variable.key)")
                             println("path name = \(filmRow)")
                             var filmDir = filmRow!.objectAtIndex(0) as! String
                             
-                            initial().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: image!)
+                            GlobalFunction().createSubAndFileDirectory("RawData", subDir: filmDir, file: currentFileName, image: image!)
                             
                             
-                            if save.variable.myNum >= 0 {
-                                self.numberLabel.text = String(save.variable.myNum)
+                            if DataSetting.variable.myNum >= 0 {
+                                self.numberLabel.text = String(DataSetting.variable.myNum)
                             }
                             
-                            self.releaseMemory()
-                            self.shotButton.enabled = true
+                            if DataSetting.variable.myNum == 0 {
+                                self.releaseMemory()
+                                self.delegate?.updateLabelCamera(String(DataSetting.variable.myNum))
+                                
+                                let path: AnyObject? = self.userSetting?.objectForKey(DataSetting.variable.key)
+                                
+                                let slotName = path!.objectAtIndex(0) as! String
+                                let filterCode = path!.objectAtIndex(1) as! String
+                                let filterName = path!.objectAtIndex(2) as! String
+                                var num = path!.objectAtIndex(3) as! Int
+                                var filmLength = path!.objectAtIndex(4) as! Int
+                                let isOn = path!.objectAtIndex(5) as! Bool
+                                
+                                num = DataSetting.variable.myNum
+                              
+                                DataSetting.variable.myNum = 0
+                                
+                                self.userSetting?.setObject([slotName, filterCode, filterName, num, filmLength, isOn], forKey: DataSetting.variable.key)
+                                
+                                self.filmDevelop?.developNewFilm()
+                                
+                                self.delay(0.5) {
+                                    self.dismissViewControllerAnimated(true, completion: nil)
+                                }
+                                
+                            }
                         }
+                        self.captureView.alpha = 0.0
+                        self.previewView.alpha = 1.0
+                        self.shotButton.enabled = true
                     }
                 })
             }
-        }else if save.variable.myNum == 0 && save.variable.rowSlected == true{
-            let alertController = UIAlertController(title: "", message:
-                "This film is have no photo!", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
             
+        }else if DataSetting.variable.myNum == 0 && DataSetting.variable.rowSlected == true{
+            let alertController = UIAlertController(title: "", message:
+                "film is have no photo", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Close camera", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+                
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }))
             self.presentViewController(alertController, animated: true, completion: nil)
             
-        }else if save.variable.rowSlected == false {
+        }else if DataSetting.variable.rowSlected == false {
             let alertController = UIAlertController(title: "", message:
                 "Select film frist", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
@@ -263,22 +303,27 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     
     @IBAction func myBag(sender: UIButton) {
         releaseMemory()
-        if save.variable.myNum >= 0 && save.variable.myNum < 26 && save.variable.key != ""{
-            self.delegate?.updateLabelCamera(String(save.variable.myNum))
-            let path: AnyObject? = self.userSetting?.objectForKey(save.variable.key)
+        if DataSetting.variable.myNum >= 0 && DataSetting.variable.myNum < 26 && DataSetting.variable.key != "" {
+            
+            self.delegate?.updateLabelCamera(String(DataSetting.variable.myNum))
+            
+            let path: AnyObject? = self.userSetting?.objectForKey(DataSetting.variable.key)
             
             let slotName = path!.objectAtIndex(0) as! String
             let filterCode = path!.objectAtIndex(1) as! String
             let filterName = path!.objectAtIndex(2) as! String
             var num = path!.objectAtIndex(3) as! Int
-            let isOn = path!.objectAtIndex(4) as! Bool
+            var filmLength = path!.objectAtIndex(4) as! Int
+            let isOn = path!.objectAtIndex(5) as! Bool
             
-            num = save.variable.myNum
-            numberLabel.text = ""
+            num = DataSetting.variable.myNum
             
-            self.userSetting?.setObject([slotName, filterCode, filterName, num, isOn], forKey: save.variable.key)
+            self.userSetting?.setObject([slotName, filterCode, filterName, num, filmLength, isOn], forKey: DataSetting.variable.key)
         }
-        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        self.delay(0.5) {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     
@@ -302,5 +347,5 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             }
         }
     }
-
+    
 }

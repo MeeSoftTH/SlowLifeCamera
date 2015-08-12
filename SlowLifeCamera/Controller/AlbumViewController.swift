@@ -12,15 +12,7 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet var myTable: UITableView!
     @IBOutlet var noLabel: UILabel!
     
-    var slot1: String = ""
-    var slot2: String = ""
-    var slot3: String = ""
-    var slot4: String = ""
-    
-    var slot5: String = ""
-    var slot6: String = ""
-    var slot7: String = ""
-    var slot8: String = ""
+    var publicKeyArray = [String]()
     
     var rowIndex: Int = 0
     
@@ -59,6 +51,8 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         if count > 0 {
             releaseMemory()
             
+            self.publicKeyArray = fileList
+            
             for var i:Int = 0; i < count; i++
             {
                 if fileManager.fileExistsAtPath(fileList[i]) != true
@@ -78,24 +72,7 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
                     if folder != "" &&  filter != "" && icon != "" && number != ""{
                         println("File is \(userSetting?.objectForKey(key))")
                         
-                        if i == 0 {
-                            slot1 = key
-                        }else if i == 1 {
-                            slot2 = key
-                        }else if i == 2 {
-                            slot3 = key
-                        }else if i == 3 {
-                            slot4 = key
-                        }else if i == 4 {
-                            slot5 = key
-                        }else if i == 5 {
-                            slot6 = key
-                        }else if i == 6 {
-                            slot7 = key
-                        }else if i == 7 {
-                            slot8 = key
-                        }
-                        
+    
                         var row = AlbumDatas(name: folder, filterName: filter, iconName: icon, number: number)
                         arryOfAlbumDatas.append(row)
                     }
@@ -145,24 +122,8 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let newVC = storyboard.instantiateViewControllerWithIdentifier("imageGallery") as! PhotoGalleryViewController
         self.navigationController!.pushViewController(newVC, animated: true)
-        
-        if rowIndex == 0 {
-            newVC.keySlot = self.slot1
-        } else if rowIndex == 1 {
-            newVC.keySlot = self.slot2
-        } else if rowIndex == 2 {
-            newVC.keySlot = self.slot3
-        } else if rowIndex == 3 {
-            newVC.keySlot = self.slot4
-        } else if rowIndex == 4 {
-            newVC.keySlot = self.slot5
-        } else if rowIndex == 5 {
-            newVC.keySlot = self.slot6
-        } else if rowIndex == 6 {
-            newVC.keySlot = self.slot7
-        } else if rowIndex == 7 {
-            newVC.keySlot = self.slot8
-        }
+      
+        newVC.keySlot = self.publicKeyArray[indexPath.row]
         
         println("Call this = \( newVC.keySlot)")
         

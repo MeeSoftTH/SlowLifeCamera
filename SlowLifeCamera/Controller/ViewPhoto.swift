@@ -21,7 +21,7 @@ class ViewPhoto: UIViewController {
     UIImageWriteToSavedPhotosAlbum(self.imageResource, nil, nil, nil);
         
         let alertController = UIAlertController(title: "", message:
-            "Already to save photo!", preferredStyle: UIAlertControllerStyle.Alert)
+            "Already save photo to gallery", preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
         
         self.presentViewController(alertController, animated: true, completion: nil)
@@ -38,7 +38,7 @@ class ViewPhoto: UIViewController {
                 // 2
                 var controller = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
                 // 3
-                controller.setInitialText("Testing Posting to Facebook")
+                controller.setInitialText("Posting by SLOW LIFE CAMERA APP")
                 controller.addImage(self.imgView.image)
                 // 4
                 self.presentViewController(controller, animated:true, completion:nil)
@@ -58,7 +58,7 @@ class ViewPhoto: UIViewController {
             
             if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
                 var tweetSheet = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                tweetSheet.setInitialText("Look at this nice picture!")
+                tweetSheet.setInitialText("Posting by SLOW LIFE CAMERA APP")
                 tweetSheet.addImage(self.imgView.image)
                 
                 self.presentViewController(tweetSheet, animated: true, completion: nil)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B216D191B7897140059D650 /* GlobalFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B216D181B7897140059D650 /* GlobalFunction.swift */; };
 		6B2D35C91B4A635500F7D31E /* MyBagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D35C81B4A635500F7D31E /* MyBagViewController.swift */; };
 		6B2E26A11B720F8000860559 /* effect.WAV in Resources */ = {isa = PBXBuildFile; fileRef = 6B2E26A01B720F8000860559 /* effect.WAV */; };
 		6B73A24F1B5E4929007A7822 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B73A24E1B5E4929007A7822 /* FilterViewController.swift */; };
@@ -29,9 +30,9 @@
 		6BC74B7D1B57982E0049C7EC /* UnityAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BC74B7C1B57982E0049C7EC /* UnityAds.framework */; };
 		6BC74B811B579C6C0049C7EC /* UnityAds.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6BC74B7F1B579C6C0049C7EC /* UnityAds.bundle */; };
 		6BC74B861B57C0770049C7EC /* GetGift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC74B851B57C0770049C7EC /* GetGift.swift */; };
-		6BCE37C51B567B9F00BBE626 /* initial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE37C41B567B9F00BBE626 /* initial.swift */; };
+		6BCE37C51B567B9F00BBE626 /* AppsSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE37C41B567B9F00BBE626 /* AppsSetting.swift */; };
 		6BD2E4411B464CFF006E4020 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4401B464CFF006E4020 /* CameraController.swift */; };
-		6BD2E4451B464D0F006E4020 /* save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4431B464D0F006E4020 /* save.swift */; };
+		6BD2E4451B464D0F006E4020 /* DataSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2E4431B464D0F006E4020 /* DataSetting.swift */; };
 		6BD4ED091B64003000C52FE8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BD4ED081B64003000C52FE8 /* CoreLocation.framework */; };
 		6BE182A91B61386F00F4A2BB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE182A81B61386F00F4A2BB /* StoreKit.framework */; };
 		6BEC28DD1B4D78DA00BAA498 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC28DC1B4D78DA00BAA498 /* SettingViewController.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6B216D181B7897140059D650 /* GlobalFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GlobalFunction.swift; path = Datas/GlobalFunction.swift; sourceTree = "<group>"; };
 		6B2D35C81B4A635500F7D31E /* MyBagViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyBagViewController.swift; path = Controller/MyBagViewController.swift; sourceTree = "<group>"; };
 		6B2E26A01B720F8000860559 /* effect.WAV */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = effect.WAV; sourceTree = "<group>"; };
 		6B73A24E1B5E4929007A7822 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewController.swift; path = Controller/FilterViewController.swift; sourceTree = "<group>"; };
@@ -77,9 +79,9 @@
 		6BC74B7E1B5798880049C7EC /* SlowLifeCamera-Bridding-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SlowLifeCamera-Bridding-Header.h"; sourceTree = "<group>"; };
 		6BC74B7F1B579C6C0049C7EC /* UnityAds.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UnityAds.bundle; sourceTree = "<group>"; };
 		6BC74B851B57C0770049C7EC /* GetGift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetGift.swift; path = Controller/GetGift.swift; sourceTree = "<group>"; };
-		6BCE37C41B567B9F00BBE626 /* initial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = initial.swift; path = Datas/initial.swift; sourceTree = "<group>"; };
+		6BCE37C41B567B9F00BBE626 /* AppsSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppsSetting.swift; path = Datas/AppsSetting.swift; sourceTree = "<group>"; };
 		6BD2E4401B464CFF006E4020 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraController.swift; path = Controller/CameraController.swift; sourceTree = "<group>"; };
-		6BD2E4431B464D0F006E4020 /* save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = save.swift; path = SaveState/save.swift; sourceTree = "<group>"; };
+		6BD2E4431B464D0F006E4020 /* DataSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSetting.swift; path = SaveState/DataSetting.swift; sourceTree = "<group>"; };
 		6BD4ED081B64003000C52FE8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		6BE182A81B61386F00F4A2BB /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6BEC28DA1B4D723700BAA498 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -129,14 +131,16 @@
 			path = Sound;
 			sourceTree = "<group>";
 		};
-		6BCE37BC1B563ED600BBE626 /* Datas */ = {
+		6BCE37BC1B563ED600BBE626 /* Functions */ = {
 			isa = PBXGroup;
 			children = (
-				6BCE37C41B567B9F00BBE626 /* initial.swift */,
+				6B216D181B7897140059D650 /* GlobalFunction.swift */,
+				6BD2E4431B464D0F006E4020 /* DataSetting.swift */,
+				6BCE37C41B567B9F00BBE626 /* AppsSetting.swift */,
 				6B94628A1B5CF70F00315367 /* ShopDatas.swift */,
 				6B94628C1B5D0E0000315367 /* AlbumDatas.swift */,
 			);
-			name = Datas;
+			name = Functions;
 			sourceTree = "<group>";
 		};
 		6BD2E43E1B464C81006E4020 /* Controller */ = {
@@ -157,14 +161,6 @@
 				6B7A48C81B5F5A57003DFE4F /* ViewPhoto.swift */,
 			);
 			name = Controller;
-			sourceTree = "<group>";
-		};
-		6BD2E43F1B464CC0006E4020 /* SaveState */ = {
-			isa = PBXGroup;
-			children = (
-				6BD2E4431B464D0F006E4020 /* save.swift */,
-			);
-			name = SaveState;
 			sourceTree = "<group>";
 		};
 		6BF090871B4531F30012ED7C = {
@@ -200,13 +196,12 @@
 		6BF090921B4531F30012ED7C /* SlowLifeCamera */ = {
 			isa = PBXGroup;
 			children = (
-				6BCE37BC1B563ED600BBE626 /* Datas */,
+				6BCE37BC1B563ED600BBE626 /* Functions */,
 				6BF090951B4531F30012ED7C /* AppDelegate.swift */,
 				6BF0909C1B4531F30012ED7C /* Images.xcassets */,
 				6BD2E43E1B464C81006E4020 /* Controller */,
 				6BF0909E1B4531F30012ED7C /* LaunchScreen.xib */,
 				6BEC28D91B4D723700BAA498 /* Main.storyboard */,
-				6BD2E43F1B464CC0006E4020 /* SaveState */,
 				6BF090931B4531F30012ED7C /* Supporting Files */,
 				6BC74B7E1B5798880049C7EC /* SlowLifeCamera-Bridding-Header.h */,
 			);
@@ -346,9 +341,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BCE37C51B567B9F00BBE626 /* initial.swift in Sources */,
+				6BCE37C51B567B9F00BBE626 /* AppsSetting.swift in Sources */,
 				6B94628B1B5CF70F00315367 /* ShopDatas.swift in Sources */,
-				6BD2E4451B464D0F006E4020 /* save.swift in Sources */,
+				6BD2E4451B464D0F006E4020 /* DataSetting.swift in Sources */,
 				6B9F72521B4CEDCD00EA8B15 /* ShopViewController.swift in Sources */,
 				6B9DCDDD1B5D6A6300B522E4 /* ShopCustomCell.swift in Sources */,
 				6BEC28DD1B4D78DA00BAA498 /* SettingViewController.swift in Sources */,
@@ -363,6 +358,7 @@
 				6BC74B861B57C0770049C7EC /* GetGift.swift in Sources */,
 				6BD2E4411B464CFF006E4020 /* CameraController.swift in Sources */,
 				6B2D35C91B4A635500F7D31E /* MyBagViewController.swift in Sources */,
+				6B216D191B7897140059D650 /* GlobalFunction.swift in Sources */,
 				6BF090961B4531F30012ED7C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,6 +495,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SlowLifeCamera/Source",
 					"$(PROJECT_DIR)",
+					/Users/pawarit.b/Desktop,
 				);
 				INFOPLIST_FILE = SlowLifeCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
@@ -520,6 +517,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SlowLifeCamera/Source",
 					"$(PROJECT_DIR)",
+					/Users/pawarit.b/Desktop,
 				);
 				INFOPLIST_FILE = SlowLifeCamera/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;

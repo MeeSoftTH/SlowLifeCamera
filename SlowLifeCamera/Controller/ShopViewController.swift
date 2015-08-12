@@ -16,9 +16,13 @@ protocol updateFilm {
 class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
     @IBOutlet var myTableView: UITableView!
+    @IBOutlet var actionAct: UIActivityIndicatorView!
+    
     var arryOfShopDatas:[ShopDatas] = [ShopDatas]()
     
     var update: updateFilm? = nil
+    
+    var loadedService: Int = 0
     
     let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     
@@ -35,8 +39,6 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         let intCoins: Int = userSetting.integerForKey("myCoins")
         
         var myStringCoins = String(intCoins)
@@ -45,15 +47,15 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let myNum = count(myStringCoins)
         
-        if myNum <= 3 {
-            self.myCoins.frame.size.width = 40
-        }else  if myNum > 3 && myNum < 5{
+        if myNum < 3 {
+            self.myCoins.frame.size.width = 48
+        }else  if myNum >= 3 && myNum < 5{
             self.myCoins.frame.size.width = 58
         }else if myNum >= 5 {
-            self.myCoins.frame.size.width = 73
+            self.myCoins.frame.size.width = 78
         }
         
-        self.setUpShopDatas()
+        setUpShopDatas()
         preloadPurchase(get150)
         preloadPurchase(get320)
         preloadPurchase(get500)
@@ -126,13 +128,13 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         var alert = UIAlertController(title: text, message: "Do you want to get \(text)?", preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Get", style: .Default, handler: { (action: UIAlertAction!) in
             
             self.getFilter(indexPath!.item)
             
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
             println("Handle Cancel Logic here")
         }))
         
@@ -142,27 +144,27 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func getFilter(index: Int) {
         
-        var datas = ["", "", 10]
+        var datas = []
         
         if index == 0 {
-            datas = ["#01", "filter1", 10]
+            datas = [DataSetting.variable.filterCode1, DataSetting.variable.iconFilter1, DataSetting.variable.coinsFilter1, DataSetting.variable.numberFilter1]
         }else if index == 1 {
-            datas = ["#02", "filter2", 20]
+            datas = [DataSetting.variable.filterCode2, DataSetting.variable.iconFilter2, DataSetting.variable.coinsFilter2, DataSetting.variable.numberFilter2]
         }else if index == 2 {
-            datas = ["#03", "filter3", 40]
+            datas = [DataSetting.variable.filterCode3, DataSetting.variable.iconFilter3, DataSetting.variable.coinsFilter3, DataSetting.variable.numberFilter3]
         }else if index == 3 {
-            datas = ["#04", "filter4", 50]
+            datas = [DataSetting.variable.filterCode4, DataSetting.variable.iconFilter4, DataSetting.variable.coinsFilter4, DataSetting.variable.numberFilter4]
         }else if index == 4 {
-            datas = ["#05", "filter5", 80]
+            datas = [DataSetting.variable.filterCode5, DataSetting.variable.iconFilter5, DataSetting.variable.coinsFilter5, DataSetting.variable.numberFilter5]
         }else if index == 5 {
-            datas = ["#06", "filter6", 80]
+            datas = [DataSetting.variable.filterCode6, DataSetting.variable.iconFilter6, DataSetting.variable.coinsFilter6, DataSetting.variable.numberFilter6]
         }else if index == 6 {
-            datas = ["#07", "filter7", 80]
+            datas = [DataSetting.variable.filterCode7, DataSetting.variable.iconFilter7, DataSetting.variable.coinsFilter7, DataSetting.variable.numberFilter7]
         }else if index == 7 {
-            datas = ["#08", "filter8", 80]
+            datas = [DataSetting.variable.filterCode8, DataSetting.variable.iconFilter8, DataSetting.variable.coinsFilter8, DataSetting.variable.numberFilter8]
         }
         
-        for var index = 1; index < 9; index++ {
+        for var index = 1; index < 10; index++ {
             
             if index <= 8 {
                 var intCoins: Int = self.userSetting.integerForKey("myCoins")
@@ -175,7 +177,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     var film = dataCheck!.objectAtIndex(4) as! Bool
                     if film == false {
                         var slotName = "Slot\(index)"
-                        userSetting.setObject([slotName, datas[0], datas[1], 25, true], forKey: poiter)
+                        userSetting.setObject([slotName, datas[0], datas[1], datas[3], datas[3], true], forKey: poiter)
                         
                         println("set slot name is = \(slotName)")
                         println("set to key is = \(poiter)")
@@ -193,24 +195,22 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         
                         let myNum = count(myStringCoins)
                         
-                        if myNum <= 3 {
-                            self.myCoins.frame.size.width = 40
-                        }else  if myNum > 3 && myNum < 5{
+                        if myNum < 3 {
+                            self.myCoins.frame.size.width = 48
+                        }else  if myNum >= 3 && myNum < 5 {
                             self.myCoins.frame.size.width = 58
                         }else if myNum >= 5 {
-                            self.myCoins.frame.size.width = 73
+                            self.myCoins.frame.size.width = 78
                         }
 
-                        
                         self.userSetting.setInteger(intCoins, forKey: "myCoins")
                         
                         let currentMyCoins = String(self.userSetting.integerForKey("myCoins"))
                         
                         self.update?.updateFilmUIViewAndCoins(true, myCoins: currentMyCoins)
 
-                        
                         let alertController = UIAlertController(title: "Successfuly", message:
-                            "Add to your bag successful", preferredStyle: UIAlertControllerStyle.Alert)
+                            "Add to your bag successfuly", preferredStyle: UIAlertControllerStyle.Alert)
                         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
                         }))
                         
@@ -219,9 +219,9 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         return
                     }
                 }else {
-                    let alertController = UIAlertController(title: "Not enough coins", message:
-                        "You are not enough coins, Please refill frist!", preferredStyle: UIAlertControllerStyle.Alert)
-                    alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil ))
+                    let alertController = UIAlertController(title: "No enough coins", message:
+                        "You are not enough coins, Please refill your coins", preferredStyle: UIAlertControllerStyle.Alert)
+                    alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel,handler: nil ))
                     
                     self.presentViewController(alertController, animated: true, completion: nil)
                     
@@ -229,8 +229,8 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }else {
                 
                 let alertController = UIAlertController(title: "Status", message:
-                    "Film in your bag is full, Please remove them", preferredStyle: UIAlertControllerStyle.Alert)
-                alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
+                    "Film in your bag is full, Please remove some film", preferredStyle: UIAlertControllerStyle.Alert)
+                alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Cancel,  handler: nil))
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
                 
@@ -242,15 +242,15 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         self.myTableView.rowHeight = 70
         
-        var filmType1 = ShopDatas(iconName: save.variable.iconFilter1, name: save.variable.filter1, coins: 10)
-        var filmType2 = ShopDatas(iconName: save.variable.iconFilter2, name: save.variable.filter2, coins: 20)
-        var filmType3 = ShopDatas(iconName: save.variable.iconFilter3, name: save.variable.filter3, coins: 40)
-        var filmType4 = ShopDatas(iconName: save.variable.iconFilter4, name: save.variable.filter4, coins: 50)
+        var filmType1 = ShopDatas(iconName: DataSetting.variable.iconFilter1, name: DataSetting.variable.filter1, coins: 10)
+        var filmType2 = ShopDatas(iconName: DataSetting.variable.iconFilter2, name: DataSetting.variable.filter2, coins: 20)
+        var filmType3 = ShopDatas(iconName: DataSetting.variable.iconFilter3, name: DataSetting.variable.filter3, coins: 40)
+        var filmType4 = ShopDatas(iconName: DataSetting.variable.iconFilter4, name: DataSetting.variable.filter4, coins: 50)
         
-        var filmType5 = ShopDatas(iconName: save.variable.iconFilter5, name: save.variable.filter5, coins: 80)
-        var filmType6 = ShopDatas(iconName: save.variable.iconFilter6, name: save.variable.filter6, coins: 80)
-        var filmType7 = ShopDatas(iconName: save.variable.iconFilter7, name: save.variable.filter7, coins: 80)
-        var filmType8 = ShopDatas(iconName: save.variable.iconFilter8, name: save.variable.filter8, coins: 80)
+        var filmType5 = ShopDatas(iconName: DataSetting.variable.iconFilter5, name: DataSetting.variable.filter5, coins: 80)
+        var filmType6 = ShopDatas(iconName: DataSetting.variable.iconFilter6, name: DataSetting.variable.filter6, coins: 80)
+        var filmType7 = ShopDatas(iconName: DataSetting.variable.iconFilter7, name: DataSetting.variable.filter7, coins: 80)
+        var filmType8 = ShopDatas(iconName: DataSetting.variable.iconFilter8, name: DataSetting.variable.filter8, coins: 80)
         
         arryOfShopDatas.append(filmType1)
         arryOfShopDatas.append(filmType2)
@@ -311,7 +311,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         var alert = UIAlertController(title: "Get coins", message: "Do you want to pay \(alertText[0]) for \(alertText[1]) coins?", preferredStyle: UIAlertControllerStyle.Alert)
         
-        alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Pay", style: .Default, handler: { (action: UIAlertAction!) in
             
             for product in self.list {
                 var prodID = product.productIdentifier
@@ -325,7 +325,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
         }))
         
-        alert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
             println("Handle Cancel Logic here")
         }))
         
@@ -357,6 +357,13 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
             println(product.price)
             
             list.append(product as! SKProduct)
+            
+            self.loadedService++
+        }
+        
+        if self.loadedService  > 3 {
+            self.actionAct.hidden = true
+            self.myTableView.hidden = false
         }
     }
     
@@ -416,12 +423,12 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     
                     let myNum = count(myStringCoins)
                     
-                    if myNum <= 3 {
-                        self.myCoins.frame.size.width = 40
-                    }else  if myNum > 3 && myNum < 5{
+                    if myNum < 3 {
+                        self.myCoins.frame.size.width = 48
+                    }else  if myNum >= 3 && myNum < 5{
                         self.myCoins.frame.size.width = 58
                     }else if myNum >= 5 {
-                        self.myCoins.frame.size.width = 73
+                        self.myCoins.frame.size.width = 78
                     }
 
                     

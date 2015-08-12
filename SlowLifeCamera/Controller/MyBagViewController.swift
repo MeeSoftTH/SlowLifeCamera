@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins, updateLabel {
+class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins, updateLabel, developFilm {
     
     let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     
@@ -76,12 +76,12 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         
         let myNum = count(String(userSetting.integerForKey("myCoins")))
         
-        if myNum <= 3 {
-         self.myCoins.frame.size.width = 40
-        }else  if myNum > 3 && myNum < 5{
+        if myNum < 3 {
+            self.myCoins.frame.size.width = 48
+        }else  if myNum >= 3 && myNum < 5{
             self.myCoins.frame.size.width = 58
         }else if myNum >= 5 {
-            self.myCoins.frame.size.width = 73
+            self.myCoins.frame.size.width = 78
         }
         
         println("\(self.myCoins.frame.size.width)")
@@ -116,13 +116,13 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     }
     
     @IBAction func cameraButton(sender: AnyObject) {
-        if save.variable.rowSlected == true {
+        if DataSetting.variable.rowSlected == true {
             let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
             cameraView.delegate = self
             self.presentViewController(cameraView, animated: true, completion: nil)
         }else {
-            let alertController = UIAlertController(title: "Alert", message:
-                "Select film first!", preferredStyle: UIAlertControllerStyle.Alert)
+            let alertController = UIAlertController(title: "Select film first", message:
+                "", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.Default,handler: nil))
             self.presentViewController(alertController, animated: true, completion: nil)
         }
@@ -130,8 +130,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap1() {
         let film: AnyObject? = userSetting?.objectForKey(slotName1)
-        save.variable.key = slotName1
-        save.variable.filmIndex = 1
+        DataSetting.variable.key = slotName1
+        DataSetting.variable.filmIndex = 1
         self.isSelect(buttonView1)
         useFilm(film!)
         println("Tap happend")
@@ -139,8 +139,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap1() {
         let film: AnyObject? = userSetting?.objectForKey(slotName1)
-        save.variable.key = slotName1
-        save.variable.filmIndex = 1
+        DataSetting.variable.key = slotName1
+        DataSetting.variable.filmIndex = 1
         self.isSelect(buttonView1)
         choicesDialog(film!)
         println("Long press")
@@ -148,8 +148,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap2() {
         let film: AnyObject? = userSetting?.objectForKey(slotName2)
-        save.variable.key = slotName2
-        save.variable.filmIndex = 2
+        DataSetting.variable.key = slotName2
+        DataSetting.variable.filmIndex = 2
         self.isSelect(buttonView2)
         useFilm(film!)
         println("Tap happend")
@@ -157,8 +157,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap2() {
         let film: AnyObject? = userSetting?.objectForKey(slotName2)
-        save.variable.key = slotName2
-        save.variable.filmIndex = 2
+        DataSetting.variable.key = slotName2
+        DataSetting.variable.filmIndex = 2
         self.isSelect(buttonView2)
         choicesDialog(film!)
         println("Long press")
@@ -166,8 +166,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap3() {
         let film: AnyObject? = userSetting?.objectForKey(slotName3)
-        save.variable.key = slotName3
-        save.variable.filmIndex = 3
+        DataSetting.variable.key = slotName3
+        DataSetting.variable.filmIndex = 3
         self.isSelect(buttonView3)
         useFilm(film!)
         println("Tap happend")
@@ -175,8 +175,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap3() {
         let film: AnyObject? = userSetting?.objectForKey(slotName3)
-        save.variable.key = slotName3
-        save.variable.filmIndex = 3
+        DataSetting.variable.key = slotName3
+        DataSetting.variable.filmIndex = 3
         self.isSelect(buttonView3)
         choicesDialog(film!)
         println("Long press")
@@ -184,8 +184,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap4() {
         let film: AnyObject? = userSetting?.objectForKey(slotName4)
-        save.variable.key = slotName4
-        save.variable.filmIndex = 4
+        DataSetting.variable.key = slotName4
+        DataSetting.variable.filmIndex = 4
         self.isSelect(buttonView4)
         useFilm(film!)
         println("Tap happend")
@@ -193,8 +193,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap4() {
         let film: AnyObject? = userSetting?.objectForKey(slotName4)
-        save.variable.key = slotName4
-        save.variable.filmIndex = 4
+        DataSetting.variable.key = slotName4
+        DataSetting.variable.filmIndex = 4
         self.isSelect(buttonView4)
         choicesDialog(film!)
         println("Long press")
@@ -202,8 +202,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap5() {
         let film: AnyObject? = userSetting?.objectForKey(slotName5)
-        save.variable.key = slotName5
-        save.variable.filmIndex = 5
+        DataSetting.variable.key = slotName5
+        DataSetting.variable.filmIndex = 5
         self.isSelect(buttonView5)
         useFilm(film!)
         println("Tap happend")
@@ -211,8 +211,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap5() {
         let film: AnyObject? = userSetting?.objectForKey(slotName5)
-        save.variable.key = slotName5
-        save.variable.filmIndex = 5
+        DataSetting.variable.key = slotName5
+        DataSetting.variable.filmIndex = 5
         self.isSelect(buttonView5)
         choicesDialog(film!)
         println("Long press")
@@ -220,8 +220,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap6() {
         let film: AnyObject? = userSetting?.objectForKey(slotName6)
-        save.variable.key = slotName6
-        save.variable.filmIndex = 6
+        DataSetting.variable.key = slotName6
+        DataSetting.variable.filmIndex = 6
         self.isSelect(buttonView6)
         useFilm(film!)
         println("Tap happend")
@@ -229,8 +229,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap6() {
         let film: AnyObject? = userSetting?.objectForKey(slotName6)
-        save.variable.key = slotName6
-        save.variable.filmIndex = 6
+        DataSetting.variable.key = slotName6
+        DataSetting.variable.filmIndex = 6
         self.isSelect(buttonView6)
         choicesDialog(film!)
         println("Long press")
@@ -238,8 +238,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap7() {
         let film: AnyObject? = userSetting?.objectForKey(slotName7)
-        save.variable.key = slotName7
-        save.variable.filmIndex = 7
+        DataSetting.variable.key = slotName7
+        DataSetting.variable.filmIndex = 7
         self.isSelect(buttonView7)
         useFilm(film!)
         println("Tap happend")
@@ -247,8 +247,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap7() {
         let film: AnyObject? = userSetting?.objectForKey(slotName7)
-        save.variable.key = slotName7
-        save.variable.filmIndex = 7
+        DataSetting.variable.key = slotName7
+        DataSetting.variable.filmIndex = 7
         self.isSelect(buttonView7)
         choicesDialog(film!)
         println("Long press")
@@ -256,8 +256,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func tap8() {
         let film: AnyObject? = userSetting?.objectForKey(slotName8)
-        save.variable.key = slotName8
-        save.variable.filmIndex = 8
+        DataSetting.variable.key = slotName8
+        DataSetting.variable.filmIndex = 8
         self.isSelect(buttonView8)
         useFilm(film!)
         println("Tap happend")
@@ -265,8 +265,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     func longTap8() {
         let film: AnyObject? = userSetting?.objectForKey(slotName8)
-        save.variable.key = slotName8
-        save.variable.filmIndex = 8
+        DataSetting.variable.key = slotName8
+        DataSetting.variable.filmIndex = 8
         self.isSelect(buttonView8)
         choicesDialog(film!)
         println("Long press")
@@ -323,7 +323,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         tapGesture8.numberOfTapsRequired = 1
         film8b.addGestureRecognizer(tapGesture8)
         film8b.addGestureRecognizer(longGesture8)
-
+        
     }
     
     func isSelect(view: UIView) {
@@ -349,7 +349,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film1Bool = film1!.objectAtIndex(4) as! Bool
         if film1Bool == true {
             var film1Text = film1!.objectAtIndex(3) as! Int
-            num1.text = String(film1Text) + (" of 25")
+            
+            var film1TextLength = film1!.objectAtIndex(4) as! Int
+            
+            num1.text = String(film1Text) + (" of \(String(film1TextLength))")
             
             var filmImg1 = film1!.objectAtIndex(2) as! String
             
@@ -365,7 +368,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film2Bool = film2!.objectAtIndex(4) as! Bool
         if film2Bool == true {
             var film2Text = film2!.objectAtIndex(3) as! Int
-            num2.text = String(film2Text) + (" of 25")
+            
+            var film2TextLength = film2!.objectAtIndex(4) as! Int
+            
+            num2.text = String(film2Text) + (" of \(String(film2TextLength))")
             
             var filmImg2 = film2!.objectAtIndex(2) as! NSString
             
@@ -380,7 +386,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film3Bool = film3!.objectAtIndex(4) as! Bool
         if film3Bool == true {
             var film3Text = film3!.objectAtIndex(3) as! Int
-            num3.text = String(film3Text) + (" of 25")
+            
+            var film3TextLength = film3!.objectAtIndex(4) as! Int
+            
+            num3.text = String(film3Text) + (" of \(String(film3TextLength))")
             
             var filmImg3 = film3!.objectAtIndex(2) as! NSString
             
@@ -395,7 +404,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film4Bool = film4!.objectAtIndex(4) as! Bool
         if film4Bool == true {
             var film4Text = film4!.objectAtIndex(3) as! Int
-            num4.text = String(film4Text) + (" of 25")
+            
+            var film4TextLength = film4!.objectAtIndex(4) as! Int
+            
+            num4.text = String(film4Text) + (" of \(String(film4TextLength))")
             
             var filmImg4 = film4!.objectAtIndex(2) as! NSString
             
@@ -412,7 +424,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film5Bool = film5!.objectAtIndex(4) as! Bool
         if film5Bool == true {
             var film5Text = film5!.objectAtIndex(3) as! Int
-            num5.text = String(film5Text) + (" of 25")
+            
+            var film5TextLength = film5!.objectAtIndex(4) as! Int
+            
+            num5.text = String(film5Text) + (" of \(String(film5TextLength))")
             
             var filmImg5 = film5!.objectAtIndex(2) as! NSString
             
@@ -427,7 +442,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film6Bool = film6!.objectAtIndex(4) as! Bool
         if film6Bool == true {
             var film6Text = film6!.objectAtIndex(3) as! Int
-            num6.text = String(film6Text) + (" of 25")
+            
+            var film6TextLength = film6!.objectAtIndex(4) as! Int
+            
+            num6.text = String(film6Text) + (" of \(String(film6TextLength))")
             
             var filmImg6 = film6!.objectAtIndex(2) as! NSString
             
@@ -442,7 +460,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film7Bool = film7!.objectAtIndex(4) as! Bool
         if film7Bool == true {
             var film7Text = film7!.objectAtIndex(3) as! Int
-            num7.text = String(film7Text) + (" of 25")
+            
+            var film7TextLength = film7!.objectAtIndex(4) as! Int
+            
+            num7.text = String(film7Text) + (" of \(String(film7TextLength))")
             
             var filmImg7 = film7!.objectAtIndex(2) as! NSString
             
@@ -457,7 +478,10 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var film8Bool = film8!.objectAtIndex(4) as! Bool
         if film8Bool == true {
             var film8Text = film8!.objectAtIndex(3) as! Int
-            num8.text = String(film8Text) + (" of 25")
+            
+            var film8TextLength = film8!.objectAtIndex(4) as! Int
+            
+            num8.text = String(film8Text) + (" of \(String(film8TextLength))")
             
             var filmImg8 = film8!.objectAtIndex(2) as! NSString
             
@@ -487,69 +511,53 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var nameText: String = ""
         
         if keyFilterName == "#01" {
-            nameText = save.variable.filter1
+            nameText = DataSetting.variable.filter1
             
         }else if keyFilterName == "#02" {
-            nameText = save.variable.filter2
+            nameText = DataSetting.variable.filter2
             
         }else if keyFilterName == "#03" {
-            nameText = save.variable.filter3
+            nameText = DataSetting.variable.filter3
             
         }else if keyFilterName == "#04" {
-            nameText = save.variable.filter4
+            nameText = DataSetting.variable.filter4
             
         }else if keyFilterName == "#05" {
-            nameText = save.variable.filter5
+            nameText = DataSetting.variable.filter5
             
         }else if keyFilterName == "#06" {
-            nameText = save.variable.filter6
+            nameText = DataSetting.variable.filter6
             
         }else if keyFilterName == "#07" {
-            nameText = save.variable.filter7
+            nameText = DataSetting.variable.filter7
             
         }else if keyFilterName == "#08" {
-            nameText = save.variable.filter8
+            nameText = DataSetting.variable.filter8
             
         }
-
+        
         
         if filmRow != nil {
             var filmNum = filmRow!.objectAtIndex(3) as! Int
             
             if filmNum > 0 {
-            save.variable.myNum = filmNum
-            save.variable.rowSlected = true
-            var slotName = filmRow!.objectAtIndex(0) as! String
-            
-            initial().createSubDirectory("RawData", subDir: slotName)
-            
-            var refreshAlert = UIAlertController(title: "Camera", message: "Open camera now?", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            refreshAlert.addAction(UIAlertAction(title: "Open", style: .Default, handler: { (action: UIAlertAction!) in
-                let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
-                cameraView.delegate = self
-                self.presentViewController(cameraView, animated: true, completion: nil)
-            }))
-            
-            refreshAlert.addAction(UIAlertAction(title: "Nothing", style: .Default, handler: { (action: UIAlertAction!) in
-                println("Handle Cancel Logic here")
-            }))
-            
-            self.presentViewController(refreshAlert, animated: true, completion: nil)
+                DataSetting.variable.myNum = filmNum
+                DataSetting.variable.rowSlected = true
+                var slotName = filmRow!.objectAtIndex(0) as! String
+                
+                GlobalFunction().createSubDirectory("RawData", subDir: slotName)
                 
             }else if filmNum == 0 {
-            
-                var refreshAlert = UIAlertController(title: "Process", message: "Process this \(nameText) film", preferredStyle: UIAlertControllerStyle.Alert)
                 
-                refreshAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+                var refreshAlert = UIAlertController(title: "Develop", message: "Develop \(nameText) film?", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                refreshAlert.addAction(UIAlertAction(title: "Develop", style: .Default, handler: { (action: UIAlertAction!) in
                     let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
                     filterView.delegate = self
                     self.presentViewController(filterView, animated: true, completion: nil)
                 }))
                 
-                refreshAlert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
-                    println("Handle Cancel Logic here")
-                }))
+                refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
                 
                 self.presentViewController(refreshAlert, animated: true, completion: nil)
             }
@@ -559,33 +567,36 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     func choicesDialog(filmRow:AnyObject?){
         
         let number = filmRow!.objectAtIndex(3) as! Int
+        var filmNumLength = filmRow!.objectAtIndex(4) as! Int
+
         let keyFilterName = filmRow!.objectAtIndex(1) as! String
+        
         
         var nameText: String = ""
         
         if keyFilterName == "#01" {
-            nameText = save.variable.filter1
+            nameText = DataSetting.variable.filter1
             
         }else if keyFilterName == "#02" {
-            nameText = save.variable.filter2
+            nameText = DataSetting.variable.filter2
             
         }else if keyFilterName == "#03" {
-            nameText = save.variable.filter3
+            nameText = DataSetting.variable.filter3
             
         }else if keyFilterName == "#04" {
-            nameText = save.variable.filter4
+            nameText = DataSetting.variable.filter4
             
         }else if keyFilterName == "#05" {
-            nameText = save.variable.filter5
+            nameText = DataSetting.variable.filter5
             
         }else if keyFilterName == "#06" {
-            nameText = save.variable.filter6
+            nameText = DataSetting.variable.filter6
             
         }else if keyFilterName == "#07" {
-            nameText = save.variable.filter7
+            nameText = DataSetting.variable.filter7
             
         }else if keyFilterName == "#08" {
-            nameText = save.variable.filter8
+            nameText = DataSetting.variable.filter8
             
         }
         
@@ -593,39 +604,38 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         var chooseDialog = UIAlertController(title: "Choose your action for", message: nameText ,preferredStyle: UIAlertControllerStyle.ActionSheet
         )
         
-        if number < 25 {
-            chooseDialog.addAction(UIAlertAction(title: "Process this \(nameText) film?", style: .Default, handler: { (action: UIAlertAction!) in
+        if number < filmNumLength {
+            chooseDialog.addAction(UIAlertAction(title: "Develop \(nameText) film?", style: .Default, handler: { (action: UIAlertAction!) in
                 
-                var refreshAlert = UIAlertController(title: "Process", message: "Process this \(nameText) film", preferredStyle: UIAlertControllerStyle.Alert)
+                var refreshAlert = UIAlertController(title: "Develop", message: "Develop \(nameText) film", preferredStyle: UIAlertControllerStyle.Alert)
                 
-                refreshAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+                refreshAlert.addAction(UIAlertAction(title: "Develop", style: .Default, handler: { (action: UIAlertAction!) in
+                    
                     let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
                     filterView.delegate = self
                     self.presentViewController(filterView, animated: true, completion: nil)
                 }))
                 
-                refreshAlert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
-                    println("Handle Cancel Logic here")
-                }))
+                refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
                 
                 self.presentViewController(refreshAlert, animated: true, completion: nil)
                 
             }))
         }
         
-        chooseDialog.addAction(UIAlertAction(title: "Delete this film", style: .Default, handler: { (action: UIAlertAction!) in
+        chooseDialog.addAction(UIAlertAction(title: "Delete \(nameText) film", style: .Default, handler: { (action: UIAlertAction!) in
             
-            var alert = UIAlertController(title: "Delete film", message: "Do you want delete this film?", preferredStyle: UIAlertControllerStyle.Alert)
+            var alert = UIAlertController(title: "Delete film", message: "Do you want delete \(nameText) film?", preferredStyle: UIAlertControllerStyle.Alert)
             
             alert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
                 if filmRow != nil {
                     var slot = filmRow!.objectAtIndex(0) as! NSString
                     
-                    self.userSetting.setObject(["", "", "", 25, false], forKey: save.variable.key)
+                    self.userSetting.setObject(["", "", "", 0, false], forKey: DataSetting.variable.key)
                     
                     self.updateControl()
                     
-                    save.variable.filmIndex = 0
+                    DataSetting.variable.filmIndex = 0
                     self.buttonView1.backgroundColor = UIColor.clearColor()
                     self.buttonView2.backgroundColor = UIColor.clearColor()
                     self.buttonView3.backgroundColor = UIColor.clearColor()
@@ -635,10 +645,27 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
                     self.buttonView6.backgroundColor = UIColor.clearColor()
                     self.buttonView7.backgroundColor = UIColor.clearColor()
                     self.buttonView8.backgroundColor = UIColor.clearColor()
-
+                    
+                    println("Set to key = \(slot)")
+                    
+                    let removeDir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+                    
+                    let removeIndexDir: AnyObject = removeDir[0]
+                    
+                    var removePath = removeIndexDir.stringByAppendingPathComponent("RawData/\(slot)")
+                    
+                    let fileDir = NSFileManager.defaultManager()
+                    var removeErrorrror: NSError?
+                    
+                    if fileDir.removeItemAtPath(removePath, error: &removeErrorrror) {
+                        println("\(removePath) = Remove Dir successful")
+                    } else {
+                        println("Remove failed: \(removeErrorrror!.localizedDescription)")
+                    }
+                    
                 }}))
             
-            alert.addAction(UIAlertAction(title: "No", style: .Default, handler: { (action: UIAlertAction!) in
+            alert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (action: UIAlertAction!) in
                 
                 self.buttonView1.backgroundColor = UIColor.clearColor()
                 self.buttonView2.backgroundColor = UIColor.clearColor()
@@ -668,7 +695,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
             self.buttonView6.backgroundColor = UIColor.clearColor()
             self.buttonView7.backgroundColor = UIColor.clearColor()
             self.buttonView8.backgroundColor = UIColor.clearColor()
-            save.variable.rowSlected = false
+            DataSetting.variable.rowSlected = false
         }))
         presentViewController(chooseDialog, animated: true, completion: nil)
     }
@@ -684,7 +711,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     func removeAfterSuccess(isTrue: Bool, coinsUpdate: String) {
         if isTrue == true {
             updateControl()
-            save.variable.filmIndex = 0
+            DataSetting.variable.filmIndex = 0
             self.buttonView1.backgroundColor = UIColor.clearColor()
             self.buttonView2.backgroundColor = UIColor.clearColor()
             self.buttonView3.backgroundColor = UIColor.clearColor()
@@ -705,35 +732,96 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         
         let myNum = count(String(userSetting.integerForKey("myCoins")))
         
-        if myNum <= 3 {
-            self.myCoins.frame.size.width = 40
-        }else  if myNum > 3 && myNum < 5{
+        if myNum < 3 {
+            self.myCoins.frame.size.width = 48
+        }else  if myNum >= 3 && myNum < 5{
             self.myCoins.frame.size.width = 58
         }else if myNum >= 5 {
-            self.myCoins.frame.size.width = 73
+            self.myCoins.frame.size.width = 78
         }
     }
     
     func updateLabelCamera(text: String) {
-        if save.variable.filmIndex == 1 {
-            self.num1.text = ("\(text) of 25")
-        }else if save.variable.filmIndex == 2 {
-            self.num2.text = ("\(text) of 25")
-        }else if save.variable.filmIndex == 3 {
-            self.num3.text = ("\(text) of 25")
-        }else if save.variable.filmIndex == 4 {
-            self.num4.text = ("\(text) of 25")
-        }else if save.variable.filmIndex == 5 {
-            self.num5.text = ("\(text) of 25")
-        }else if save.variable.filmIndex == 6 {
-            self.num6.text = ("\(text) of 25")
-        }else if save.variable.filmIndex == 7 {
-            self.num7.text = ("\(text) of 25")
-        }else if save.variable.filmIndex == 8 {
-            self.num8.text = ("\(text) of 25")
+        
+        println("Update label")
+        
+        if DataSetting.variable.filmIndex == 1 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName1)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num1.text = ("\(text) of \(filmLength)")
+            
+        }else if DataSetting.variable.filmIndex == 2 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName2)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num2.text = ("\(text) of \(filmLength)")
+            
+        }else if DataSetting.variable.filmIndex == 3 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName3)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num3.text = ("\(text) of \(filmLength)")
+            
+        }else if DataSetting.variable.filmIndex == 4 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName4)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num4.text = ("\(text) of \(filmLength)")
+            
+        }else if DataSetting.variable.filmIndex == 5 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName5)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num5.text = ("\(text) of \(filmLength)")
+            
+        }else if DataSetting.variable.filmIndex == 6 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName6)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num6.text = ("\(text) of \(filmLength)")
+            
+        }else if DataSetting.variable.filmIndex == 7 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName7)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num7.text = ("\(text) of \(filmLength)")
+        
+        }else if DataSetting.variable.filmIndex == 8 {
+            let film: AnyObject? = userSetting?.objectForKey(slotName8)
+            var filmLength = film!.objectAtIndex(4) as! Int
+            self.num8.text = ("\(text) of \(filmLength)")
+            
+        }
+        DataSetting.variable.filmIndex = 0
+    }
+    
+    func developNewFilm() {
+        var film: AnyObject? = userSetting?.objectForKey(slotName1)
+        var buttonUI: UIView = buttonView1
+        
+        if DataSetting.variable.filmIndex == 1 {
+            film = userSetting?.objectForKey(slotName1)
+            buttonUI = buttonView1
+        }else if DataSetting.variable.filmIndex == 2 {
+            film = userSetting?.objectForKey(slotName2)
+            buttonUI = buttonView2
+        }else if DataSetting.variable.filmIndex == 3 {
+            film = userSetting?.objectForKey(slotName3)
+            buttonUI = buttonView3
+        }else if DataSetting.variable.filmIndex == 4 {
+            film = userSetting?.objectForKey(slotName4)
+            buttonUI = buttonView4
+        }else if DataSetting.variable.filmIndex == 5 {
+            film = userSetting?.objectForKey(slotName5)
+            buttonUI = buttonView5
+        }else if DataSetting.variable.filmIndex == 6 {
+            film = userSetting?.objectForKey(slotName6)
+            buttonUI = buttonView6
+        }else if DataSetting.variable.filmIndex == 7 {
+            film = userSetting?.objectForKey(slotName7)
+            buttonUI = buttonView7
+        }else if DataSetting.variable.filmIndex == 8 {
+            film = userSetting?.objectForKey(slotName8)
+                buttonUI = buttonView8
         }
         
-        save.variable.filmIndex = 0
+        self.isSelect(buttonUI)
+        self.useFilm(film!)
+        
     }
     
 }

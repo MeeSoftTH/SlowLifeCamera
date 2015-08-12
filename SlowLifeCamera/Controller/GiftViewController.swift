@@ -134,7 +134,7 @@ class GiftViewController: UIViewController, AVAudioPlayerDelegate, UnityAdsDeleg
                 self.audioPlayer()
                 var intCoins: Int = self.userSetting.integerForKey("myCoins")
                 let alertController = UIAlertController(title: "Congratulations", message:
-                    "Your got 20 coins from Slow Lift Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
+                    "Your got 20 coins from Slow Life Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
                     
                     //self.giftStatueNot.text = "Congratulations, Your got 20 coins from Gift, you current coins is \(intCoins)"
@@ -175,7 +175,7 @@ class GiftViewController: UIViewController, AVAudioPlayerDelegate, UnityAdsDeleg
         self.audioPlayer()
         
         let alertController = UIAlertController(title: "Congratulations", message:
-            "Your got \(randomCoins) coins from Slow Lift Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
+            "Your got \(randomCoins) coins from Slow Life Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
             
             self.slowGift.enabled = false
@@ -222,9 +222,7 @@ class GiftViewController: UIViewController, AVAudioPlayerDelegate, UnityAdsDeleg
             
         }))
         
-        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
-            println("Handle Cancel Logic here")
-        }))
+        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         
         self.presentViewController(refreshAlert, animated: true, completion: nil)
     }
@@ -235,6 +233,15 @@ class GiftViewController: UIViewController, AVAudioPlayerDelegate, UnityAdsDeleg
         let resourcePath = NSBundle.mainBundle().URLForResource("effect", withExtension: "WAV")!
         
         soundPlayer = AVAudioPlayer(contentsOfURL: resourcePath, error: nil)
+        let session:AVAudioSession = AVAudioSession.sharedInstance()
+        
+        if !session.overrideOutputAudioPort(AVAudioSessionPortOverride.Speaker, error:&error) {
+            println("could not set output to speaker")
+            if let e = error {
+                println(e.localizedDescription)
+            }
+        }
+
         
         if let err = error {
             println("AVAudioPlayer error: \(err.localizedDescription)")

@@ -18,53 +18,54 @@ class FilterViewController: UIViewController {
     
     @IBOutlet var status: UILabel!
     @IBOutlet var act: UIActivityIndicatorView!
-    @IBOutlet var imageSet: UIImageView!
     @IBOutlet var actionButton: UIButton!
     
     var delegate: removeFilm? = nil
-    var datas:String = save.variable.key
+    var datas:String = DataSetting.variable.key
     var subDir:String = ""
     var subDir2:String = ""
     var keyFilter: String = ""
     var isCancel: Bool = false
     var isCreated: Bool = false
+    var textLength: Int = 0
     
     
     let showCopy = userSetting.boolForKey("showCopyRight")
     let showTime = userSetting.boolForKey("ShowTime")
     let showLocation = userSetting.boolForKey("showLocation")
     
-    @IBOutlet var galleryButton: UIButton!
-    
     let context = CIContext(options: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         
-        let datas: AnyObject? = userSetting?.objectForKey(save.variable.key)
+        let datas: AnyObject? = userSetting?.objectForKey(DataSetting.variable.key)
         self.subDir = datas!.objectAtIndex(0) as! String
         self.keyFilter = datas!.objectAtIndex(1) as! String
+        let count = datas!.objectAtIndex(3) as! Int
+        let textLength = datas!.objectAtIndex(4) as! Int
         
-        delay(5.0){
-            
+        delay(3.0){
             if !self.isCancel {
                 self.processFilter()
             }else{
                 println("Process is cancel")
             }
         }
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func cancel(sender: UIButton) {
         self.isCancel = true
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
     
     func delay(delay:Double, closure:()->()) {
         
@@ -73,79 +74,74 @@ class FilterViewController: UIViewController {
     }
     
     func processFilter() {
+        
+        DataSetting.variable.isProcess = true
+        
         self.actionButton.enabled = false
         let fileManager:NSFileManager = NSFileManager.defaultManager()
         var fileList = listFilesFromDocumentsFolder()
-        
         let count = fileList.count
         
-        println("Number of photos = \(count)")
         if count > 0 {
-            var filterName = "No.14"
-            var iconName = "filter1"
+            var filterName = DataSetting.variable.filter1
+            var iconName = DataSetting.variable.iconFilter1
             
             let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-            
             let documentsDirectory: AnyObject = dir[0]
             
-            for var i:Int = 0; i < count; i++
-            {
+            for i in 0..<count {
                 
-                if fileManager.fileExistsAtPath(fileList[i]) != true
-                {
-                    println("File is \(fileList[i])")
+                var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(fileList[i])")
+                releaseMemory(getImagePath)
+                
+                var fileURL = NSURL(fileURLWithPath: getImagePath)
+                releaseMemory(getImagePath)
+                
+                if keyFilter == "#01" {
+                    ApplyFilterNO14(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter1
+                    iconName = DataSetting.variable.iconFilter1
                     
-                    releaseMemory()
+                }else if keyFilter == "#02" {
+                    ApplySepiaFilter(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter2
+                    iconName = DataSetting.variable.iconFilter2
                     
-                    var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(fileList[i])")
+                }else if keyFilter == "#03" {
+                    ApplyMonoFilter(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter3
+                    iconName = DataSetting.variable.iconFilter3
                     
-                    var fileURL = NSURL(fileURLWithPath: getImagePath)
+                }else if keyFilter == "#04" {
+                    ApplyFilterNO10(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter4
+                    iconName = DataSetting.variable.iconFilter4
                     
-                    if keyFilter == "#01" {
-                        ApplyFilterNO14(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter1
-                        iconName = save.variable.iconFilter1
-                        
-                    }else if keyFilter == "#02" {
-                        ApplySepiaFilter(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter2
-                        iconName = save.variable.iconFilter2
-                        
-                    }else if keyFilter == "#03" {
-                        ApplyMonoFilter(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter3
-                        iconName = save.variable.iconFilter3
-                        
-                    }else if keyFilter == "#04" {
-                        ApplyFilterNO10(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter4
-                        iconName = save.variable.iconFilter4
-                        
-                        
-                    }else if keyFilter == "#05" {
-                        ApplyPolyFilter(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter5
-                        iconName = save.variable.iconFilter5
-                        
-                    }else if keyFilter == "#06" {
-                        ApplyFilterNO9(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter6
-                        iconName = save.variable.iconFilter6
-                        
-                    }else if keyFilter == "#07" {
-                        ApplyFilterNO7(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter7
-                        iconName = save.variable.iconFilter7
-                        
-                    }else if keyFilter == "#08" {
-                        ApplyFilterNO13(fileURL!, rename: fileList[i])
-                        filterName = save.variable.filter8
-                        iconName = save.variable.iconFilter8
-                        
-                    }
                     
-                    removeFile(fileList[i])
+                }else if keyFilter == "#05" {
+                    ApplyPolyFilter(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter5
+                    iconName = DataSetting.variable.iconFilter5
+                    
+                }else if keyFilter == "#06" {
+                    ApplyFilterNO9(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter6
+                    iconName = DataSetting.variable.iconFilter6
+                    
+                }else if keyFilter == "#07" {
+                    ApplyFilterNO7(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter7
+                    iconName = DataSetting.variable.iconFilter7
+                    
+                }else if keyFilter == "#08" {
+                    ApplyFilterNO13(fileURL!, rename: fileList[i])
+                    filterName = DataSetting.variable.filter8
+                    iconName = DataSetting.variable.iconFilter8
+                    
                 }
+                releaseMemory(getImagePath)
+                
+                removeFile(fileList[i])
             }
             
             println("Set to key = \(self.subDir2)")
@@ -155,6 +151,7 @@ class FilterViewController: UIViewController {
             let removeIndexDir: AnyObject = removeDir[0]
             
             var removePath = removeIndexDir.stringByAppendingPathComponent("RawData/\(self.subDir)")
+            releaseMemory(removePath)
             
             let fileDir = NSFileManager.defaultManager()
             var removeErrorrror: NSError?
@@ -167,36 +164,31 @@ class FilterViewController: UIViewController {
             
             var intCoins: Int = userSetting.integerForKey("myCoins")
             
-            intCoins = intCoins + save.variable.filterSuccess
+            intCoins = intCoins + DataSetting.variable.filterSuccess
             
             userSetting.setInteger(intCoins, forKey: "myCoins")
             
-            var numberOfPhoto = String(save.variable.filterSuccess)
+            var numberOfPhoto = String(DataSetting.variable.filterSuccess)
             
             userSetting.setObject([self.subDir2, filterName, iconName, numberOfPhoto], forKey: self.subDir2)
             
-            userSetting.setObject(["", "", "", 25, false], forKey: save.variable.key)
-            save.variable.key = ""
+            userSetting.setObject(["", "", "", 0, false], forKey: DataSetting.variable.key)
+            DataSetting.variable.key = ""
             
-            save.variable.filterSuccess = 0
-            save.variable.key = ""
+            DataSetting.variable.filterSuccess = 0
+            DataSetting.variable.key = ""
             
             
             self.delegate?.removeAfterSuccess(true, coinsUpdate: String(intCoins))
             
-            save.variable.rowSlected = false
+            DataSetting.variable.rowSlected = false
+            DataSetting.variable.isProcess = false
             
-            self.actionButton.enabled = true
-            self.status.text = "Successful"
-            self.act.hidden = true
-            self.actionButton.setTitle("Close", forState: UIControlState.Normal)
-            self.imageSet.image = UIImage(named: "success")
-            
-            delay(1.0) {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
+            self.dismissViewControllerAnimated(true, completion: nil)
         }else {
             println("No photo")
+            
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
@@ -209,7 +201,9 @@ class FilterViewController: UIViewController {
             println("This slot = \(self.subDir)")
             let dir = dirs![0]
             let fileList = NSFileManager.defaultManager().contentsOfDirectoryAtPath("\(dir)/RawData/\(self.subDir)", error: theError)
+            
             println("this dir = \(fileList)")
+            
             return fileList as! [String]
         }else{
             let fileList = [""]
@@ -224,6 +218,8 @@ class FilterViewController: UIViewController {
         let documentsDirectory: AnyObject = dir[0]
         
         var imagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(path)")
+        releaseMemory(imagePath)
+        releaseMemory(imagePath)
         
         let filemgr = NSFileManager.defaultManager()
         var error: NSError?
@@ -557,44 +553,6 @@ class FilterViewController: UIViewController {
         self.moveFile(newImage, newName: rename)
     }
     
-    
-    func getText(nameText: String)-> String {
-        
-        var cutLocation = nameText
-        var cutTime = nameText
-        
-        var copyText: String = ""
-        var timeText: String = ""
-        var locationText: String = ""
-        
-        
-        if showTime == true {
-            let endIndex = advance(cutTime.startIndex, 19)
-            let needle = cutTime.substringToIndex(endIndex)
-            println("Time is = \(needle)")
-            timeText = " : \(needle)"
-        }
-        
-        if showLocation == true{
-            if count(nameText) > 19 {
-                cutLocation.removeRange(cutLocation.startIndex..<advance(cutLocation.startIndex, 20))
-                let newStr = cutLocation[advance(cutLocation.startIndex, 0)...advance(cutLocation.endIndex, -4)]
-                println("Location is = \(newStr)")
-                locationText = " : \(newStr)"
-            }
-        }
-        
-        if showCopy == true {
-            copyText = "Film By SlowLife Camera"
-        }
-        
-        let text = "\(copyText) \(timeText) \(locationText)"
-        
-        println("Text is = \(text)")
-        
-        return text
-    }
-    
     func randomNumberBetween(min: Int, max: Int) -> Int {
         return Int(arc4random_uniform(UInt32(max - min + 1))) + min
     }
@@ -609,11 +567,12 @@ class FilterViewController: UIViewController {
         if(imgWidth > imgHeight){
             fontSize = imgHeight * 3 / 100
             frameSize = imgHeight * 5 / 100
-        }
-        else {
+            
+        }else {
             fontSize = imgWidth * 3 / 100
             frameSize = imgWidth * 5 / 100
         }
+        
         let gab = ((frameSize - fontSize)/2);
         println(fontSize)
         println(frameSize)
@@ -635,14 +594,36 @@ class FilterViewController: UIViewController {
         //Put the image into a rectangle as large as the original image.
         if useFrame {
             inImage.drawInRect(CGRectMake(frameSize, frameSize, inImage.size.width - (frameSize*2), inImage.size.height - (frameSize*2)))
-        }
-        else {
+            
+        }else {
             inImage.drawInRect(CGRectMake(0, 0, inImage.size.width, inImage.size.height))
         }
         
         // Creating a point within the space that is as bit as the image.
         var rect: CGRect = CGRectMake(atPoint.x, atPoint.y, inImage.size.width, inImage.size.height)
-        getText(nameText).drawInRect(rect, withAttributes: textFontAttributes)
+        
+        if showCopy == true {
+            getCopyText().drawInRect(rect, withAttributes: textFontAttributes)
+        }
+        
+        var timeParagraphStyle = NSMutableParagraphStyle()
+        timeParagraphStyle.alignment = NSTextAlignment.Right
+        
+        let timeTextFontAttributes = [
+            NSFontAttributeName: textFont,
+            NSForegroundColorAttributeName: textColor,
+            NSParagraphStyleAttributeName: timeParagraphStyle
+        ]
+        
+        let gab2 = (frameSize * 2);
+        
+        let atPoint2 = CGPointMake(frameSize - gab2, imgHeight - fontSize - gab)
+        
+        var timeRect: CGRect = CGRectMake(atPoint2.x, atPoint2.y, inImage.size.width, inImage.size.height)
+        
+        if showTime == true || showLocation == true {
+            getTimeAndLocationText(nameText).drawInRect(timeRect, withAttributes: timeTextFontAttributes)
+        }
         
         // Create a new image out of the images we have created
         var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -654,16 +635,89 @@ class FilterViewController: UIViewController {
         return newImage
     }
     
+    func getCopyText()-> String {
+        
+        let text = "Film By SlowLife Camera"
+        
+        println("Text is = \(text)")
+        
+        return text
+    }
+    
+    func getTimeAndLocationText(textString: String)-> String {
+        
+        var timeText: String = ""
+        var locationText: String = ""
+        
+        var fullNameArr = split(textString) {$0 == ","}
+        
+        if showTime == true {
+            let getTime = split(fullNameArr[0]) {$0 == "_"}
+            
+            let tempDate = getTime[0]
+            let tempTime = getTime[1]
+            
+            // Cut Date
+            let yy = tempDate.substringWithRange(Range<String.Index>(start: advance(tempDate.startIndex, 0), end: advance(tempDate.endIndex, -4)))
+            
+            let mm = tempDate.substringWithRange(Range<String.Index>(start: advance(tempDate.startIndex, 4), end: advance(tempDate.endIndex, -2)))
+            
+            let dd = tempDate.substringWithRange(Range<String.Index>(start: advance(tempDate.startIndex, 6), end: advance(tempDate.endIndex, 0)))
+            
+            let date = "\(yy)-\(mm)-\(dd)"
+            
+            println("date is = \(date)")
+            
+            // Cut time
+            let hr = tempTime.substringWithRange(Range<String.Index>(start: advance(tempTime.startIndex, 0), end: advance(tempTime.endIndex, -4)))
+            
+            let min = tempTime.substringWithRange(Range<String.Index>(start: advance(tempTime.startIndex, 2), end: advance(tempTime.endIndex, -2)))
+            
+            let time = "\(hr):\(min)"
+            
+            timeText = "\(date) \(time)"
+            
+            println("timeText is = \(timeText)")
+        }
+        
+        if showLocation == true{
+            
+            let provice = fullNameArr[1]
+            let tempCoutry = fullNameArr[2]
+            
+            let coutry = tempCoutry.substringWithRange(Range<String.Index>(start: advance(tempCoutry.startIndex, 0), end: advance(tempCoutry.endIndex, -4)))
+            
+            locationText = "\(provice), \(coutry)"
+            
+            println("locationText is = \(locationText)")
+            
+        }
+        
+        var text = ""
+        
+        if showTime == true && showLocation == false {
+            text = "\(timeText)"
+        }else if showTime == false && showLocation == true {
+            text = "\(locationText)"
+        }else if showTime == true && showLocation == true {
+            text = "\(timeText), \(locationText)"
+        }
+        
+        println("Text is = \(text)")
+        
+        return text
+        
+    }
+    
     func moveFile(image: UIImage, newName: String) {
         
         if isCreated == false {
-            releaseMemory()
             var currentTime = NSDate()
             let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "ddMMyy-H:mm" // superset of OP's format
+            dateFormatter.dateFormat = "ddMMyy-HHmm" // superset of OP's format
             let str = dateFormatter.stringFromDate(currentTime)
-
-        let newKey =  initial().createSubDirectory("CompletedData", subDir: str)
+            
+            let newKey =  GlobalFunction().createSubDirectory("CompletedData", subDir: str)
             isCreated = true
             
             self.subDir2 = newKey
@@ -671,34 +725,34 @@ class FilterViewController: UIViewController {
             println("New path = \(newKey)")
         }
         
-        
-        
-        let endIndex = advance(newName.startIndex, 19)
-        let needle = newName.substringToIndex(endIndex)
-        println("Time is = \(needle)")
-        
+        var fullNameArr = split(newName) {$0 == ","}
         //newName.substringWithRange(Range(0, 19))
         
-        var currentFileName: String = "slowlife-\(needle).jpg"
+        var currentFileName: String = "slowlife-\(fullNameArr[0]).jpg"
         println("NewName = \(currentFileName)")
         
         let UIimg = UIImage(CGImage: image.CGImage, scale: 1.0, orientation: UIImageOrientation.Right)
         
-        initial().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: UIimg!)
+        for i in 0 ..< 5 {
+            autoreleasepool {
+                for j in 0 ..< 500 {
+                    let image = UIimg
+                }
+            }
+        }
         
-        
-        save.variable.filterSuccess += 1
+        GlobalFunction().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: UIimg!)
+        DataSetting.variable.filterSuccess += 1
     }
     
-    func releaseMemory() {
-      var counter = 0
-        println("release memory")
-        for i in 0..<10 {
+    func releaseMemory(path: String) {
+        let filename = path
+        
+        for i in 0 ..< 5 {
             autoreleasepool {
-                if i == 5 {
-                   return
+                for j in 0 ..< 500 {
+                    let image = UIImage(contentsOfFile: filename)
                 }
-                counter++
             }
         }
     }

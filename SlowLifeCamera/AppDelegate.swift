@@ -26,7 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
         
         if userSetting.boolForKey("isFirstUse") == false {
-            initial().initial()
+            AppSetting().setting()
+            
         }
         
         return true

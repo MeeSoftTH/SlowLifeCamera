@@ -48,7 +48,7 @@ class GetGift: UIViewController {
         userSetting.setObject(date, forKey: "lasttime")
         self.delegate?.disableGift(true)
         let alertController = UIAlertController(title: "Congratulations", message:
-            "Your got \(randomCoins) coins from Slow Lift Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
+            "Your got \(randomCoins) coins from Slow Life Gift, you current coins is \(intCoins)", preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
             self.navigationController!.popViewControllerAnimated(true)
         }))
