@@ -607,18 +607,9 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         if number < filmNumLength {
             chooseDialog.addAction(UIAlertAction(title: "Develop this film?", style: .Default, handler: { (action: UIAlertAction!) in
                 
-                var refreshAlert = UIAlertController(title: "Develop", message: "Develop \(nameText) film", preferredStyle: UIAlertControllerStyle.Alert)
-                
-                refreshAlert.addAction(UIAlertAction(title: "Develop", style: .Default, handler: { (action: UIAlertAction!) in
-                    
-                    let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
-                    filterView.delegate = self
-                    self.presentViewController(filterView, animated: true, completion: nil)
-                }))
-                
-                refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                
-                self.presentViewController(refreshAlert, animated: true, completion: nil)
+                let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
+                filterView.delegate = self
+                self.presentViewController(filterView, animated: true, completion: nil)
                 
             }))
         }
@@ -677,6 +668,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
                 self.buttonView7.backgroundColor = UIColor.clearColor()
                 self.buttonView8.backgroundColor = UIColor.clearColor()
                 
+                 DataSetting.variable.rowSlected = false
+                
             }))
             
             self.presentViewController(alert, animated: true, completion: nil)
@@ -686,16 +679,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         chooseDialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
             println("Handle Cancel Logic here")
             
-            self.buttonView1.backgroundColor = UIColor.clearColor()
-            self.buttonView2.backgroundColor = UIColor.clearColor()
-            self.buttonView3.backgroundColor = UIColor.clearColor()
-            self.buttonView4.backgroundColor = UIColor.clearColor()
-            
-            self.buttonView5.backgroundColor = UIColor.clearColor()
-            self.buttonView6.backgroundColor = UIColor.clearColor()
-            self.buttonView7.backgroundColor = UIColor.clearColor()
-            self.buttonView8.backgroundColor = UIColor.clearColor()
-            DataSetting.variable.rowSlected = false
         }))
         presentViewController(chooseDialog, animated: true, completion: nil)
     }

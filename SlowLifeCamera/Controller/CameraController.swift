@@ -10,16 +10,16 @@ import UIKit
 import AVFoundation
 import MobileCoreServices
 import Foundation
-import CoreLocation
+//import CoreLocation
 
 protocol updateLabel {
     func updateLabelCamera(text: String, isDev: Bool)
 }
 
-class CameraController: UIViewController, CLLocationManagerDelegate  {
+class CameraController: UIViewController { //, CLLocationManagerDelegate
     
     let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
-    let locationManager = CLLocationManager()
+    //let locationManager = CLLocationManager()
     
     var delegate: updateLabel? = nil
     
@@ -49,15 +49,30 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
         super.viewDidLoad()
         
         if DataSetting.variable.rowSlected == true {
-            numberLabel.text = "Service's starting..."
+            numberLabel.text = "Starting..."
         }
         
         self.shotButton.enabled = false
+        self.shotButton.hidden = true
         
-        locationManager.delegate = self
+        /*locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
+        locationManager.startUpdatingLocation())*/
+        
+        
+        if DataSetting.variable.rowSlected == true {
+            delay(3.0){
+                self.numberLabel.text = "Ready!"
+                self.shotButton.enabled = true
+                self.shotButton.hidden = false
+                
+                self.delay(2.0) {
+                    self.numberLabel.text = String(DataSetting.variable.myNum)
+                    
+                }
+            }
+        }
         
     }
     
@@ -70,7 +85,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
         previewLayer!.frame = previewView.bounds
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    /*func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error)->Void in
             
             if (error != nil) {
@@ -113,7 +128,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
         println("Error while updating location " + error.localizedDescription)
-    }
+    })*/
     
     
     func reloadCamera() {
@@ -195,7 +210,8 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                         if (image != nil) {
                             var format = NSDateFormatter()
                             format.dateFormat="yyyyMMdd_HHmmss"
-                            var currentFileName: String = "\(format.stringFromDate(NSDate())),\(self.locationText).jpg"
+                            var currentFileName: String = "\(format.stringFromDate(NSDate())).jpg" // "\(format.stringFromDate(NSDate())),\(self.locationText).jpg"
+                            
                             println(currentFileName)
                             
                             let filmRow: AnyObject? = self.userSetting?.objectForKey(DataSetting.variable.key)
@@ -226,7 +242,7 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                                 DataSetting.variable.myNum = 0
                                 
                                 self.userSetting?.setObject([slotName, filterCode, filterName, num, filmLength, isOn], forKey: DataSetting.variable.key)
-
+                                
                                 self.delegate?.updateLabelCamera(String(DataSetting.variable.myNum), isDev: true)
                                 self.delay(0.5) {
                                     self.dismissViewControllerAnimated(true, completion: nil)

@@ -39,8 +39,9 @@ class AppSetting {
         userSetting.setObject(["", "", "", ""], forKey: "Slot8")
         
         userSetting.setBool(true, forKey : "showCopyRight")
+        userSetting.setBool(true, forKey : "showFrame")
         userSetting.setBool(true, forKey : "ShowTime")
-        userSetting.setBool(true, forKey : "showLocation")
+        userSetting.setBool(false, forKey : "showLocation")
         
         GlobalFunction().createDirectory("RawData")
         GlobalFunction().createDirectory("CompletedData")

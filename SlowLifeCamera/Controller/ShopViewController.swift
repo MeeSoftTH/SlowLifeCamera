@@ -126,7 +126,7 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
             text = "No.13"
         }
         
-        var alert = UIAlertController(title: text, message: "Do you want to get \(text)?", preferredStyle: UIAlertControllerStyle.Alert)
+        var alert = UIAlertController(title: "Buy Film", message: "You got \(text) 1 ea.", preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: "Get", style: .Default, handler: { (action: UIAlertAction!) in
             
@@ -242,15 +242,15 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         self.myTableView.rowHeight = 70
         
-        var filmType1 = ShopDatas(iconName: DataSetting.variable.iconFilter1, name: DataSetting.variable.filter1, coins: 10)
-        var filmType2 = ShopDatas(iconName: DataSetting.variable.iconFilter2, name: DataSetting.variable.filter2, coins: 20)
-        var filmType3 = ShopDatas(iconName: DataSetting.variable.iconFilter3, name: DataSetting.variable.filter3, coins: 40)
-        var filmType4 = ShopDatas(iconName: DataSetting.variable.iconFilter4, name: DataSetting.variable.filter4, coins: 50)
+        var filmType1 = ShopDatas(iconName: DataSetting.variable.iconFilter1, name: DataSetting.variable.filter1, coins: DataSetting.variable.coinsFilter1)
+        var filmType2 = ShopDatas(iconName: DataSetting.variable.iconFilter2, name: DataSetting.variable.filter2, coins: DataSetting.variable.coinsFilter2)
+        var filmType3 = ShopDatas(iconName: DataSetting.variable.iconFilter3, name: DataSetting.variable.filter3, coins: DataSetting.variable.coinsFilter3)
+        var filmType4 = ShopDatas(iconName: DataSetting.variable.iconFilter4, name: DataSetting.variable.filter4, coins: DataSetting.variable.coinsFilter4)
         
-        var filmType5 = ShopDatas(iconName: DataSetting.variable.iconFilter5, name: DataSetting.variable.filter5, coins: 80)
-        var filmType6 = ShopDatas(iconName: DataSetting.variable.iconFilter6, name: DataSetting.variable.filter6, coins: 80)
-        var filmType7 = ShopDatas(iconName: DataSetting.variable.iconFilter7, name: DataSetting.variable.filter7, coins: 80)
-        var filmType8 = ShopDatas(iconName: DataSetting.variable.iconFilter8, name: DataSetting.variable.filter8, coins: 80)
+        var filmType5 = ShopDatas(iconName: DataSetting.variable.iconFilter5, name: DataSetting.variable.filter5, coins: DataSetting.variable.coinsFilter5)
+        var filmType6 = ShopDatas(iconName: DataSetting.variable.iconFilter6, name: DataSetting.variable.filter6, coins: DataSetting.variable.coinsFilter6)
+        var filmType7 = ShopDatas(iconName: DataSetting.variable.iconFilter7, name: DataSetting.variable.filter7, coins: DataSetting.variable.coinsFilter7)
+        var filmType8 = ShopDatas(iconName: DataSetting.variable.iconFilter8, name: DataSetting.variable.filter8, coins: DataSetting.variable.coinsFilter8)
         
         arryOfShopDatas.append(filmType1)
         arryOfShopDatas.append(filmType2)

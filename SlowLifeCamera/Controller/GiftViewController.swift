@@ -157,8 +157,16 @@ class GiftViewController: UIViewController, AVAudioPlayerDelegate, UnityAdsDeleg
     
     @IBAction func slowLiftButton(sender: UIButton) {
         
-        let randomNumber = arc4random_uniform(100) + 20
-        var randomCoins = Int(randomNumber)
+        let randomNumber = arc4random_uniform(9) + 1
+        var randomCoins:Int = Int(randomNumber)
+        
+        println("RandomCoins is= \(String(randomCoins))")
+        
+        if randomCoins < 2 {
+            randomCoins = 2
+        }
+        
+        randomCoins = randomCoins * 10
         
         var intCoins: Int = userSetting.integerForKey("myCoins")
         

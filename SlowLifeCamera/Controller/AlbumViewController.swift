@@ -49,12 +49,8 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         
         if count > 0 {
-            releaseMemory()
             
-            self.publicKeyArray = fileList
-            
-            for var i:Int = 0; i < count; i++
-            {
+            for var i: Int = count - 1; i > -1; i-- {
                 if fileManager.fileExistsAtPath(fileList[i]) != true
                 {
                     
@@ -75,6 +71,8 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
     
                         var row = AlbumDatas(name: folder, filterName: filter, iconName: icon, number: number)
                         arryOfAlbumDatas.append(row)
+                        
+                        self.publicKeyArray.append(fileList[i])
                     }
                 }
             }
@@ -110,7 +108,6 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         let AlbumData = arryOfAlbumDatas[indexPath.row]
         cell.setAlbumCell(AlbumData.name, filterName: AlbumData.filterName, iconName: AlbumData.iconName, number: AlbumData.number)
-        releaseMemory()
         return cell
     }
     
@@ -166,18 +163,4 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         return
     }
-    
-    
-    func releaseMemory() {
-        var counter = 0
-        for i in 0..<10 {
-            autoreleasepool {
-                if i == 5 {
-                    return
-                }
-                counter++
-            }
-        }
-    }
-    
 }

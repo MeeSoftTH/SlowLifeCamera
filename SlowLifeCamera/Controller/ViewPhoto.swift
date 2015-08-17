@@ -9,6 +9,7 @@
 
 import UIKit
 import Social
+import AssetsLibrary
 
 protocol updateCoinsViewPhoto {
     func updateCoinsViewPhoto2(myCoins: Int)
@@ -24,13 +25,26 @@ class ViewPhoto: UIViewController {
     
     //@Export photo
     @IBAction func save(sender : AnyObject) {
-        UIImageWriteToSavedPhotosAlbum(self.imageResource, nil, nil, nil);
         
-        let alertController = UIAlertController(title: "", message:
-            "Already save photo to gallery", preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
+        var status:ALAuthorizationStatus = ALAssetsLibrary.authorizationStatus()
         
-        self.presentViewController(alertController, animated: true, completion: nil)
+        if status != ALAuthorizationStatus.Authorized{
+            println("User has not given authorization for the camera roll")
+        }else {
+            UIImageWriteToSavedPhotosAlbum(self.imageResource, self, "image:didFinishSavingWithError:contextInfo:", nil)
+        }
+    }
+    
+    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
+        if error == nil {
+            let ac = UIAlertController(title: "Saved!", message: "The photo has been saved.", preferredStyle: .Alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(ac, animated: true, completion: nil)
+        } else {
+            let ac = UIAlertController(title: "Save error", message: error?.localizedDescription, preferredStyle: .Alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(ac, animated: true, completion: nil)
+        }
     }
     
     @IBAction func shareTo(sender: UIBarButtonItem) {
@@ -182,6 +196,7 @@ class ViewPhoto: UIViewController {
         
         self.delegate.updateCoinsViewPhoto2(intCoins)
     }
+    
     
     
     func delay(delay:Double, closure:()->()) {
