@@ -9,7 +9,7 @@
 
 import UIKit
 import Social
-import AssetsLibrary
+import Photos
 
 protocol updateCoinsViewPhoto {
     func updateCoinsViewPhoto2(myCoins: Int)
@@ -26,27 +26,28 @@ class ViewPhoto: UIViewController {
     //@Export photo
     @IBAction func save(sender : AnyObject) {
         
-        var status:ALAuthorizationStatus = ALAssetsLibrary.authorizationStatus()
-        
-        if status != ALAuthorizationStatus.Authorized{
-            println("User has not given authorization for the camera roll")
-        }else {
-            UIImageWriteToSavedPhotosAlbum(self.imageResource, self, "image:didFinishSavingWithError:contextInfo:", nil)
+        PHPhotoLibrary.requestAuthorization
+            { (PHAuthorizationStatus status) -> Void in
+                switch (status)
+                {
+                case .Authorized:
+                    // Permission Granted
+                    println("Write your code here")
+                    UIImageWriteToSavedPhotosAlbum(self.imageResource, nil, nil, nil)
+                    
+                    let ac = UIAlertController(title: "Saved!", message: "The photo has been saved.", preferredStyle: .Alert)
+                    ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                    self.presentViewController(ac, animated: true, completion: nil)
+
+                case .Denied:
+                    // Permission Denied
+                    println("User denied")
+                default:
+                    println("Restricted")
+                }
+                
         }
     }
-    
-    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
-        if error == nil {
-            let ac = UIAlertController(title: "Saved!", message: "The photo has been saved.", preferredStyle: .Alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            presentViewController(ac, animated: true, completion: nil)
-        } else {
-            let ac = UIAlertController(title: "Save error", message: error?.localizedDescription, preferredStyle: .Alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            presentViewController(ac, animated: true, completion: nil)
-        }
-    }
-    
     @IBAction func shareTo(sender: UIBarButtonItem) {
         
         var chooseDialog = UIAlertController(title: "Post to social network", message: "Choose your social network?",preferredStyle: UIAlertControllerStyle.ActionSheet
