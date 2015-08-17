@@ -10,15 +10,21 @@
 import UIKit
 import Social
 
+protocol updateCoinsViewPhoto {
+    func updateCoinsViewPhoto2(myCoins: Int)
+}
+
 class ViewPhoto: UIViewController {
     var filterImage = [String]()
     var index: Int = 0
     var keySlot = ""
     var imageResource = UIImage()
     
+    var delegate: updateCoinsViewPhoto = DataSetting.variable.controller
+    
     //@Export photo
     @IBAction func save(sender : AnyObject) {
-    UIImageWriteToSavedPhotosAlbum(self.imageResource, nil, nil, nil);
+        UIImageWriteToSavedPhotosAlbum(self.imageResource, nil, nil, nil);
         
         let alertController = UIAlertController(title: "", message:
             "Already save photo to gallery", preferredStyle: UIAlertControllerStyle.Alert)
@@ -40,10 +46,31 @@ class ViewPhoto: UIViewController {
                 // 3
                 controller.setInitialText("Posting by SLOW LIFE CAMERA APP")
                 controller.addImage(self.imgView.image)
-                // 4
-                self.presentViewController(controller, animated:true, completion:nil)
-            }
-            else {
+                
+                controller.completionHandler = { (result:SLComposeViewControllerResult) -> Void in
+                    switch result {
+                    case SLComposeViewControllerResult.Cancelled:
+                        NSLog("result: cancelled")
+                    case SLComposeViewControllerResult.Done:
+                        // TODO: ADD SOME CODE FOR SUCCESS
+                        
+                        self.delay(1.0) {
+                            let alertController = UIAlertController(title: "Congratulations", message:
+                                "Your got 100 coins from share photo action", preferredStyle: UIAlertControllerStyle.Alert)
+                            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+                                self.gifeCoins()
+                                
+                            }))
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                        }
+                        
+                        NSLog("result: done")
+                    }
+                }
+                
+                self.presentViewController(controller, animated: true, completion: nil)
+                
+            }else {
                 // 3
                 let alertController = UIAlertController(title: "Alert", message:
                     "Sign to Facebook first!", preferredStyle: UIAlertControllerStyle.Alert)
@@ -61,6 +88,27 @@ class ViewPhoto: UIViewController {
                 tweetSheet.setInitialText("Posting by SLOW LIFE CAMERA APP")
                 tweetSheet.addImage(self.imgView.image)
                 
+                tweetSheet.completionHandler = { (result:SLComposeViewControllerResult) -> Void in
+                    switch result {
+                    case SLComposeViewControllerResult.Cancelled:
+                        NSLog("result: cancelled")
+                    case SLComposeViewControllerResult.Done:
+                        // TODO: ADD SOME CODE FOR SUCCESS
+                        
+                        self.delay(1.0) {
+                            let alertController = UIAlertController(title: "Congratulations", message:
+                                "Your got 100 coins from share photo action", preferredStyle: UIAlertControllerStyle.Alert)
+                            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
+                                self.gifeCoins()
+                                
+                            }))
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                        }
+                        
+                        NSLog("result: done")
+                    }
+                }
+                
                 self.presentViewController(tweetSheet, animated: true, completion: nil)
             } else {
                 let alertController = UIAlertController(title: "Alert", message:
@@ -69,7 +117,7 @@ class ViewPhoto: UIViewController {
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             }
-        
+            
         }))
         
         chooseDialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
@@ -124,5 +172,21 @@ class ViewPhoto: UIViewController {
             }
             
         }
+    }
+    
+    func gifeCoins() {
+        
+        var intCoins: Int = userSetting.integerForKey("myCoins")
+        
+        intCoins = intCoins + 100
+        
+        self.delegate.updateCoinsViewPhoto2(intCoins)
+    }
+    
+    
+    func delay(delay:Double, closure:()->()) {
+        
+        dispatch_after(
+            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
     }
 }

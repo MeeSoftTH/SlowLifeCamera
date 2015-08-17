@@ -9,7 +9,7 @@
 import UIKit
 
 protocol removeFilm {
-    func removeAfterSuccess(isTrue: Bool, coinsUpdate: String)
+    func removeAfterSuccess(isTrue: Bool)
 }
 
 let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
@@ -28,7 +28,7 @@ class FilterViewController: UIViewController {
     var isCancel: Bool = false
     var isCreated: Bool = false
     var textLength: Int = 0
-    
+    var IsUseText: Bool = false
     
     let showCopy = userSetting.boolForKey("showCopyRight")
     let showTime = userSetting.boolForKey("ShowTime")
@@ -37,6 +37,8 @@ class FilterViewController: UIViewController {
     let context = CIContext(options: nil)
     
     override func viewDidLoad() {
+        self.IsUseText = showCopy == true || showTime == true || showLocation == true ? true : false
+
         super.viewDidLoad()
     }
     
@@ -81,7 +83,7 @@ class FilterViewController: UIViewController {
         let fileManager:NSFileManager = NSFileManager.defaultManager()
         var fileList = listFilesFromDocumentsFolder()
         let count = fileList.count
-        
+        println(String(format: "Start Process %@", keyFilter))
         if count > 0 {
             var filterName = DataSetting.variable.filter1
             var iconName = DataSetting.variable.iconFilter1
@@ -89,59 +91,63 @@ class FilterViewController: UIViewController {
             let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
             let documentsDirectory: AnyObject = dir[0]
             
-            for i in 0..<count {
-                
-                var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(fileList[i])")
-                releaseMemory(getImagePath)
-                
-                var fileURL = NSURL(fileURLWithPath: getImagePath)
-                releaseMemory(getImagePath)
-                
-                if keyFilter == "#01" {
-                    ApplyFilterNO14(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter1
-                    iconName = DataSetting.variable.iconFilter1
+            autoreleasepool {
+                for i in 0..<count {
+                    status.text = String(format: "Developing %d of %d", i + 1, count)
+                    NSRunLoop.mainRunLoop().runUntilDate(NSDate().dateByAddingTimeInterval(0.5))
+                    var getImagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(fileList[i])")
+                    println("Path:" + getImagePath)
+                    //releaseMemory(getImagePath)
                     
-                }else if keyFilter == "#02" {
-                    ApplySepiaFilter(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter2
-                    iconName = DataSetting.variable.iconFilter2
+                    var fileURL = NSURL(fileURLWithPath: getImagePath)
+                    //releaseMemory(getImagePath)
+                    var gotImg = UIImage(contentsOfFile: getImagePath)
+                    println(gotImg?.imageOrientation.rawValue)
+                    if keyFilter == "#01" {
+                        ApplyFilterNO14(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter1
+                        iconName = DataSetting.variable.iconFilter1
+                        
+                    }else if keyFilter == "#02" {
+                        ApplySepiaFilter(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter2
+                        iconName = DataSetting.variable.iconFilter2
+                        
+                    }else if keyFilter == "#03" {
+                        ApplyMonoFilter(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter3
+                        iconName = DataSetting.variable.iconFilter3
+                        
+                    }else if keyFilter == "#04" {
+                        ApplyFilterNO10(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter4
+                        iconName = DataSetting.variable.iconFilter4
+                        
+                        
+                    }else if keyFilter == "#05" {
+                        ApplyPolyFilter(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter5
+                        iconName = DataSetting.variable.iconFilter5
+                        
+                    }else if keyFilter == "#06" {
+                        ApplyFilterNO9(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter6
+                        iconName = DataSetting.variable.iconFilter6
+                        
+                    }else if keyFilter == "#07" {
+                        ApplyFilterNO7(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter7
+                        iconName = DataSetting.variable.iconFilter7
+                        
+                    }else if keyFilter == "#08" {
+                        ApplyFilterNO13(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        filterName = DataSetting.variable.filter8
+                        iconName = DataSetting.variable.iconFilter8
+                        
+                    }
                     
-                }else if keyFilter == "#03" {
-                    ApplyMonoFilter(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter3
-                    iconName = DataSetting.variable.iconFilter3
-                    
-                }else if keyFilter == "#04" {
-                    ApplyFilterNO10(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter4
-                    iconName = DataSetting.variable.iconFilter4
-                    
-                    
-                }else if keyFilter == "#05" {
-                    ApplyPolyFilter(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter5
-                    iconName = DataSetting.variable.iconFilter5
-                    
-                }else if keyFilter == "#06" {
-                    ApplyFilterNO9(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter6
-                    iconName = DataSetting.variable.iconFilter6
-                    
-                }else if keyFilter == "#07" {
-                    ApplyFilterNO7(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter7
-                    iconName = DataSetting.variable.iconFilter7
-                    
-                }else if keyFilter == "#08" {
-                    ApplyFilterNO13(fileURL!, rename: fileList[i])
-                    filterName = DataSetting.variable.filter8
-                    iconName = DataSetting.variable.iconFilter8
-                    
+                    removeFile(fileList[i])
                 }
-                releaseMemory(getImagePath)
-                
-                removeFile(fileList[i])
             }
             
             println("Set to key = \(self.subDir2)")
@@ -151,7 +157,7 @@ class FilterViewController: UIViewController {
             let removeIndexDir: AnyObject = removeDir[0]
             
             var removePath = removeIndexDir.stringByAppendingPathComponent("RawData/\(self.subDir)")
-            releaseMemory(removePath)
+            //releaseMemory(removePath)
             
             let fileDir = NSFileManager.defaultManager()
             var removeErrorrror: NSError?
@@ -161,12 +167,6 @@ class FilterViewController: UIViewController {
             } else {
                 println("Remove failed: \(removeErrorrror!.localizedDescription)")
             }
-            
-            var intCoins: Int = userSetting.integerForKey("myCoins")
-            
-            intCoins = intCoins + DataSetting.variable.filterSuccess
-            
-            userSetting.setInteger(intCoins, forKey: "myCoins")
             
             var numberOfPhoto = String(DataSetting.variable.filterSuccess)
             
@@ -178,8 +178,7 @@ class FilterViewController: UIViewController {
             DataSetting.variable.filterSuccess = 0
             DataSetting.variable.key = ""
             
-            
-            self.delegate?.removeAfterSuccess(true, coinsUpdate: String(intCoins))
+            self.delegate?.removeAfterSuccess(true)
             
             DataSetting.variable.rowSlected = false
             DataSetting.variable.isProcess = false
@@ -218,8 +217,8 @@ class FilterViewController: UIViewController {
         let documentsDirectory: AnyObject = dir[0]
         
         var imagePath = documentsDirectory.stringByAppendingPathComponent("RawData/\(self.subDir)/\(path)")
-        releaseMemory(imagePath)
-        releaseMemory(imagePath)
+        //releaseMemory(imagePath)
+        //releaseMemory(imagePath)
         
         let filemgr = NSFileManager.defaultManager()
         var error: NSError?
@@ -232,7 +231,7 @@ class FilterViewController: UIViewController {
         return
     }
     
-    func ApplyCCtrlFilter(fileURL:NSURL, rename: String) {
+    func ApplyCCtrlFilter(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let filter = CIFilter(name: "CIColorControls")
         let ciImage = CIImage(contentsOfURL: fileURL)
         
@@ -241,19 +240,15 @@ class FilterViewController: UIViewController {
         filter.setValue(0.92, forKey: kCIInputSaturationKey)
         filter.setValue(0.98, forKey: kCIInputContrastKey)
         //let context = CIContext(options:nil)
+  
         
-        
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
-        
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
+
+        self.moveFile(finalImage, newName: rename)
         
     }
     
-    func ApplySepiaFilter(fileURL:NSURL, rename: String) {
+    func ApplySepiaFilter(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let filter = CIFilter(name: "CISepiaTone")
         let ciImage = CIImage(contentsOfURL: fileURL)
         
@@ -261,19 +256,13 @@ class FilterViewController: UIViewController {
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(0.87, forKey: kCIInputIntensityKey)
         
-        //let context = CIContext(options:nil)
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: true, useText: IsUseText, nameText: rename);
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        self.moveFile(finalImage, newName: rename)
         
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        let newImage = textImg
-        
-        self.moveFile(newImage, newName: rename)
     }
     
-    func ApplyReduceNoiseFilter(fileURL:NSURL, rename: String) {
+    func ApplyReduceNoiseFilter(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let filter = CIFilter(name: "CISharpenLuminance")
         let ciImage = CIImage(contentsOfURL: fileURL)
         
@@ -290,31 +279,23 @@ class FilterViewController: UIViewController {
         
         //let context = CIContext(options:nil)
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        let newImage = textImg
-        
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyMonoFilter(fileURL:NSURL, rename: String) {
+    func ApplyMonoFilter(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         //CIMaximumComponent
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIMaximumComponent")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: true, useText: IsUseText, nameText: rename);
         
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyPolyFilter(fileURL:NSURL, rename: String) {
+    func ApplyPolyFilter(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         //CIColorCrossPolynomial
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CISharpenLuminance")
@@ -331,51 +312,37 @@ class FilterViewController: UIViewController {
         filter2.setValue(filter.outputImage, forKey: kCIInputImageKey)
         filter2.setValue(vector, forKey: "inputGreenCoefficients")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
         
     }
     
-    func ApplyFadeFilter(fileURL:NSURL, rename: String) {
+    func ApplyFadeFilter(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         //CIPhotoEffectFade
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIPhotoEffectFade")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+      let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO7(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO7(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIHighlightShadowAdjust")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         //filter.setValue(1.8, forKey: "inputHighlightAmount")
         filter.setValue(0.3, forKey: "inputShadowAmount")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+       let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO8(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO8(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIVignetteEffect")
         //filter.setDefaults()
@@ -386,17 +353,12 @@ class FilterViewController: UIViewController {
         filter.setValue(0.24, forKey: "inputIntensity")
         filter.setValue(0, forKey: "inputRadius")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO9(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO9(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIHighlightShadowAdjust")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
@@ -408,65 +370,48 @@ class FilterViewController: UIViewController {
         filter2.setValue(color, forKey: "inputColor")
         filter2.setValue(1.0, forKey: "inputIntensity")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO10(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO10(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
+        
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIColorPosterize")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(27, forKey: "inputLevels")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), scale: CGFloat(1.0), orientation: UIImageOrientation.Right)
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: true, useText: IsUseText, nameText: rename);
         
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        let newImage = textImg
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO11(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO11(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIUnsharpMask")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(2.9, forKey: "inputRadius")
         filter.setValue(0.72, forKey: "inputIntensity")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+       let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        let newImage = textImg
-        
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO12(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO12(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIGloom")
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(8.1, forKey: "inputRadius")
         filter.setValue(0.5, forKey: "inputIntensity")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        let newImage = textImg
-        
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO13(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO13(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let ciImage = CIImage(contentsOfURL: fileURL)
         let filter = CIFilter(name: "CIConvolution3X3")
         //filter.setDefaults()
@@ -476,16 +421,12 @@ class FilterViewController: UIViewController {
         filter.setValue(vector, forKey: "inputWeights")
         filter.setValue(0.0, forKey: "inputBias")
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+       let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
-        
-        let newImage = textImg
-        
-        self.moveFile(newImage, newName: rename)
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO14(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO14(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         var ciImage = CIImage(contentsOfURL: fileURL)
         let imgWidth = ciImage.extent().width
         let imgHeight = ciImage.extent().height
@@ -512,15 +453,13 @@ class FilterViewController: UIViewController {
             filter2.setValue(ciImage, forKey: "inputBackgroundImage")
             ciImage = filter2.outputImage
         }
-        var image = UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))
-        let textImg = addTextAndFrame(image!, useFrame: true, nameText: rename);
         
-        let newImage = textImg//UIImage(CGImage: context.createCGImage(ciImage, fromRect: rect))
-        
-        self.moveFile(newImage, newName: rename)
+         let finalImage = ProcessFilterImage(context.createCGImage(ciImage, fromRect: rect), orientation: orientation, useFrame: true,  useText: IsUseText, nameText: rename);
+    
+        self.moveFile(finalImage, newName: rename)
     }
     
-    func ApplyFilterNO15(fileURL:NSURL, rename: String) {
+    func ApplyFilterNO15(fileURL:NSURL, rename: String, orientation: UIImageOrientation) {
         let filter = CIFilter(name: "CIStripesGenerator")
         let floatArr: [CGFloat] = [100,100]
         var vector = CIVector(values: floatArr, count: floatArr.count)
@@ -544,13 +483,23 @@ class FilterViewController: UIViewController {
         println(imgWidth)
         println(imgHeight)
         
-        var image = UIImage(CGImage: context.createCGImage(filter.outputImage, fromRect: ciImage.extent()))
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: false, useText: IsUseText, nameText: rename);
         
-        let textImg = addTextAndFrame(image!, useFrame: false, nameText: rename);
+        self.moveFile(finalImage, newName: rename)
+    }
+    
+    func ProcessFilterImage(cgImage : CGImage, orientation: UIImageOrientation, useFrame: Bool, useText: Bool, nameText: String) -> UIImage{
         
-        let newImage = textImg// UIImage(CGImage: context.createCGImage(filter3.outputImage, fromRect: ciImage.extent()))
+        // First: Create UIImage from filtered image plus rotate it to real orientation.
+        var uImage = UIImage(CGImage: cgImage, scale: CGFloat(1.0), orientation: orientation)
         
-        self.moveFile(newImage, newName: rename)
+        // Last: Check nees to add Frame or Text on image or not.
+        if(useFrame || useText){
+            return addTextAndFrame(uImage!, useFrame: useFrame, nameText: nameText);
+        }
+        else {
+            return uImage!
+        }
     }
     
     func randomNumberBetween(min: Int, max: Int) -> Int {
@@ -731,29 +680,18 @@ class FilterViewController: UIViewController {
         var currentFileName: String = "slowlife-\(fullNameArr[0]).jpg"
         println("NewName = \(currentFileName)")
         
-        let UIimg = UIImage(CGImage: image.CGImage, scale: 1.0, orientation: UIImageOrientation.Right)
-        
+        //let UIimg = UIImage(CGImage: image.CGImage, scale: CGFloat(1.0), orientation: orientation)
+        /*
         for i in 0 ..< 5 {
-            autoreleasepool {
-                for j in 0 ..< 500 {
-                    let image = UIimg
-                }
-            }
+        autoreleasepool {
+        for j in 0 ..< 500 {
+        let image = UIimg
         }
-        
-        GlobalFunction().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: UIimg!)
+        }
+        }
+        */
+        GlobalFunction().createSubAndFileDirectory("CompletedData", subDir: self.subDir2, file: currentFileName, image: image)
         DataSetting.variable.filterSuccess += 1
     }
     
-    func releaseMemory(path: String) {
-        let filename = path
-        
-        for i in 0 ..< 5 {
-            autoreleasepool {
-                for j in 0 ..< 500 {
-                    let image = UIImage(contentsOfFile: filename)
-                }
-            }
-        }
-    }
 }

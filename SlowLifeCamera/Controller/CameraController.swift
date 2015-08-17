@@ -13,11 +13,7 @@ import Foundation
 import CoreLocation
 
 protocol updateLabel {
-    func updateLabelCamera(text: String)
-}
-
-protocol developFilm {
-    func developNewFilm()
+    func updateLabelCamera(text: String, isDev: Bool)
 }
 
 class CameraController: UIViewController, CLLocationManagerDelegate  {
@@ -26,7 +22,6 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     let locationManager = CLLocationManager()
     
     var delegate: updateLabel? = nil
-    var filmDevelop: developFilm? = nil
     
     @IBOutlet weak var previewView: UIView!
     @IBOutlet var captureView: UIView!
@@ -64,7 +59,6 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
         
-        releaseMemory()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -161,15 +155,43 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             self.shotButton.enabled = false
             
             if let videoConnection = stillImageOutput!.connectionWithMediaType(AVMediaTypeVideo) {
-                videoConnection.videoOrientation = AVCaptureVideoOrientation.Portrait
+                var newOrientation : AVCaptureVideoOrientation
+                var imgOrientation : UIImageOrientation
+                let deviceOrientation = UIDevice.currentDevice().orientation
+                switch(deviceOrientation)
+                {
+                case UIDeviceOrientation.Portrait:
+                    newOrientation = AVCaptureVideoOrientation.Portrait
+                    imgOrientation = UIImageOrientation.Right
+                    break
+                case UIDeviceOrientation.PortraitUpsideDown:
+                    newOrientation = AVCaptureVideoOrientation.PortraitUpsideDown
+                    imgOrientation = UIImageOrientation.Right // .Left
+                    break
+                case UIDeviceOrientation.LandscapeLeft:
+                    newOrientation = AVCaptureVideoOrientation.LandscapeLeft
+                    imgOrientation = UIImageOrientation.Up
+                    break
+                case UIDeviceOrientation.LandscapeRight:
+                    newOrientation = AVCaptureVideoOrientation.LandscapeRight
+                    imgOrientation = UIImageOrientation.Down
+                    break
+                default :
+                    newOrientation = AVCaptureVideoOrientation.Portrait
+                    imgOrientation = UIImageOrientation.Right
+                    break
+                    
+                }
+                
+                videoConnection.videoOrientation = newOrientation // AVCaptureVideoOrientation.Portrait
                 stillImageOutput!.captureStillImageAsynchronouslyFromConnection(videoConnection, completionHandler: {(sampleBuffer, error) in
                     if (sampleBuffer != nil) {
                         var imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
                         var dataProvider = CGDataProviderCreateWithCFData(imageData)
                         var cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, kCGRenderingIntentDefault)
                         
-                        var image = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: UIImageOrientation.Right)
-                        
+                        var image = UIImage(CGImage: cgImageRef, scale: 1.0, orientation: imgOrientation)
+                        //var image = UIImage(CGImage: cgImageRef)
                         if (image != nil) {
                             var format = NSDateFormatter()
                             format.dateFormat="yyyyMMdd_HHmmss"
@@ -189,8 +211,6 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                             }
                             
                             if DataSetting.variable.myNum == 0 {
-                                self.releaseMemory()
-                                self.delegate?.updateLabelCamera(String(DataSetting.variable.myNum))
                                 
                                 let path: AnyObject? = self.userSetting?.objectForKey(DataSetting.variable.key)
                                 
@@ -202,13 +222,12 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
                                 let isOn = path!.objectAtIndex(5) as! Bool
                                 
                                 num = DataSetting.variable.myNum
-                              
+                                
                                 DataSetting.variable.myNum = 0
                                 
                                 self.userSetting?.setObject([slotName, filterCode, filterName, num, filmLength, isOn], forKey: DataSetting.variable.key)
-                                
-                                self.filmDevelop?.developNewFilm()
-                                
+
+                                self.delegate?.updateLabelCamera(String(DataSetting.variable.myNum), isDev: true)
                                 self.delay(0.5) {
                                     self.dismissViewControllerAnimated(true, completion: nil)
                                 }
@@ -270,7 +289,6 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             }
         }
         captureSession!.stopRunning()
-        releaseMemory()
         previewLayer?.removeFromSuperlayer()
         if(cameratype == true) {
             let devices = AVCaptureDevice.devices()
@@ -302,10 +320,9 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
     }
     
     @IBAction func myBag(sender: UIButton) {
-        releaseMemory()
         if DataSetting.variable.myNum >= 0 && DataSetting.variable.myNum < 26 && DataSetting.variable.key != "" {
             
-            self.delegate?.updateLabelCamera(String(DataSetting.variable.myNum))
+            self.delegate?.updateLabelCamera(String(DataSetting.variable.myNum), isDev: false)
             
             let path: AnyObject? = self.userSetting?.objectForKey(DataSetting.variable.key)
             
@@ -335,17 +352,4 @@ class CameraController: UIViewController, CLLocationManagerDelegate  {
             }
         }
     }
-    
-    func releaseMemory() {
-        var counter = 0
-        for i in 0..<10 {
-            autoreleasepool {
-                if i == 5 {
-                    return
-                }
-                counter++
-            }
-        }
-    }
-    
 }

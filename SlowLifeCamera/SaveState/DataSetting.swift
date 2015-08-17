@@ -15,6 +15,7 @@ class DataSetting {
         static var filterSuccess: Int = 0
         static var filmIndex: Int = 0
         static var isProcess: Bool = false
+        static var controller: updateCoinsViewPhoto! = nil
         
         //Filter define
         static let filterCode1: String = "#01"
@@ -28,15 +29,15 @@ class DataSetting {
         static let filterCode8: String = "#08"
         
         
-        static let filter1: String = "No.14"
+        static let filter1: String = "firefly"
         static let filter2: String = "Sepia"
         static let filter3: String = "Mono"
-        static let filter4: String = "No.10"
+        static let filter4: String = "Grain"
         
         static let filter5: String = "Poly"
-        static let filter6: String = "No.9"
-        static let filter7: String = "No.7"
-        static let filter8: String = "No.13"
+        static let filter6: String = "Red Room"
+        static let filter7: String = "WOW"
+        static let filter8: String = "DARK"
         
         
         static let iconFilter1: String = "filter1"
@@ -50,21 +51,21 @@ class DataSetting {
         static let iconFilter8: String = "filter8"
         
         
-        static let numberFilter1: Int = 20
-        static let numberFilter2: Int = 20
-        static let numberFilter3: Int = 20
-        static let numberFilter4: Int = 20
+        static let numberFilter1: Int = 5
+        static let numberFilter2: Int = 5
+        static let numberFilter3: Int = 5
+        static let numberFilter4: Int = 5
         
-        static let numberFilter5: Int = 20
-        static let numberFilter6: Int = 20
-        static let numberFilter7: Int = 20
-        static let numberFilter8: Int = 20
+        static let numberFilter5: Int = 7
+        static let numberFilter6: Int = 7
+        static let numberFilter7: Int = 7
+        static let numberFilter8: Int = 7
         
         
-        static let coinsFilter1: Int = 10
+        static let coinsFilter1: Int = 20
         static let coinsFilter2: Int = 20
-        static let coinsFilter3: Int = 40
-        static let coinsFilter4: Int = 50
+        static let coinsFilter3: Int = 20
+        static let coinsFilter4: Int = 20
         
         static let coinsFilter5: Int = 80
         static let coinsFilter6: Int = 80

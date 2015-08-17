@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins, updateLabel, developFilm {
+class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins, updateLabel, updateCoinsViewPhoto {
     
     let userSetting: NSUserDefaults! = NSUserDefaults.standardUserDefaults()
     
@@ -54,10 +54,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     @IBOutlet var buttonView7: UIView!
     @IBOutlet var buttonView8: UIView!
     
-    
-    
     @IBOutlet var myCoins: UILabel!
-    
     
     let slotName1: String = "row1"
     let slotName2: String = "row2"
@@ -71,6 +68,8 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        DataSetting.variable.controller = self
         
         self.myCoins.text = String(userSetting.integerForKey("myCoins"))
         
@@ -119,6 +118,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         if DataSetting.variable.rowSlected == true {
             let cameraView = self.storyboard!.instantiateViewControllerWithIdentifier("cameraView") as! CameraController
             cameraView.delegate = self
+            
             self.presentViewController(cameraView, animated: true, completion: nil)
         }else {
             let alertController = UIAlertController(title: "Select film first", message:
@@ -568,7 +568,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         
         let number = filmRow!.objectAtIndex(3) as! Int
         var filmNumLength = filmRow!.objectAtIndex(4) as! Int
-
+        
         let keyFilterName = filmRow!.objectAtIndex(1) as! String
         
         
@@ -605,7 +605,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         )
         
         if number < filmNumLength {
-            chooseDialog.addAction(UIAlertAction(title: "Develop \(nameText) film?", style: .Default, handler: { (action: UIAlertAction!) in
+            chooseDialog.addAction(UIAlertAction(title: "Develop this film?", style: .Default, handler: { (action: UIAlertAction!) in
                 
                 var refreshAlert = UIAlertController(title: "Develop", message: "Develop \(nameText) film", preferredStyle: UIAlertControllerStyle.Alert)
                 
@@ -623,7 +623,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
             }))
         }
         
-        chooseDialog.addAction(UIAlertAction(title: "Delete \(nameText) film", style: .Default, handler: { (action: UIAlertAction!) in
+        chooseDialog.addAction(UIAlertAction(title: "Delete this film", style: .Default, handler: { (action: UIAlertAction!) in
             
             var alert = UIAlertController(title: "Delete film", message: "Do you want delete \(nameText) film?", preferredStyle: UIAlertControllerStyle.Alert)
             
@@ -708,7 +708,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         self.myCoins.text = myCoins
     }
     
-    func removeAfterSuccess(isTrue: Bool, coinsUpdate: String) {
+    func removeAfterSuccess(isTrue: Bool) {
         if isTrue == true {
             updateControl()
             DataSetting.variable.filmIndex = 0
@@ -721,8 +721,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
             self.buttonView6.backgroundColor = UIColor.clearColor()
             self.buttonView7.backgroundColor = UIColor.clearColor()
             self.buttonView8.backgroundColor = UIColor.clearColor()
-            
-            self.myCoins.text = coinsUpdate
         }
     }
     
@@ -741,87 +739,149 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         }
     }
     
-    func updateLabelCamera(text: String) {
+    func updateLabelCamera(text: String, isDev: Bool) {
         
         println("Update label")
+        var nameText: String = ""
+        var keyFilterName: String = ""
+        var buttonUI: UIView = self.buttonView1
         
         if DataSetting.variable.filmIndex == 1 {
             let film: AnyObject? = userSetting?.objectForKey(slotName1)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num1.text = ("\(text) of \(filmLength)")
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName1
+            buttonUI = self.buttonView1
             
         }else if DataSetting.variable.filmIndex == 2 {
             let film: AnyObject? = userSetting?.objectForKey(slotName2)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num2.text = ("\(text) of \(filmLength)")
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName2
+            buttonUI = self.buttonView2
             
         }else if DataSetting.variable.filmIndex == 3 {
             let film: AnyObject? = userSetting?.objectForKey(slotName3)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num3.text = ("\(text) of \(filmLength)")
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName3
+            buttonUI = self.buttonView3
             
         }else if DataSetting.variable.filmIndex == 4 {
             let film: AnyObject? = userSetting?.objectForKey(slotName4)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num4.text = ("\(text) of \(filmLength)")
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName4
+            buttonUI = self.buttonView4
             
         }else if DataSetting.variable.filmIndex == 5 {
             let film: AnyObject? = userSetting?.objectForKey(slotName5)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num5.text = ("\(text) of \(filmLength)")
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName5
+            buttonUI = self.buttonView5
             
         }else if DataSetting.variable.filmIndex == 6 {
             let film: AnyObject? = userSetting?.objectForKey(slotName6)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num6.text = ("\(text) of \(filmLength)")
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName6
+            buttonUI = self.buttonView6
             
         }else if DataSetting.variable.filmIndex == 7 {
             let film: AnyObject? = userSetting?.objectForKey(slotName7)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num7.text = ("\(text) of \(filmLength)")
-        
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName7
+            buttonUI = self.buttonView7
+            
         }else if DataSetting.variable.filmIndex == 8 {
             let film: AnyObject? = userSetting?.objectForKey(slotName8)
             var filmLength = film!.objectAtIndex(4) as! Int
             self.num8.text = ("\(text) of \(filmLength)")
+            keyFilterName = film!.objectAtIndex(1) as! String
+            DataSetting.variable.key = slotName8
+            buttonUI = self.buttonView8
             
         }
-        DataSetting.variable.filmIndex = 0
+        if isDev == true {
+            self.isSelect(buttonUI)
+            
+            if keyFilterName == "#01" {
+                nameText = DataSetting.variable.filter1
+                
+            }else if keyFilterName == "#02" {
+                nameText = DataSetting.variable.filter2
+                
+            }else if keyFilterName == "#03" {
+                nameText = DataSetting.variable.filter3
+                
+            }else if keyFilterName == "#04" {
+                nameText = DataSetting.variable.filter4
+                
+            }else if keyFilterName == "#05" {
+                nameText = DataSetting.variable.filter5
+                
+            }else if keyFilterName == "#06" {
+                nameText = DataSetting.variable.filter6
+                
+            }else if keyFilterName == "#07" {
+                nameText = DataSetting.variable.filter7
+                
+            }else if keyFilterName == "#08" {
+                nameText = DataSetting.variable.filter8
+                
+            }
+            println("Alert Develop film")
+            
+            delay(1.0){
+                
+                var refreshAlert = UIAlertController(title: "Develop", message: "Develop \(nameText) film?", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                refreshAlert.addAction(UIAlertAction(title: "Develop", style: .Default, handler: { (action: UIAlertAction!) in
+                    let filterView = self.storyboard!.instantiateViewControllerWithIdentifier("process") as! FilterViewController
+                    filterView.delegate = self
+                    self.presentViewController(filterView, animated: true, completion: nil)
+                }))
+                
+                refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+                
+                self.presentViewController(refreshAlert, animated: true, completion: nil)
+            }
+        }
     }
     
-    func developNewFilm() {
-        var film: AnyObject? = userSetting?.objectForKey(slotName1)
-        var buttonUI: UIView = buttonView1
+    func updateCoinsViewPhoto2(coins: Int){
         
-        if DataSetting.variable.filmIndex == 1 {
-            film = userSetting?.objectForKey(slotName1)
-            buttonUI = buttonView1
-        }else if DataSetting.variable.filmIndex == 2 {
-            film = userSetting?.objectForKey(slotName2)
-            buttonUI = buttonView2
-        }else if DataSetting.variable.filmIndex == 3 {
-            film = userSetting?.objectForKey(slotName3)
-            buttonUI = buttonView3
-        }else if DataSetting.variable.filmIndex == 4 {
-            film = userSetting?.objectForKey(slotName4)
-            buttonUI = buttonView4
-        }else if DataSetting.variable.filmIndex == 5 {
-            film = userSetting?.objectForKey(slotName5)
-            buttonUI = buttonView5
-        }else if DataSetting.variable.filmIndex == 6 {
-            film = userSetting?.objectForKey(slotName6)
-            buttonUI = buttonView6
-        }else if DataSetting.variable.filmIndex == 7 {
-            film = userSetting?.objectForKey(slotName7)
-            buttonUI = buttonView7
-        }else if DataSetting.variable.filmIndex == 8 {
-            film = userSetting?.objectForKey(slotName8)
-                buttonUI = buttonView8
+        var myString = String(coins)
+        
+        userSetting.setInteger(coins, forKey: "myCoins")
+        
+        let myNum = count(String(userSetting.integerForKey("myCoins")))
+        
+        self.myCoins.text = myString
+        
+        if myNum < 3 {
+            self.myCoins.frame.size.width = 48
+        }else  if myNum >= 3 && myNum < 5 {
+            self.myCoins.frame.size.width = 58
+        }else if myNum >= 5 {
+            self.myCoins.frame.size.width = 78
         }
         
-        self.isSelect(buttonUI)
-        self.useFilm(film!)
+        println("MyCoins Label Update \(myString)")
         
     }
     
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time( DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    }
 }
