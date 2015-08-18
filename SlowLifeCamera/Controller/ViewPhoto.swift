@@ -23,31 +23,29 @@ class ViewPhoto: UIViewController {
     
     var delegate: updateCoinsViewPhoto = DataSetting.variable.controller
     
-    //@Export photo
     @IBAction func save(sender : AnyObject) {
-        
         PHPhotoLibrary.requestAuthorization
-            { (PHAuthorizationStatus status) -> Void in
+            {(PHAuthorizationStatus status) -> Void in
                 switch (status)
+                
                 {
                 case .Authorized:
                     // Permission Granted
                     println("Write your code here")
                     UIImageWriteToSavedPhotosAlbum(self.imageResource, nil, nil, nil)
                     
-                    let ac = UIAlertController(title: "Saved!", message: "The photo has been saved.", preferredStyle: .Alert)
-                    ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                    self.presentViewController(ac, animated: true, completion: nil)
-
+                    let alertControl = UIAlertController(title: "Saved!", message: "The photo has been saved.", preferredStyle: .Alert)
+                    alertControl.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                    self.presentViewController(alertControl, animated: true, completion: nil)
+                    
                 case .Denied:
-                    // Permission Denied
                     println("User denied")
                 default:
                     println("Restricted")
                 }
-                
         }
     }
+    
     @IBAction func shareTo(sender: UIBarButtonItem) {
         
         var chooseDialog = UIAlertController(title: "Post to social network", message: "Choose your social network?",preferredStyle: UIAlertControllerStyle.ActionSheet
