@@ -42,7 +42,7 @@ class FilterViewController: UIViewController {
         self.isShowText = showCopy == true || showTime == true || showLocation == true ? true : false
         self.isShowFrame = showFrame == true ? true : false
         
-
+        
         super.viewDidLoad()
     }
     
@@ -108,41 +108,33 @@ class FilterViewController: UIViewController {
                     var gotImg = UIImage(contentsOfFile: getImagePath)
                     println(gotImg?.imageOrientation.rawValue)
                     if keyFilter == "#01" {
-                        ApplyFilterNO14(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        ApplyFilterNO7(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter1
                         iconName = DataSetting.variable.iconFilter1
-                        
                     }else if keyFilter == "#02" {
                         ApplySepiaFilter(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter2
                         iconName = DataSetting.variable.iconFilter2
-                        
                     }else if keyFilter == "#03" {
                         ApplyMonoFilter(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter3
                         iconName = DataSetting.variable.iconFilter3
-                        
                     }else if keyFilter == "#04" {
                         ApplyFilterNO10(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter4
                         iconName = DataSetting.variable.iconFilter4
-                        
-                        
                     }else if keyFilter == "#05" {
                         ApplyPolyFilter(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter5
                         iconName = DataSetting.variable.iconFilter5
-                        
                     }else if keyFilter == "#06" {
                         ApplyFilterNO9(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter6
                         iconName = DataSetting.variable.iconFilter6
-                        
                     }else if keyFilter == "#07" {
-                        ApplyFilterNO7(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
+                        ApplyFilterNO14(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter7
                         iconName = DataSetting.variable.iconFilter7
-                        
                     }else if keyFilter == "#08" {
                         ApplyFilterNO13(fileURL!, rename: fileList[i], orientation: gotImg!.imageOrientation)
                         filterName = DataSetting.variable.filter8
@@ -244,10 +236,10 @@ class FilterViewController: UIViewController {
         filter.setValue(0.92, forKey: kCIInputSaturationKey)
         filter.setValue(0.98, forKey: kCIInputContrastKey)
         //let context = CIContext(options:nil)
-  
+        
         
         let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
-
+        
         self.moveFile(finalImage, newName: rename)
         
     }
@@ -329,7 +321,7 @@ class FilterViewController: UIViewController {
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         
         
-      let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
         
         self.moveFile(finalImage, newName: rename)
     }
@@ -341,7 +333,7 @@ class FilterViewController: UIViewController {
         //filter.setValue(1.8, forKey: "inputHighlightAmount")
         filter.setValue(0.3, forKey: "inputShadowAmount")
         
-       let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
         
         self.moveFile(finalImage, newName: rename)
     }
@@ -398,7 +390,7 @@ class FilterViewController: UIViewController {
         filter.setValue(2.9, forKey: "inputRadius")
         filter.setValue(0.72, forKey: "inputIntensity")
         
-       let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
         
         self.moveFile(finalImage, newName: rename)
     }
@@ -425,7 +417,7 @@ class FilterViewController: UIViewController {
         filter.setValue(vector, forKey: "inputWeights")
         filter.setValue(0.0, forKey: "inputBias")
         
-       let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
+        let finalImage = ProcessFilterImage(context.createCGImage(filter.outputImage, fromRect: ciImage.extent()), orientation: orientation, useFrame: isShowFrame, useText: isShowText, nameText: rename);
         
         self.moveFile(finalImage, newName: rename)
     }
@@ -458,8 +450,8 @@ class FilterViewController: UIViewController {
             ciImage = filter2.outputImage
         }
         
-         let finalImage = ProcessFilterImage(context.createCGImage(ciImage, fromRect: rect), orientation: orientation, useFrame: isShowFrame,  useText: isShowText, nameText: rename);
-    
+        let finalImage = ProcessFilterImage(context.createCGImage(ciImage, fromRect: rect), orientation: orientation, useFrame: isShowFrame,  useText: isShowText, nameText: rename);
+        
         self.moveFile(finalImage, newName: rename)
     }
     
@@ -638,16 +630,16 @@ class FilterViewController: UIViewController {
         }
         
         /*if showLocation == true{
-            
-            let provice = fullNameArr[1]
-            let tempCoutry = fullNameArr[2]
-            
-            let coutry = tempCoutry.substringWithRange(Range<String.Index>(start: advance(tempCoutry.startIndex, 0), end: advance(tempCoutry.endIndex, -4)))
-            
-            locationText = "\(provice), \(coutry)"
-            
-            println("locationText is = \(locationText)")
-            
+        
+        let provice = fullNameArr[1]
+        let tempCoutry = fullNameArr[2]
+        
+        let coutry = tempCoutry.substringWithRange(Range<String.Index>(start: advance(tempCoutry.startIndex, 0), end: advance(tempCoutry.endIndex, -4)))
+        
+        locationText = "\(provice), \(coutry)"
+        
+        println("locationText is = \(locationText)")
+        
         }*/
         
         var text = ""

@@ -202,13 +202,13 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         }else if myNum >= 5 {
                             self.myCoins.frame.size.width = 78
                         }
-
+                        
                         self.userSetting.setInteger(intCoins, forKey: "myCoins")
                         
                         let currentMyCoins = String(self.userSetting.integerForKey("myCoins"))
                         
                         self.update?.updateFilmUIViewAndCoins(true, myCoins: currentMyCoins)
-
+                        
                         let alertController = UIAlertController(title: "Successfuly", message:
                             "Add to your bag successfuly", preferredStyle: UIAlertControllerStyle.Alert)
                         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: { (action: UIAlertAction!) in
@@ -379,68 +379,87 @@ class ShopViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 println("Buying success: Unlock features.")
                 println(p.productIdentifier)
                 
-                
+                /*
                 var productIndex = String()
                 if self.index == 0 {
-                    productIndex = self.get150
-                    
+                productIndex = self.get150
+                
                 }else if self.index == 1{
-                    productIndex = self.get320
-                    
+                productIndex = self.get320
+                
                 }else if self.index == 2 {
-                    productIndex = self.get500
-                    
+                productIndex = self.get500
+                
                 }else if self.index == 3 {
-                    productIndex = self.get1000
-                    
+                productIndex = self.get1000
+                
+                }*/
+                
+                //let prodID = p.productIdentifier as String
+                //if(prodID == productIndex){
+                
+                var intCoins: Int = userSetting.integerForKey("myCoins")
+                
+                switch(p.productIdentifier){
+                case self.get150:
+                    intCoins = intCoins +  150
+                    break
+                case self.get320:
+                    intCoins = intCoins +  320
+                    break
+                case self.get500:
+                    intCoins = intCoins +  500
+                    break
+                case self.get1000:
+                    intCoins = intCoins +  1000
+                    break
+                default :
+                    intCoins = intCoins +  0
+                    break
                 }
                 
-                let prodID = p.productIdentifier as String
-                if(prodID == productIndex){
-                    
-                    var intCoins: Int = userSetting.integerForKey("myCoins")
-                    
-                    if self.index == 0 {
-                        
-                        intCoins = intCoins +  150
-                        
-                    }else if self.index == 1{
-                        intCoins = intCoins + 320
-                        
-                    }else if self.index == 2 {
-                        intCoins = intCoins + 500
-                        
-                    }else if self.index == 3 {
-                        intCoins = intCoins + 1000
-                        
-                    }
-                    
-                    self.myCoins.text = String(intCoins)
-                    
-                    var myStringCoins = String(intCoins)
-                    
-                    myCoins.text = myStringCoins
-                    
-                    let myNum = count(myStringCoins)
-                    
-                    if myNum < 3 {
-                        self.myCoins.frame.size.width = 48
-                    }else  if myNum >= 3 && myNum < 5{
-                        self.myCoins.frame.size.width = 58
-                    }else if myNum >= 5 {
-                        self.myCoins.frame.size.width = 78
-                    }
-
-                    
-                    self.userSetting.setInteger(intCoins, forKey: "myCoins")
-                    
-                    let currentMyCoins = String(userSetting.integerForKey("myCoins"))
-                    
-                    self.update?.updateFilmUIViewAndCoins(false, myCoins: currentMyCoins)
-                    
-                    println("current coins = \(intCoins)")
-                    
+                /*
+                if self.index == 0 {
+                
+                intCoins = intCoins +  150
+                
+                }else if  self.index == 1{
+                intCoins = intCoins + 320
+                
+                }else if self.index == 2 {
+                intCoins = intCoins + 500
+                
+                }else if self.index == 3 {
+                intCoins = intCoins + 1000
+                
                 }
+                */
+                self.myCoins.text = String(intCoins)
+                
+                var myStringCoins = String(intCoins)
+                
+                myCoins.text = myStringCoins
+                
+                let myNum = count(myStringCoins)
+                
+                if myNum < 3 {
+                    self.myCoins.frame.size.width = 48
+                }else  if myNum >= 3 && myNum < 5{
+                    self.myCoins.frame.size.width = 58
+                }else if myNum >= 5 {
+                    self.myCoins.frame.size.width = 78
+                }
+                
+                
+                self.userSetting.setInteger(intCoins, forKey: "myCoins")
+                
+                let currentMyCoins = String(userSetting.integerForKey("myCoins"))
+                
+                self.update?.updateFilmUIViewAndCoins(false, myCoins: currentMyCoins)
+                
+                println("current coins = \(intCoins)")
+                
+                //}
                 
                 queue.finishTransaction(trans)
                 break;

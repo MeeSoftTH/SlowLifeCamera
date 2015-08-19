@@ -29,14 +29,14 @@ class DataSetting {
         static let filterCode8: String = "#08"
         
         
-        static let filter1: String = "firefly"
+        static let filter1: String = "Slow"
         static let filter2: String = "Sepia"
         static let filter3: String = "Mono"
         static let filter4: String = "Grain"
         
         static let filter5: String = "Poly"
         static let filter6: String = "Red Room"
-        static let filter7: String = "WOW"
+        static let filter7: String = "firefly"
         static let filter8: String = "DARK"
         
         
