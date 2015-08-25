@@ -36,7 +36,7 @@ class DataSetting {
         
         static let filter5: String = "Poly"
         static let filter6: String = "Red Room"
-        static let filter7: String = "firefly"
+        static let filter7: String = "Firefly"
         static let filter8: String = "DARK"
         
         

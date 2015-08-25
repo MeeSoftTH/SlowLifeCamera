@@ -31,20 +31,20 @@ class GlobalFunction {
         
         if (!NSFileManager.defaultManager().fileExistsAtPath(dirPath)) {
             NSFileManager.defaultManager() .createDirectoryAtPath(dirPath, withIntermediateDirectories: false, attributes: nil, error: &error)
-             println("Created folder")
+            println("Save by \(dirPath)")
+            println("Created folder")
             
         }else {
-            if DataSetting.variable.isProcess == true {
-                var n = 1
-                while n > 0 {
-                    
-                    dirPath = "\(subDir)(\(n))"
-                    key = "\(subDir)(\(n))"
-                    if (!NSFileManager.defaultManager().fileExistsAtPath(dirPath)) {
-                        NSFileManager.defaultManager() .createDirectoryAtPath(dirPath, withIntermediateDirectories: false, attributes: nil, error: &error)
-                        println("Save by \(dirPath)")
-                        n = 0
-                    }
+            for var i = 1; i < 100; i++ {
+                
+                dirPath = documentsDirectory.stringByAppendingPathComponent("\(dir)/\(subDir)(\(i))")
+                key = "\(subDir)(\(i))"
+                
+                if (!NSFileManager.defaultManager().fileExistsAtPath(dirPath)) {
+                    NSFileManager.defaultManager() .createDirectoryAtPath(dirPath, withIntermediateDirectories: false, attributes: nil, error: &error)
+                    println("Save by \(dirPath)")
+                    println("Created same folder")
+                    i = 100
                 }
             }
         }
