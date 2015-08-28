@@ -25,6 +25,8 @@ class AlbumViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         
         self.setUpAlbumRow()
+        
+        self.myTable.tableFooterView = UIView()
     }
     
     override func didReceiveMemoryWarning() {
