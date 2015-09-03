@@ -668,7 +668,7 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
                 self.buttonView7.backgroundColor = UIColor.clearColor()
                 self.buttonView8.backgroundColor = UIColor.clearColor()
                 
-                 DataSetting.variable.rowSlected = false
+                DataSetting.variable.rowSlected = false
                 
             }))
             
@@ -677,7 +677,6 @@ class MyBagViewController: UIViewController, updateFilm, removeFilm, updateCoins
         }))
         
         chooseDialog.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
-            println("Handle Cancel Logic here")
             
         }))
         presentViewController(chooseDialog, animated: true, completion: nil)

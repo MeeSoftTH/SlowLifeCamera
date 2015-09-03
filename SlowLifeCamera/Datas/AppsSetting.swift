@@ -25,11 +25,6 @@ class AppSetting {
         userSetting.setObject(["Slot7", DataSetting.variable.filterCode7, DataSetting.variable.iconFilter7, DataSetting.variable.numberFilter7, DataSetting.variable.numberFilter7, true], forKey: "row7")
         userSetting.setObject(["Slot8", DataSetting.variable.filterCode8, DataSetting.variable.iconFilter8, DataSetting.variable.numberFilter8, DataSetting.variable.numberFilter8, true], forKey: "row8")
         
-        //userSetting.setObject(["Slot5", "", "", 0, 0,  false], forKey: "row5")
-        //userSetting.setObject(["Slot6", "", "", 0, 0, false], forKey: "row6")
-        //userSetting.setObject(["Slot7", "", "", 0, 0, false], forKey: "row7")
-        //userSetting.setObject(["Slot8", "", "", 0, 0, false], forKey: "row8")
-        
         // completed photo
         // defind folderName, FilterName, iconName, numPhoto
         userSetting.setObject(["", "", "", ""], forKey: "Slot1")
